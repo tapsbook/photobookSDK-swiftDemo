@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'C1270BB02907EF78F7C096FD'
+               BlueprintIdentifier = 'E74A358743E1DDB511ED2202'
                BlueprintName = 'FXLabel'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libFXLabel.a'>

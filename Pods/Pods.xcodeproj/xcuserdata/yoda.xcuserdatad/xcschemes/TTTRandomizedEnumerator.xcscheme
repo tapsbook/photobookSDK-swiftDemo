@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '7E7C7AD37CF65D1AEC0A3555'
+               BlueprintIdentifier = 'A1D91E147140EDBCA1516677'
                BlueprintName = 'TTTRandomizedEnumerator'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libTTTRandomizedEnumerator.a'>

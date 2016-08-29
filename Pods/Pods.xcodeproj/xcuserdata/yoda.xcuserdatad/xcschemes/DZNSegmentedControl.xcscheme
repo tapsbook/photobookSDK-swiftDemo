@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'C4098605EFA925176C5DF8D4'
+               BlueprintIdentifier = '8BF3C548144395053D54610B'
                BlueprintName = 'DZNSegmentedControl'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libDZNSegmentedControl.a'>

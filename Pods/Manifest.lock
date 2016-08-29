@@ -215,7 +215,7 @@ DEPENDENCIES:
   - MZFormSheetController (~> 3.1)
   - MZFormSheetPresentationController (~> 2.1)
   - pop (~> 1.0)
-  - Qiniu (~> 7.0)
+  - Qiniu (~> 7.0.16)
   - Reachability (~> 3.2)
   - SCLAlertView-Objective-C (~> 0.7)
   - SDWebImage (~> 3.7)
