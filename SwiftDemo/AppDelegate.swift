@@ -16,6 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        TBWeChatManager.sharedInstance().setupWithApplication(application, options: launchOptions)
+        TBFacebookManager.sharedInstance().setupWithApplication(application, options: launchOptions)
+        
+        TBSDKConfiguration.initializeWithConfiguratorClassName("SDKConfiguratorCustomCheckout")
+
         return true
     }
 
