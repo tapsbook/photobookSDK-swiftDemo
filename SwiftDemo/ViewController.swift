@@ -13,7 +13,6 @@ import DKImagePickerController
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    var assets: [DKAsset]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,10 +41,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         pickerController.allowMultipleTypes = allowMultipleType
         pickerController.sourceType = sourceType
         pickerController.singleSelect = singleSelect
+        pickerController.defaultSelectedAssets = nil
         
-        //		pickerController.showsCancelButton = true
-        //		pickerController.showsEmptyAlbums = false
-        //		pickerController.defaultAssetGroup = PHAssetCollectionSubtype.SmartAlbumFavorites
+//        pickerController.showsCancelButton = true
+//        pickerController.showsEmptyAlbums = false
+//        pickerController.defaultAssetGroup = PHAssetCollectionSubtype.SmartAlbumFavorites
+        
+        pickerController.didSelectAssets = { (assets: [DKAsset]) in
+            print("didSelectAssets")
+            print(assets)
+        }
+
+        
         
 //        pickerController.defaultSelectedAssets = self.assets
 //        
@@ -90,8 +97,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
+        if (indexPath.row == 0) {
+            showPhotoPicker()
+        }
+    }
+    
+    func showPhotoPicker() {
         let assetType = Demo.types[0]
-        let allowMultipleType = !(indexPath.row == 0 && indexPath.section == 3)
+        let allowMultipleType = false
         let sourceType: DKImagePickerControllerSourceType = .Photo
         let allowsLandscape = false
         let singleSelect = false
@@ -103,8 +116,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             allowsLandscape: allowsLandscape,
             singleSelect: singleSelect
         )
+        
     }
-
 
 }
 

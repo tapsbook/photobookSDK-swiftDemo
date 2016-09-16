@@ -12,7 +12,6 @@
 		D51912471D8C80BA0081DE5F /* DKAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51912431D8C80BA0081DE5F /* DKAsset.swift */; };
 		D51912481D8C80BA0081DE5F /* DKAssetGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51912441D8C80BA0081DE5F /* DKAssetGroup.swift */; };
 		D51912491D8C80BA0081DE5F /* DKImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51912451D8C80BA0081DE5F /* DKImageManager.swift */; };
-		D519124B1D8C827B0081DE5F /* DKImagePickerController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D519124A1D8C827B0081DE5F /* DKImagePickerController.framework */; };
 		D521585D1D74DA7A0053FB91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D521585C1D74DA7A0053FB91 /* AppDelegate.swift */; };
 		D52158621D74DA7B0053FB91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D52158601D74DA7B0053FB91 /* Main.storyboard */; };
 		D52158641D74DA7B0053FB91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D52158631D74DA7B0053FB91 /* Assets.xcassets */; };
@@ -64,7 +63,6 @@
 		D51912431D8C80BA0081DE5F /* DKAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKAsset.swift; sourceTree = "<group>"; };
 		D51912441D8C80BA0081DE5F /* DKAssetGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKAssetGroup.swift; sourceTree = "<group>"; };
 		D51912451D8C80BA0081DE5F /* DKImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKImageManager.swift; sourceTree = "<group>"; };
-		D519124A1D8C827B0081DE5F /* DKImagePickerController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DKImagePickerController.framework; path = "../../Library/Developer/Xcode/DerivedData/SwiftDemo-egdnruqpsptflvexgyaxsueshimw/Build/Products/Debug-iphonesimulator/DKImagePickerController.framework"; sourceTree = "<group>"; };
 		D52158591D74DA7A0053FB91 /* SwiftDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D521585C1D74DA7A0053FB91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D521585E1D74DA7B0053FB91 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -126,7 +124,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D519124B1D8C827B0081DE5F /* DKImagePickerController.framework in Frameworks */,
 				D52158CA1D74DE4D0053FB91 /* UIKit.framework in Frameworks */,
 				D52158C81D74DE460053FB91 /* Accelerate.framework in Frameworks */,
 				D52158C61D74DE3D0053FB91 /* AdSupport.framework in Frameworks */,
@@ -348,7 +345,6 @@
 			isa = PBXGroup;
 			children = (
 				D52158A61D74DD280053FB91 /* libsqlite3.0.tbd */,
-				D519124A1D8C827B0081DE5F /* DKImagePickerController.framework */,
 				D52158C91D74DE4D0053FB91 /* UIKit.framework */,
 				D52158C71D74DE460053FB91 /* Accelerate.framework */,
 				D52158C51D74DE3D0053FB91 /* AdSupport.framework */,
