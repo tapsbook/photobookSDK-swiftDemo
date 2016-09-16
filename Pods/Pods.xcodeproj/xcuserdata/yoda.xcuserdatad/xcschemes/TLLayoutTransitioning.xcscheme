@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '7D3573074C3C2975DA8D3A08'
+               BlueprintIdentifier = 'BBE0A9A417C1170B42F4C4BB'
                BlueprintName = 'TLLayoutTransitioning'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libTLLayoutTransitioning.a'>
+               BuildableName = 'TLLayoutTransitioning.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

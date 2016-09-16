@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E10DEB4E83F7D194D72B608A'
+               BlueprintIdentifier = '587C88A740C90B787FD9017F'
                BlueprintName = 'smc-runtime'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libsmc-runtime.a'>
+               BuildableName = 'smc_runtime.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

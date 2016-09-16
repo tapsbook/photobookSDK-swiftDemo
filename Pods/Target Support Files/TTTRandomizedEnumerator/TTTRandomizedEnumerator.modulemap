@@ -1,0 +1,6 @@
+framework module TTTRandomizedEnumerator {
+  umbrella header "TTTRandomizedEnumerator-umbrella.h"
+
+  export *
+  module * { export * }
+}

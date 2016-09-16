@@ -7,8 +7,13 @@
 //
 
 import UIKit
+import Photos
+import AVKit
+import DKImagePickerController
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
+    var assets: [DKAsset]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +23,86 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func showImagePickerWithAssetType(assetType: DKImagePickerControllerAssetType,
+                                      allowMultipleType: Bool,
+                                      sourceType: DKImagePickerControllerSourceType = .Both,
+                                      allowsLandscape: Bool,
+                                      singleSelect: Bool) {
+        
+        let pickerController = DKImagePickerController()
+        
+        // Custom camera
+        //		pickerController.UIDelegate = CustomUIDelegate()
+        //		pickerController.modalPresentationStyle = .OverCurrentContext
+        
+        pickerController.assetType = assetType
+        pickerController.allowsLandscape = allowsLandscape
+        pickerController.allowMultipleTypes = allowMultipleType
+        pickerController.sourceType = sourceType
+        pickerController.singleSelect = singleSelect
+        
+        //		pickerController.showsCancelButton = true
+        //		pickerController.showsEmptyAlbums = false
+        //		pickerController.defaultAssetGroup = PHAssetCollectionSubtype.SmartAlbumFavorites
+        
+//        pickerController.defaultSelectedAssets = self.assets
+//        
+//        pickerController.didSelectAssets = { [unowned self] (assets: [DKAsset]) in
+//            print("didSelectAssets")
+//            
+//            self.assets = assets
+//        }
+        
+        if UI_USER_INTERFACE_IDIOM() == .Pad {
+            pickerController.modalPresentationStyle = .FormSheet
+        }
+        
+        self.presentViewController(pickerController, animated: true) {}
+    }
+    
+    struct Demo {
+        static let titles = [
+            ["Create Book"],
+            ["View Books"],
+            ["View Shopping cart"]
+        ]
+        static let types: [DKImagePickerControllerAssetType] = [.AllPhotos]
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return Demo.titles.count
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return Demo.titles[section].count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+        
+        cell.textLabel?.text = Demo.titles[indexPath.section][indexPath.row]
+        
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        let assetType = Demo.types[0]
+        let allowMultipleType = !(indexPath.row == 0 && indexPath.section == 3)
+        let sourceType: DKImagePickerControllerSourceType = .Photo
+        let allowsLandscape = false
+        let singleSelect = false
+        
+        showImagePickerWithAssetType(
+            assetType,
+            allowMultipleType: allowMultipleType,
+            sourceType: sourceType,
+            allowsLandscape: allowsLandscape,
+            singleSelect: singleSelect
+        )
     }
 
 

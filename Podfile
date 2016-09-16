@@ -43,6 +43,9 @@ pod 'leveldb'
 pod 'ShareSDK3'
 pod 'MOBFoundation'
 
+pod 'DKImagePickerController'
+use_frameworks!
+
 end
 
 

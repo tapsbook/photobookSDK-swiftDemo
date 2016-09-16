@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         TBWeChatManager.sharedInstance().setupWithApplication(application, options: launchOptions)
         TBFacebookManager.sharedInstance().setupWithApplication(application, options: launchOptions)
         
-        TBSDKConfiguration.initializeWithConfiguratorClassName("SDKConfiguratorCustomCheckout")
+    TBSDKConfiguration.initializeWithConfiguratorClassName("SDKConfiguratorCustomCheckout")
 
         return true
     }
