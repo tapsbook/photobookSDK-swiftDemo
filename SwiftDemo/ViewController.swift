@@ -110,29 +110,29 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             try! fileManager.createDirectoryAtPath(cachePath, withIntermediateDirectories: true, attributes: nil)
         }
 
-        var index = 0
-        let base=arc4random_uniform(1000)
-
         let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true);
 
         for asset in assets! {
-            //save the file to local cache for SDK
-            let photo_id = String.localizedStringWithFormat("photo-%zd-%zd", base, index)
-            let filename_s = String.localizedStringWithFormat("photo-%zd-%zd-s.jpg", base, index)
-            let filename_l = String.localizedStringWithFormat("photo-%zd-%zd-l.jpg", base, index)
+            let photo_id = asset.identifier().componentsSeparatedByString("/").first
+            let filename_s = String.localizedStringWithFormat("%@-s.jpg", photo_id!)
+            let filename_l = String.localizedStringWithFormat("%@-l.jpg", photo_id!)
             let sPath = cachePath.stringByAppendingPathComponent(filename_s)
             let lPath = cachePath.stringByAppendingPathComponent(filename_l)
             
-            index = index + 1
-            asset.writeSizedImageToFile(sPath, size: CGSizeMake(100, 100), completeBlock: { (success) in
-                print("didSelectAssets:",filename_s)
-            })
+            //save the file to local cache for SDK
+            if(!fileManager.fileExistsAtPath(sPath)){
+                asset.writeSizedImageToFile(sPath, size: CGSizeMake(100, 100), completeBlock: { (success) in
+                    print("didSelectAssets:",filename_s)
+                })
+            }
             
-            asset.writeSizedImageToFile(lPath, size: CGSizeMake(800, 800), completeBlock: { (success) in
-                print("didSelectAssets:",filename_l)
-            })
+            if(!fileManager.fileExistsAtPath(lPath)){
+                asset.writeSizedImageToFile(lPath, size: CGSizeMake(800, 800), completeBlock: { (success) in
+                    print("didSelectAssets:",filename_l)
+                })
+            }
             
-            //then wrap asset as TBImage
+            //then wrap image as TBImage
             let tbImage : TBImage = TBImage(identifier: photo_id)
             tbImage.setImagePath(sPath, size: TBImageSize.s)
             tbImage.setImagePath(lPath, size: TBImageSize.l)

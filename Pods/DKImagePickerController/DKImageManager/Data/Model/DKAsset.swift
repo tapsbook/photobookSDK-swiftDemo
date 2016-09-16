@@ -61,6 +61,10 @@ public class DKAsset: NSObject {
 			return false
 		}
 	}
+    
+    public func identifier () -> String {
+        return (self.originalAsset?.localIdentifier)!
+    }
 	
 	public func fetchImageWithSize(size: CGSize, completeBlock: (image: UIImage?, info: [NSObject : AnyObject]?) -> Void) {
 		self.fetchImageWithSize(size, options: nil, completeBlock: completeBlock)
