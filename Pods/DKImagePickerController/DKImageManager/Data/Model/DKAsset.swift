@@ -191,7 +191,31 @@ public extension DKAsset {
 			})
 		})
 	}
-	
+    
+    /**
+     Writes the image in the receiver to the file specified by a given path.
+     */
+    public func writeSizedImageToFile(path: String, size : CGSize,  completeBlock: (success: Bool) -> Void) {
+        let options = PHImageRequestOptions()
+        options.version = .Current
+        
+        getImageManager().fetchImageForAsset(self, size: size) { (image, info) in
+            
+            DKAssetWriter.writeQueue.addOperationWithBlock({
+                if let imageData = UIImageJPEGRepresentation(image!, 0.8) {
+                    imageData.writeToFile(path, atomically: true)
+                    completeBlock(success: true)
+                } else {
+                    completeBlock(success: false)
+                }
+            })
+            
+        }
+        
+    }
+
+
+    
 	/**
 		Writes the AV in the receiver to the file specified by a given path.
 	

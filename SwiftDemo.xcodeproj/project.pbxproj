@@ -8,10 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3018D6963D81300372ACFED5 /* Pods_SwiftDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C734B798E2B806F1C490788 /* Pods_SwiftDemo.framework */; };
-		D51912461D8C80BA0081DE5F /* DKGroupDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51912411D8C80BA0081DE5F /* DKGroupDataManager.swift */; };
-		D51912471D8C80BA0081DE5F /* DKAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51912431D8C80BA0081DE5F /* DKAsset.swift */; };
-		D51912481D8C80BA0081DE5F /* DKAssetGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51912441D8C80BA0081DE5F /* DKAssetGroup.swift */; };
-		D51912491D8C80BA0081DE5F /* DKImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51912451D8C80BA0081DE5F /* DKImageManager.swift */; };
 		D521585D1D74DA7A0053FB91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D521585C1D74DA7A0053FB91 /* AppDelegate.swift */; };
 		D52158621D74DA7B0053FB91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D52158601D74DA7B0053FB91 /* Main.storyboard */; };
 		D52158641D74DA7B0053FB91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D52158631D74DA7B0053FB91 /* Assets.xcassets */; };
@@ -59,10 +55,6 @@
 		15F19F20BDC80AD600EDA8A7 /* Pods-SwiftDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftDemo/Pods-SwiftDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		4AD24ACC63B535468D05260A /* Pods-SwiftDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftDemo/Pods-SwiftDemo.release.xcconfig"; sourceTree = "<group>"; };
 		5C734B798E2B806F1C490788 /* Pods_SwiftDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D51912411D8C80BA0081DE5F /* DKGroupDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKGroupDataManager.swift; sourceTree = "<group>"; };
-		D51912431D8C80BA0081DE5F /* DKAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKAsset.swift; sourceTree = "<group>"; };
-		D51912441D8C80BA0081DE5F /* DKAssetGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKAssetGroup.swift; sourceTree = "<group>"; };
-		D51912451D8C80BA0081DE5F /* DKImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKImageManager.swift; sourceTree = "<group>"; };
 		D52158591D74DA7A0053FB91 /* SwiftDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D521585C1D74DA7A0053FB91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D521585E1D74DA7B0053FB91 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -162,33 +154,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		D519123F1D8C80BA0081DE5F /* DKImageManager */ = {
-			isa = PBXGroup;
-			children = (
-				D51912401D8C80BA0081DE5F /* Data */,
-				D51912451D8C80BA0081DE5F /* DKImageManager.swift */,
-			);
-			path = DKImageManager;
-			sourceTree = "<group>";
-		};
-		D51912401D8C80BA0081DE5F /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				D51912411D8C80BA0081DE5F /* DKGroupDataManager.swift */,
-				D51912421D8C80BA0081DE5F /* Model */,
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
-		D51912421D8C80BA0081DE5F /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				D51912431D8C80BA0081DE5F /* DKAsset.swift */,
-				D51912441D8C80BA0081DE5F /* DKAssetGroup.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		D52158501D74DA7A0053FB91 = {
 			isa = PBXGroup;
 			children = (
@@ -227,7 +192,6 @@
 		D521586E1D74DAE90053FB91 /* CustomClasses */ = {
 			isa = PBXGroup;
 			children = (
-				D519123F1D8C80BA0081DE5F /* DKImageManager */,
 				D52158CC1D74E5100053FB91 /* utils */,
 				D521586F1D74DBD20053FB91 /* TapsbookSDK */,
 			);
@@ -515,16 +479,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D51912461D8C80BA0081DE5F /* DKGroupDataManager.swift in Sources */,
 				D52158951D74DBD20053FB91 /* ALAssetRepresentation+Helper.m in Sources */,
 				D52158A21D74DBD30053FB91 /* UIImage+Save.m in Sources */,
-				D51912481D8C80BA0081DE5F /* DKAssetGroup.swift in Sources */,
-				D51912471D8C80BA0081DE5F /* DKAsset.swift in Sources */,
 				D52158CE1D74E5300053FB91 /* String.swift in Sources */,
 				D52158A11D74DBD30053FB91 /* TBPSSizeUtil.m in Sources */,
 				D52158D21D74E6780053FB91 /* AppColors.swift in Sources */,
 				D52158D01D74E5D40053FB91 /* ViewController.swift in Sources */,
-				D51912491D8C80BA0081DE5F /* DKImageManager.swift in Sources */,
 				D52158991D74DBD30053FB91 /* SDKConfigurator.m in Sources */,
 				D521589A1D74DBD30053FB91 /* SDKConfiguratorCustomCheckout.m in Sources */,
 				D52158981D74DBD30053FB91 /* PullableView.m in Sources */,

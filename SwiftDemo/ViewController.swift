@@ -10,18 +10,19 @@ import UIKit
 import Photos
 import AVKit
 import DKImagePickerController
+import MBProgressHUD
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    var assets: [DKAsset]?
+    var tbImages : [TBImage] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func showImagePickerWithAssetType(assetType: DKImagePickerControllerAssetType,
@@ -32,35 +33,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let pickerController = DKImagePickerController()
         
-        // Custom camera
-        //		pickerController.UIDelegate = CustomUIDelegate()
-        //		pickerController.modalPresentationStyle = .OverCurrentContext
-        
         pickerController.assetType = assetType
         pickerController.allowsLandscape = allowsLandscape
         pickerController.allowMultipleTypes = allowMultipleType
         pickerController.sourceType = sourceType
         pickerController.singleSelect = singleSelect
-        pickerController.defaultSelectedAssets = nil
-        
-//        pickerController.showsCancelButton = true
-//        pickerController.showsEmptyAlbums = false
-//        pickerController.defaultAssetGroup = PHAssetCollectionSubtype.SmartAlbumFavorites
-        
-        pickerController.didSelectAssets = { (assets: [DKAsset]) in
+        pickerController.defaultSelectedAssets = self.assets
+        pickerController.didSelectAssets = { [unowned self] (assets: [DKAsset]) in
             print("didSelectAssets")
-            print(assets)
+            self.assets = assets
+            
+            self.createBookWithSelectedAssets()
         }
-
-        
-        
-//        pickerController.defaultSelectedAssets = self.assets
-//        
-//        pickerController.didSelectAssets = { [unowned self] (assets: [DKAsset]) in
-//            print("didSelectAssets")
-//            
-//            self.assets = assets
-//        }
         
         if UI_USER_INTERFACE_IDIOM() == .Pad {
             pickerController.modalPresentationStyle = .FormSheet
@@ -116,6 +100,55 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             allowsLandscape: allowsLandscape,
             singleSelect: singleSelect
         )
+        
+    }
+    
+    func createBookWithSelectedAssets (){
+        let cachePath : String = NSHomeDirectory().stringByAppendingPathComponent("Library").stringByAppendingPathComponent("ImageCache")
+        let fileManager : NSFileManager = NSFileManager.defaultManager()
+        if(!fileManager.fileExistsAtPath(cachePath, isDirectory: nil)){
+            try! fileManager.createDirectoryAtPath(cachePath, withIntermediateDirectories: true, attributes: nil)
+        }
+
+        var index = 0
+        let base=arc4random_uniform(1000)
+
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true);
+
+        for asset in assets! {
+            //save the file to local cache for SDK
+            let photo_id = String.localizedStringWithFormat("photo-%zd-%zd", base, index)
+            let filename_s = String.localizedStringWithFormat("photo-%zd-%zd-s.jpg", base, index)
+            let filename_l = String.localizedStringWithFormat("photo-%zd-%zd-l.jpg", base, index)
+            let sPath = cachePath.stringByAppendingPathComponent(filename_s)
+            let lPath = cachePath.stringByAppendingPathComponent(filename_l)
+            
+            index = index + 1
+            asset.writeSizedImageToFile(sPath, size: CGSizeMake(100, 100), completeBlock: { (success) in
+                print("didSelectAssets:",filename_s)
+            })
+            
+            asset.writeSizedImageToFile(lPath, size: CGSizeMake(800, 800), completeBlock: { (success) in
+                print("didSelectAssets:",filename_l)
+            })
+            
+            //then wrap asset as TBImage
+            let tbImage : TBImage = TBImage(identifier: photo_id)
+            tbImage.setImagePath(sPath, size: TBImageSize.s)
+            tbImage.setImagePath(lPath, size: TBImageSize.l)
+            tbImages.append(tbImage)
+        }
+        hud.hide(true, afterDelay: 1.0)
+        
+        //launch SDK with images
+        let albumOption : NSDictionary = [
+        kTBPreferredProductSKU:     "1003"
+        ] //sku=1003 is a layflat book
+        
+        TBSDKAlbumManager.sharedInstance().createSDKAlbumWithImages(tbImages , identifier: nil, title: "Album", tag: 0, options: albumOption as [NSObject : AnyObject], completionBlock: { (success, sdkAlbum, error) -> Void in
+            
+            TBSDKAlbumManager.sharedInstance().openSDKAlbum(sdkAlbum, presentOnViewController: self, shouldPrintDirectly: false)
+        })
         
     }
 
