@@ -20,4 +20,7 @@ chilkat-9.5.0-ios/lib/
 SwiftDemo.xcworkspace/xcuserdata
 *.xcbkptlist
 
+TapsbookSDK/
+
+
 SwiftDemo.xcworkspace/xcuserdata/yoda.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
