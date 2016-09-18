@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '8A61114DEB1BCE0ACE38B49E'
+               BlueprintIdentifier = '44E59B5E6BDF9C5C4C80AEB8'
                BlueprintName = 'FastImageCache'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'FastImageCache.framework'>

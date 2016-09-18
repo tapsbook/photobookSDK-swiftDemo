@@ -1,64 +1,28 @@
-//
-//  _ASAsyncTransactionContainer.m
-//  AsyncDisplayKit
-//
-//  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
-//  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
-//
+/* Copyright (c) 2014-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
 
 #import "_ASAsyncTransactionContainer+Private.h"
 
 #import "_ASAsyncTransaction.h"
 #import "_ASAsyncTransactionGroup.h"
-#import <objc/runtime.h>
-
-static const char *ASDisplayNodeAssociatedTransactionsKey = "ASAssociatedTransactions";
-static const char *ASDisplayNodeAssociatedCurrentTransactionKey = "ASAssociatedCurrentTransaction";
 
 @implementation CALayer (ASAsyncTransactionContainerTransactions)
-
-- (_ASAsyncTransaction *)asyncdisplaykit_currentAsyncLayerTransaction
-{
-  return objc_getAssociatedObject(self, ASDisplayNodeAssociatedCurrentTransactionKey);
-}
-
-- (void)asyncdisplaykit_setCurrentAsyncLayerTransaction:(_ASAsyncTransaction *)transaction
-{
-  objc_setAssociatedObject(self, ASDisplayNodeAssociatedCurrentTransactionKey, transaction, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (NSHashTable *)asyncdisplaykit_asyncLayerTransactions
-{
-  return objc_getAssociatedObject(self, ASDisplayNodeAssociatedTransactionsKey);
-}
-
-- (void)asyncdisplaykit_setAsyncLayerTransactions:(NSHashTable *)transactions
-{
-  objc_setAssociatedObject(self, ASDisplayNodeAssociatedTransactionsKey, transactions, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
+@dynamic asyncdisplaykit_asyncLayerTransactions;
+@dynamic asyncdisplaykit_currentAsyncLayerTransaction;
 
 // No-ops in the base class. Mostly exposed for testing.
 - (void)asyncdisplaykit_asyncTransactionContainerWillBeginTransaction:(_ASAsyncTransaction *)transaction {}
 - (void)asyncdisplaykit_asyncTransactionContainerDidCompleteTransaction:(_ASAsyncTransaction *)transaction {}
 @end
 
-static const char *ASAsyncTransactionIsContainerKey = "ASTransactionIsContainer";
-
 @implementation CALayer (ASDisplayNodeAsyncTransactionContainer)
 
-- (BOOL)asyncdisplaykit_isAsyncTransactionContainer
-{
-  CFBooleanRef isContainerBool = (__bridge CFBooleanRef)objc_getAssociatedObject(self, ASAsyncTransactionIsContainerKey);
-  BOOL isContainer = (isContainerBool == kCFBooleanTrue);
-  return isContainer;
-}
-
-- (void)asyncdisplaykit_setAsyncTransactionContainer:(BOOL)isContainer
-{
-  objc_setAssociatedObject(self, ASAsyncTransactionIsContainerKey, (id)(isContainer ? kCFBooleanTrue : kCFBooleanFalse), OBJC_ASSOCIATION_ASSIGN);
-}
+@dynamic asyncdisplaykit_asyncTransactionContainer;
 
 - (ASAsyncTransactionContainerState)asyncdisplaykit_asyncTransactionContainerState
 {

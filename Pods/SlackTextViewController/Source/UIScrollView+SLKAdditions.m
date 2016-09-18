@@ -1,9 +1,17 @@
 //
-//  SlackTextViewController
-//  https://github.com/slackhq/SlackTextViewController
+//   Copyright 2014 Slack Technologies, Inc.
 //
-//  Copyright 2014-2016 Slack Technologies, Inc.
-//  Licence: MIT-Licence
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
 //
 
 #import "UIScrollView+SLKAdditions.h"
@@ -12,29 +20,17 @@
 
 - (void)slk_scrollToTopAnimated:(BOOL)animated
 {
-    if ([self slk_canScroll]) {
-        [self setContentOffset:CGPointZero animated:animated];
-    }
+    [self scrollRectToVisible:[self slk_topRect] animated:animated];
 }
 
 - (void)slk_scrollToBottomAnimated:(BOOL)animated
 {
-    if ([self slk_canScroll]) {
-        [self setContentOffset:[self slk_bottomRect].origin animated:animated];
-    }
-}
-
-- (BOOL)slk_canScroll
-{
-    if (self.contentSize.height > CGRectGetHeight(self.frame)) {
-        return YES;
-    }
-    return NO;
+    [self scrollRectToVisible:[self slk_bottomRect] animated:animated];
 }
 
 - (BOOL)slk_isAtTop
 {
-    return CGRectGetMinY([self slk_visibleRect]) <= CGRectGetMinY(self.bounds);
+    return CGRectGetMinY([self slk_visibleRect]) <= CGRectGetMinY([self slk_topRect]);
 }
 
 - (BOOL)slk_isAtBottom
@@ -50,9 +46,14 @@
     return visibleRect;
 }
 
+- (CGRect)slk_topRect
+{
+    return CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
+}
+
 - (CGRect)slk_bottomRect
 {
-    return CGRectMake(0.0, self.contentSize.height - CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
+    return CGRectMake(0, self.contentSize.height - CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
 }
 
 - (void)slk_stopScrolling

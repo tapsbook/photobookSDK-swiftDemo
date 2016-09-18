@@ -1,12 +1,10 @@
-//
-//  ASCollectionView.h
-//  AsyncDisplayKit
-//
-//  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
-//  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
-//
+/* Copyright (c) 2014-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
 
 #import <UIKit/UIKit.h>
 
@@ -15,94 +13,70 @@
 #import <AsyncDisplayKit/ASBaseDefines.h>
 #import <AsyncDisplayKit/ASBatchContext.h>
 
+
 @class ASCellNode;
-@class ASCollectionNode;
-@protocol ASCollectionDataSource;
-@protocol ASCollectionDelegate;
+@protocol ASCollectionViewDataSource;
+@protocol ASCollectionViewDelegate;
 @protocol ASCollectionViewLayoutInspecting;
 
-NS_ASSUME_NONNULL_BEGIN
-
 /**
- * Asynchronous UICollectionView with Intelligent Preloading capabilities.
+ * Node-based collection view.
  *
- * ASCollectionNode is recommended over ASCollectionView.  This class exists for adoption convenience.
- *
- * ASCollectionView is a true subclass of UICollectionView, meaning it is pointer-compatible
- * with code that currently uses UICollectionView.
- *
- * The main difference is that asyncDataSource expects -nodeForItemAtIndexPath, an ASCellNode, and
- * the sizeForItemAtIndexPath: method is eliminated (as are the performance problems caused by it).
- * This is made possible because ASCellNodes can calculate their own size, and preload ahead of time.
+ * ASCollectionView is a version of UICollectionView that uses nodes -- specifically, ASCellNode subclasses -- with asynchronous
+ * pre-rendering instead of synchronously loading UICollectionViewCells.
  */
 @interface ASCollectionView : UICollectionView
 
-/**
- * Initializer.
- *
- * @param layout The layout object to use for organizing items. The collection view stores a strong reference to the specified object. Must not be nil.
- */
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout;
-- (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout;
 
-// The corresponding ASCollectionNode, which exists even if directly allocating & handling the view class.
-@property (nonatomic, weak, readonly) ASCollectionNode *collectionNode;
-
-@property (nonatomic, weak) id<ASCollectionDelegate>   asyncDelegate;
-@property (nonatomic, weak) id<ASCollectionDataSource> asyncDataSource;
+@property (nonatomic, weak) id<ASCollectionViewDataSource> asyncDataSource;
+@property (nonatomic, weak) id<ASCollectionViewDelegate> asyncDelegate;       // must not be nil
 
 /**
- * Tuning parameters for a range type in full mode.
+ * Tuning parameters for a range type.
  *
  * @param rangeType The range type to get the tuning parameters for.
  *
- * @returns A tuning parameter value for the given range type in full mode.
+ * @returns A tuning parameter value for the given range type.
  *
- * @see ASLayoutRangeMode
- * @see ASLayoutRangeType
+ * Defaults to the render range having one sceenful both leading and trailing and the preload range having two
+ * screenfuls in both directions.
  */
 - (ASRangeTuningParameters)tuningParametersForRangeType:(ASLayoutRangeType)rangeType;
 
 /**
- * Set the tuning parameters for a range type in full mode.
+ * Set the tuning parameters for a range type.
  *
  * @param tuningParameters The tuning parameters to store for a range type.
  * @param rangeType The range type to set the tuning parameters for.
- *
- * @see ASLayoutRangeMode
- * @see ASLayoutRangeType
  */
 - (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters forRangeType:(ASLayoutRangeType)rangeType;
 
 /**
- * Tuning parameters for a range type in the specified mode.
+ * Initializer.
  *
- * @param rangeMode The range mode to get the running parameters for.
- * @param rangeType The range type to get the tuning parameters for.
+ * @param frame The frame rectangle for the collection view, measured in points. The origin of the frame is relative to the superview 
+ * in which you plan to add it. This frame is passed to the superclass during initialization.
+ * 
+ * @param layout The layout object to use for organizing items. The collection view stores a strong reference to the specified object. 
+ * Must not be nil.
  *
- * @returns A tuning parameter value for the given range type in the given mode.
+ * @param asyncDataFetchingEnabled Enable the data fetching in async mode.
  *
- * @see ASLayoutRangeMode
- * @see ASLayoutRangeType
+ * @discussion If asyncDataFetching is enabled, the `ASCollectionView` will fetch data through `collectionView:numberOfRowsInSection:` and
+ * `collectionView:nodeForRowAtIndexPath:` in async mode from background thread. Otherwise, the methods will be invoked synchronically
+ * from calling thread.
+ * Enabling asyncDataFetching could avoid blocking main thread for `ASCellNode` allocation, which is frequently reported issue for
+ * large scale data. On another hand, the application code need take the responsibility to avoid data inconsistence. Specifically,
+ * we will lock the data source through `collectionViewLockDataSource`, and unlock it by `collectionViewUnlockDataSource` after the data fetching.
+ * The application should not update the data source while the data source is locked, to keep data consistence.
  */
-- (ASRangeTuningParameters)tuningParametersForRangeMode:(ASLayoutRangeMode)rangeMode rangeType:(ASLayoutRangeType)rangeType;
-
-/**
- * Set the tuning parameters for a range type in the specified mode.
- *
- * @param tuningParameters The tuning parameters to store for a range type.
- * @param rangeMode The range mode to set the running parameters for.
- * @param rangeType The range type to set the tuning parameters for.
- *
- * @see ASLayoutRangeMode
- * @see ASLayoutRangeType
- */
-- (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters forRangeMode:(ASLayoutRangeMode)rangeMode rangeType:(ASLayoutRangeType)rangeType;
+- (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout asyncDataFetching:(BOOL)asyncDataFetchingEnabled;
 
 /**
  * The number of screens left to scroll before the delegate -collectionView:beginBatchFetchingWithContext: is called.
  *
- * Defaults to two screenfuls.
+ * Defaults to one screenful.
  */
 @property (nonatomic, assign) CGFloat leadingScreensForBatching;
 
@@ -128,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
  *                    Boolean parameter that contains the value YES if all of the related animations completed successfully or 
  *                    NO if they were interrupted. This parameter may be nil. If supplied, the block is run on the main thread.
  */
-- (void)performBatchAnimated:(BOOL)animated updates:(void (^ _Nullable)())updates completion:(void (^ _Nullable)(BOOL))completion;
+- (void)performBatchAnimated:(BOOL)animated updates:(void (^)())updates completion:(void (^)(BOOL))completion;
 
 /**
  *  Perform a batch of updates asynchronously.  This method must be called from the main thread.
@@ -139,7 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
  *                    Boolean parameter that contains the value YES if all of the related animations completed successfully or
  *                    NO if they were interrupted. This parameter may be nil. If supplied, the block is run on the main thread.
  */
-- (void)performBatchUpdates:(void (^ _Nullable)())updates completion:(void (^ _Nullable)(BOOL))completion;
+- (void)performBatchUpdates:(void (^)())updates completion:(void (^)(BOOL))completion;
 
 /**
  * Reload everything from scratch, destroying the working range and all cached nodes.
@@ -148,7 +122,7 @@ NS_ASSUME_NONNULL_BEGIN
  * the main thread.
  * @warning This method is substantially more expensive than UICollectionView's version.
  */
-- (void)reloadDataWithCompletion:(void (^ _Nullable)())completion;
+- (void)reloadDataWithCompletion:(void (^)())completion;
 
 /**
  * Reload everything from scratch, destroying the working range and all cached nodes.
@@ -166,20 +140,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)reloadDataImmediately;
 
 /**
- * Triggers a relayout of all nodes.
- *
- */
-- (void)relayoutItems;
-
-/**
- *  Blocks execution of the main thread until all section and row updates are committed. This method must be called from the main thread.
- */
-- (void)waitUntilAllUpdatesAreCommitted;
-
-/**
  * Registers the given kind of supplementary node for use in creating node-backed supplementary views.
  *
- * @param elementKind The kind of supplementary node that will be requested through the data source.
+ * @param kind The kind of supplementary node that will be requested through the data source.
  *
  * @discussion Use this method to register support for the use of supplementary nodes in place of the default
  * `registerClass:forSupplementaryViewOfKind:withReuseIdentifier:` and `registerNib:forSupplementaryViewOfKind:withReuseIdentifier:`
@@ -238,7 +201,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
  * before this method is called.
  */
-- (void)insertItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths;
+- (void)insertItemsAtIndexPaths:(NSArray *)indexPaths;
 
 /**
  * Deletes the items specified by an array of index paths.
@@ -248,7 +211,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
  * before this method is called.
  */
-- (void)deleteItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths;
+- (void)deleteItemsAtIndexPaths:(NSArray *)indexPaths;
 
 /**
  * Reloads the specified items.
@@ -258,7 +221,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
  * before this method is called.
  */
-- (void)reloadItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths;
+- (void)reloadItemsAtIndexPaths:(NSArray *)indexPaths;
 
 /**
  * Moves the item at a specified location to a destination location.
@@ -277,20 +240,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param indexPath The index path of the requested node.
  *
- * @returns a node for display at this indexpath or nil
+ * @returns a node for display at this indexpath.
  */
-- (nullable ASCellNode *)nodeForItemAtIndexPath:(NSIndexPath *)indexPath;
-
-
-/**
- * Similar to -supplementaryViewForElementKind:atIndexPath:
- *
- * @param elementKind The kind of supplementary node to locate.
- * @param indexPath The index path of the requested supplementary node.
- *
- * @returns The specified supplementary node or nil
- */
-- (nullable ASCellNode *)supplementaryNodeForElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath;
+- (ASCellNode *)nodeForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  * Similar to -indexPathForCell:.
@@ -306,7 +258,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @returns an array containing the nodes being displayed on screen.
  */
-- (NSArray<ASCellNode *> *)visibleNodes;
+- (NSArray *)visibleNodes;
 
 /**
  * Query the sized node at `indexPath` for its calculatedSize.
@@ -329,40 +281,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (ASScrollDirection)scrollableDirections;
 
-/**
- * Triggers all loaded ASCellNodes to destroy displayed contents (freeing a lot of memory).
- *
- * @discussion This method should only be called by ASCollectionNode.  To be removed in a later release.
- */
-- (void)clearContents;
-
-/**
- * Triggers all loaded ASCellNodes to purge any data fetched from the network or disk (freeing memory).
- *
- * @discussion This method should only be called by ASCollectionNode.  To be removed in a later release.
- */
-- (void)clearFetchedData;
-
-/**
- * Forces the .contentInset to be UIEdgeInsetsZero.
- *
- * @discussion By default, UIKit sets the top inset to the navigation bar height, even for horizontally
- * scrolling views.  This can only be disabled by setting a property on the containing UIViewController,
- * automaticallyAdjustsScrollViewInsets, which may not be accessible.  ASPagerNode uses this to ensure
- * its flow layout behaves predictably and does not log undefined layout warnings.
- */
-@property (nonatomic) BOOL zeroContentInsets;
-
 @end
 
 
 /**
  * This is a node-based UICollectionViewDataSource.
  */
-#define ASCollectionViewDataSource ASCollectionDataSource
-@protocol ASCollectionDataSource <ASCommonCollectionViewDataSource>
-
-@optional
+@protocol ASCollectionViewDataSource <ASCommonCollectionViewDataSource, NSObject>
 
 /**
  * Similar to -collectionView:cellForItemAtIndexPath:.
@@ -371,25 +296,13 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param indexPath The index path of the requested node.
  *
- * @returns a node for display at this indexpath. This will be called on the main thread and should
- *   not implement reuse (it will be called once per row).  Unlike UICollectionView's version,
- *   this method is not called when the row is about to display.
+ * @returns a node for display at this indexpath.  Must be thread-safe (can be called on the main thread or a background
+ * queue) and should not implement reuse (it will be called once per row).  Unlike UICollectionView's version, this method
+ * is not called when the row is about to display.
  */
 - (ASCellNode *)collectionView:(ASCollectionView *)collectionView nodeForItemAtIndexPath:(NSIndexPath *)indexPath;
 
-/**
- * Similar to -collectionView:nodeForItemAtIndexPath:
- * This method takes precedence over collectionView:nodeForItemAtIndexPath: if implemented.
- *
- * @param collectionView The sender.
- *
- * @param indexPath The index path of the requested node.
- *
- * @returns a block that creates the node for display at this indexpath.
- *   Must be thread-safe (can be called on the main thread or a background
- *   queue) and should not implement reuse (it will be called once per row).
- */
-- (ASCellNodeBlock)collectionView:(ASCollectionView *)collectionView nodeBlockForItemAtIndexPath:(NSIndexPath *)indexPath;
+@optional
 
 /**
  * Asks the collection view to provide a supplementary node to display in the collection view.
@@ -413,23 +326,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Indicator to lock the data source for data fetching in async mode.
- * We should not update the data source until the data source has been unlocked. Otherwise, it will incur data inconsistency or exception
+ * We should not update the data source until the data source has been unlocked. Otherwise, it will incur data inconsistence or exception
  * due to the data access in async mode.
  *
  * @param collectionView The sender.
- * @deprecated The data source is always accessed on the main thread, and this method will not be called.
  */
-- (void)collectionViewLockDataSource:(ASCollectionView *)collectionView ASDISPLAYNODE_DEPRECATED;
+- (void)collectionViewLockDataSource:(ASCollectionView *)collectionView;
 
 /**
  * Indicator to unlock the data source for data fetching in async mode.
- * We should not update the data source until the data source has been unlocked. Otherwise, it will incur data inconsistency or exception
+ * We should not update the data source until the data source has been unlocked. Otherwise, it will incur data inconsistence or exception
  * due to the data access in async mode.
  *
  * @param collectionView The sender.
- * @deprecated The data source is always accessed on the main thread, and this method will not be called.
  */
-- (void)collectionViewUnlockDataSource:(ASCollectionView *)collectionView ASDISPLAYNODE_DEPRECATED;
+- (void)collectionViewUnlockDataSource:(ASCollectionView *)collectionView;
 
 @end
 
@@ -437,38 +348,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * This is a node-based UICollectionViewDelegate.
  */
-#define ASCollectionViewDelegate ASCollectionDelegate
-@protocol ASCollectionDelegate <ASCommonCollectionViewDelegate, NSObject>
+@protocol ASCollectionViewDelegate <ASCommonCollectionViewDelegate, NSObject>
 
 @optional
 
-/**
- * Informs the delegate that the collection view will add the node
- * at the given index path to the view hierarchy.
- *
- * @param collectionView The sender.
- * @param indexPath The index path of the item that will be displayed.
- *
- * @warning AsyncDisplayKit processes collection view edits asynchronously. The index path
- *   passed into this method may not correspond to the same item in your data source
- *   if your data source has been updated since the last edit was processed.
- */
 - (void)collectionView:(ASCollectionView *)collectionView willDisplayNodeForItemAtIndexPath:(NSIndexPath *)indexPath;
-
-/**
- * Informs the delegate that the collection view did remove the provided node from the view hierarchy.
- * This may be caused by the node scrolling out of view, or by deleting the item
- * or its containing section with @c deleteItemsAtIndexPaths: or @c deleteSections: .
- * 
- * @param collectionView The sender.
- * @param node The node which was removed from the view hierarchy.
- * @param indexPath The index path at which the node was located before it was removed.
- *
- * @warning AsyncDisplayKit processes collection view edits asynchronously. The index path
- *   passed into this method may not correspond to the same item in your data source
- *   if your data source has been updated since the last edit was processed.
- */
-- (void)collectionView:(ASCollectionView *)collectionView didEndDisplayingNode:(ASCellNode *)node forItemAtIndexPath:(NSIndexPath *)indexPath;
+- (void)collectionView:(ASCollectionView *)collectionView didEndDisplayingNodeForItemAtIndexPath:(NSIndexPath*)indexPath;
 
 /**
  * Receive a message that the collectionView is near the end of its data set and more data should be fetched if 
@@ -498,18 +383,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)shouldBatchFetchForCollectionView:(ASCollectionView *)collectionView;
 
-/**
- * Informs the delegate that the collection view did remove the node which was previously
- * at the given index path from the view hierarchy.
- *
- * @warning AsyncDisplayKit processes collection view edits asynchronously. The index path
- *   passed into this method may not correspond to the same item in your data source
- *   if your data source has been updated since the last edit was processed.
- *
- * This method is deprecated. Use @c collectionView:didEndDisplayingNode:forItemAtIndexPath: instead.
- */
-- (void)collectionView:(ASCollectionView *)collectionView didEndDisplayingNodeForItemAtIndexPath:(NSIndexPath *)indexPath ASDISPLAYNODE_DEPRECATED;
-
 @end
 
 /**
@@ -520,15 +393,17 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 /**
- * @discussion This method is deprecated and does nothing from 1.9.7 and up
- * Previously it applies the section inset to every cells within the corresponding section.
- * The expected behavior is to apply the section inset to the whole section rather than
- * shrinking each cell individually.
- * If you want this behavior, you can integrate your insets calculation into
- * `constrainedSizeForNodeAtIndexPath`
- * please file a github issue if you would like this to be restored.
+ * Passthrough support to UICollectionViewDelegateFlowLayout sectionInset behavior.
+ *
+ * @param collectionView The sender.
+ * @param collectionViewLayout The layout object requesting the information.
+ * @param section The index number of the section whose insets are needed.
+ *
+ * @discussion The same rules apply as the UICollectionView implementation, but this can also be used without a UICollectionViewFlowLayout.
+ * https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionViewDelegateFlowLayout_protocol/index.html#//apple_ref/occ/intfm/UICollectionViewDelegateFlowLayout/collectionView:layout:insetForSectionAtIndex:
+ *
  */
-- (UIEdgeInsets)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section __deprecated_msg("This method does nothing for 1.9.7+ due to incorrect implementation previously, see the header file for more information.");
+- (UIEdgeInsets)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;
 
 /**
  * Asks the delegate for the size of the header in the specified section.
@@ -544,8 +419,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ASCollectionView (Deprecated)
 
-- (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout asyncDataFetching:(BOOL)asyncDataFetchingEnabled ASDISPLAYNODE_DEPRECATED;
+@property (nonatomic, assign) ASRangeTuningParameters rangeTuningParameters ASDISPLAYNODE_DEPRECATED;
 
 @end
-
-NS_ASSUME_NONNULL_END

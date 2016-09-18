@@ -1,46 +1,33 @@
-//
-//  ASDataController.h
-//  AsyncDisplayKit
-//
-//  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
-//  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
-//
-
-#pragma once
+/* Copyright (c) 2014-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
 
 #import <UIKit/UIKit.h>
 #import <AsyncDisplayKit/ASDealloc2MainObject.h>
 #import <AsyncDisplayKit/ASDimension.h>
-#import <AsyncDisplayKit/ASFlowLayoutController.h>
-
-NS_ASSUME_NONNULL_BEGIN
+#import "ASFlowLayoutController.h"
 
 @class ASCellNode;
 @class ASDataController;
-@protocol ASEnvironment;
-
-typedef NSUInteger ASDataControllerAnimationOptions;
-
-/**
- * ASCellNode creation block. Used to lazily create the ASCellNode instance for a specified indexPath.
- */
-typedef ASCellNode * _Nonnull(^ASCellNodeBlock)();
 
 FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
+
+typedef NSUInteger ASDataControllerAnimationOptions;
 
 /**
  Data source for data controller
  It will be invoked in the same thread as the api call of ASDataController.
  */
-
 @protocol ASDataControllerSource <NSObject>
 
 /**
- Fetch the ASCellNode block for specific index path. This block should return the ASCellNode for the specified index path.
+ Fetch the ASCellNode for specific index path.
  */
-- (ASCellNodeBlock)dataController:(ASDataController *)dataController nodeBlockAtIndexPath:(NSIndexPath *)indexPath;
+- (ASCellNode *)dataController:(ASDataController *)dataController nodeAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  The constrained size range for layout.
@@ -57,10 +44,16 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
  */
 - (NSUInteger)numberOfSectionsInDataController:(ASDataController *)dataController;
 
-@end
+/**
+ Lock the data source for data fetching.
+ */
+- (void)dataControllerLockDataSource;
 
-@protocol ASDataControllerEnvironmentDelegate
-- (id<ASEnvironment>)dataControllerEnvironment;
+/**
+ Unlock the data source after data fetching.
+ */
+- (void)dataControllerUnlockDataSource;
+
 @end
 
 /**
@@ -75,22 +68,22 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
  Called for batch update.
  */
 - (void)dataControllerBeginUpdates:(ASDataController *)dataController;
-- (void)dataController:(ASDataController *)dataController endUpdatesAnimated:(BOOL)animated completion:(void (^ _Nullable)(BOOL))completion;
+- (void)dataController:(ASDataController *)dataController endUpdatesAnimated:(BOOL)animated completion:(void (^)(BOOL))completion;
 
 /**
  Called for insertion of elements.
  */
-- (void)dataController:(ASDataController *)dataController didInsertNodes:(NSArray<ASCellNode *> *)nodes atIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
+- (void)dataController:(ASDataController *)dataController didInsertNodes:(NSArray *)nodes atIndexPaths:(NSArray *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
 
 /**
  Called for deletion of elements.
  */
-- (void)dataController:(ASDataController *)dataController didDeleteNodes:(NSArray<ASCellNode *> *)nodes atIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
+- (void)dataController:(ASDataController *)dataController didDeleteNodes:(NSArray *)nodes atIndexPaths:(NSArray *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
 
 /**
  Called for insertion of sections.
  */
-- (void)dataController:(ASDataController *)dataController didInsertSections:(NSArray<NSArray<ASCellNode *> *> *)sections atIndexSet:(NSIndexSet *)indexSet withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
+- (void)dataController:(ASDataController *)dataController didInsertSections:(NSArray *)sections atIndexSet:(NSIndexSet *)indexSet withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
 
 /**
  Called for deletion of sections.
@@ -120,18 +113,26 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
 @property (nonatomic, weak) id<ASDataControllerDelegate> delegate;
 
 /**
+ *  Designated initializer.
  *
+ * @param asyncDataFetchingEnabled Enable the data fetching in async mode.
+ *
+ * @discussion If enabled, we will fetch data through `dataController:nodeAtIndexPath:` and `dataController:rowsInSection:` in background thread.
+ * Otherwise, the methods will be invoked synchronically in calling thread. Enabling data fetching in async mode could avoid blocking main thread
+ * while allocating cell on main thread, which is frequently reported issue for handling large scale data. On another hand, the application code
+ * will take the responsibility to avoid data inconsistence. Specifically, we will lock the data source through `dataControllerLockDataSource`,
+ * and unlock it by `dataControllerUnlockDataSource` after the data fetching. The application should not update the data source while
+ * the data source is locked.
  */
-@property (nonatomic, weak) id<ASDataControllerEnvironmentDelegate> environmentDelegate;
+- (instancetype)initWithAsyncDataFetching:(BOOL)asyncDataFetchingEnabled;
 
-/**
- * Returns YES if reloadData has been called at least once. Before this point it is
- * important to ignore/suppress some operations. For example, inserting a section
- * before the initial data load should have no effect.
+/** @name Initial loading
  *
- * This must be called on the main thread.
+ * @discussion This method allows choosing an animation style for the first load of content.  It is typically used just once,
+ * for example in viewWillAppear:, to specify an animation option for the information already present in the asyncDataSource.
  */
-@property (nonatomic, readonly) BOOL initialReloadDataHasBeenCalled;
+
+- (void)initialDataLoadingWithAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
 
 /** @name Data Updating */
 
@@ -139,7 +140,7 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
 
 - (void)endUpdates;
 
-- (void)endUpdatesAnimated:(BOOL)animated completion:(void (^ _Nullable)(BOOL))completion;
+- (void)endUpdatesAnimated:(BOOL)animated completion:(void (^)(BOOL))completion;
 
 - (void)insertSections:(NSIndexSet *)sections withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
 
@@ -149,11 +150,11 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
 
 - (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
 
-- (void)insertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
+- (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
 
-- (void)deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
+- (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
 
-- (void)reloadRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
+- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
 
 /**
  * Re-measures all loaded nodes in the backing store.
@@ -165,11 +166,9 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
 
 - (void)moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
 
-- (void)reloadDataWithAnimationOptions:(ASDataControllerAnimationOptions)animationOptions completion:(void (^ _Nullable)())completion;
+- (void)reloadDataWithAnimationOptions:(ASDataControllerAnimationOptions)animationOptions completion:(void (^)())completion;
 
 - (void)reloadDataImmediatelyWithAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
-
-- (void)waitUntilAllUpdatesAreCommitted;
 
 /** @name Data Querying */
 
@@ -177,15 +176,15 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
 
 - (NSUInteger)numberOfRowsInSection:(NSUInteger)section;
 
-- (nullable ASCellNode *)nodeAtIndexPath:(NSIndexPath *)indexPath;
+- (ASCellNode *)nodeAtIndexPath:(NSIndexPath *)indexPath;
 
-- (nullable NSIndexPath *)indexPathForNode:(ASCellNode *)cellNode;
+- (NSIndexPath *)indexPathForNode:(ASCellNode *)cellNode;
+
+- (NSArray *)nodesAtIndexPaths:(NSArray *)indexPaths;
 
 /**
  * Direct access to the nodes that have completed calculation and layout
  */
-- (NSArray<NSArray <ASCellNode *> *> *)completedNodes;
+- (NSArray *)completedNodes;
 
 @end
-
-NS_ASSUME_NONNULL_END

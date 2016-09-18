@@ -3,7 +3,7 @@
 //  SCLAlertView
 //
 //  Created by Diogo Autilio on 9/26/14.
-//  Copyright (c) 2014-2016 AnyKey Entertainment. All rights reserved.
+//  Copyright (c) 2014 AnyKey Entertainment. All rights reserved.
 //
 
 #if defined(__has_feature) && __has_feature(modules)
@@ -58,12 +58,6 @@
  *
  * TODO
  */
-+ (UIImage*)imageOfQuestion;
-
-/** TODO
- *
- * TODO
- */
 + (void)drawCheckmark;
 
 /** TODO
@@ -95,11 +89,5 @@
  * TODO
  */
 + (void)drawEdit;
-
-/** TODO
- *
- * TODO
- */
-+ (void)drawQuestion;
 
 @end

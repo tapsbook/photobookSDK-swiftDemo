@@ -37,6 +37,8 @@ FBSDK_STATIC_INLINE CGSize FBSDKEdgeInsetsInsetSize(CGSize size, UIEdgeInsets in
  */
 FBSDK_STATIC_INLINE CGSize FBSDKEdgeInsetsOutsetSize(CGSize size, UIEdgeInsets insets)
 {
+  CGRect rect = CGRectZero;
+  rect.size = size;
   return CGSizeMake(insets.left + size.width + insets.right,
                     insets.top + size.height + insets.bottom);
 }
@@ -63,18 +65,25 @@ FBSDK_STATIC_INLINE CGSize FBSDKTextSize(NSString *text,
   if (!text) {
     return CGSizeZero;
   }
-
-  NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-  paragraphStyle.lineBreakMode = lineBreakMode;
-  NSDictionary *attributes = @{
-                               NSFontAttributeName: font,
-                               NSParagraphStyleAttributeName: paragraphStyle,
-                               };
-  NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:text attributes:attributes];
-  CGSize size = [FBSDKMath ceilForSize:[attributedString boundingRectWithSize:constrainedSize
-                                                                      options:(NSStringDrawingUsesDeviceMetrics |
-                                                                               NSStringDrawingUsesLineFragmentOrigin |
-                                                                               NSStringDrawingUsesFontLeading)
-                                                                      context:NULL].size];
+  CGSize size;
+  if ([NSAttributedString instancesRespondToSelector:@selector(boundingRectWithSize:options:context:)]) {
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineBreakMode = lineBreakMode;
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName: font,
+                                 NSParagraphStyleAttributeName: paragraphStyle,
+                                 };
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:text attributes:attributes];
+    size = [FBSDKMath ceilForSize:[attributedString boundingRectWithSize:constrainedSize
+                                                                 options:(NSStringDrawingUsesDeviceMetrics |
+                                                                          NSStringDrawingUsesLineFragmentOrigin |
+                                                                          NSStringDrawingUsesFontLeading)
+                                                                 context:NULL].size];
+  } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    size = [text sizeWithFont:font constrainedToSize:constrainedSize lineBreakMode:lineBreakMode];
+#pragma clang diagnostic pop
+  }
   return [FBSDKMath ceilForSize:size];
 }

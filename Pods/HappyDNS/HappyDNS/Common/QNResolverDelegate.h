@@ -12,8 +12,6 @@ extern const int kQNDomainHijackingCode;
 extern const int kQNDomainNotOwnCode;
 extern const int kQNDomainSeverError;
 
-#define QN_DNS_DEFAULT_TIMEOUT 20 //seconds
-
 @class QNDomain;
 @class QNNetworkInfo;
 @protocol QNResolverDelegate <NSObject>

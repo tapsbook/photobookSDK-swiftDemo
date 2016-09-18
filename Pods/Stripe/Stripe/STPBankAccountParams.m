@@ -10,16 +10,6 @@
 
 @implementation STPBankAccountParams
 
-@synthesize additionalAPIParameters = _additionalAPIParameters;
-
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _additionalAPIParameters = @{};
-    }
-    return self;
-}
-
 - (NSString *)last4 {
     if (self.accountNumber && self.accountNumber.length >= 4) {
         return [self.accountNumber substringFromIndex:(self.accountNumber.length - 4)];

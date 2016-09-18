@@ -203,14 +203,14 @@
   [self _ensureLikeActionController:YES];
   [_likeActionController toggleLikeWithSoundEnabled:self.soundEnabled
                                 analyticsParameters:[self analyticsParameters]
-                                 fromViewController:[FBSDKInternalUtility viewControllerForView:self]];
+                                 fromViewController:[FBSDKInternalUtility viewControllerforView:self]];
 }
 
 - (void)_like:(id)sender
 {
   [_likeActionController toggleLikeWithSoundEnabled:_soundEnabled
                                 analyticsParameters:[self analyticsParameters]
-                                 fromViewController:[FBSDKInternalUtility viewControllerForView:self]];
+                                 fromViewController:[FBSDKInternalUtility viewControllerforView:self]];
 }
 
 - (void)_likeActionControllerDidDisableNotification:(NSNotification *)notification

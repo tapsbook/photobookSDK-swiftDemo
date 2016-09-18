@@ -18,7 +18,6 @@
 #import "STPAPIClient+ApplePay.h"
 #import "Stripe+ApplePay.h"
 #import "STPPaymentCardTextField.h"
-#import "UIImage+Stripe.h"
 
 FOUNDATION_EXPORT double StripeVersionNumber;
 FOUNDATION_EXPORT const unsigned char StripeVersionString[];

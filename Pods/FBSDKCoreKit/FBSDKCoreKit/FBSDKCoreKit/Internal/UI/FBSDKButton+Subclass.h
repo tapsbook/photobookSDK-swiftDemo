@@ -50,7 +50,6 @@
  selectedHighlightedColor:(UIColor *)selectedHighlightedColor;
 - (UIColor *)defaultBackgroundColor;
 - (UIColor *)defaultDisabledColor;
-- (UIFont *)defaultFont;
 - (UIColor *)defaultHighlightedColor;
 - (FBSDKIcon *)defaultIcon;
 - (UIColor *)defaultSelectedColor;

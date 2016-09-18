@@ -22,14 +22,11 @@
     return request;
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated"
 - (void)startLoading {
     NSMutableURLRequest *newRequest = [self.request mutableCopy];
     [self.class removePropertyForKey:STPStrictURLProtocolRequestKey inRequest:newRequest];
     self.connection = [NSURLConnection connectionWithRequest:[newRequest copy] delegate:self];
 }
-#pragma clang diagnostic pop
 
 - (void)stopLoading {
     [self.connection cancel];

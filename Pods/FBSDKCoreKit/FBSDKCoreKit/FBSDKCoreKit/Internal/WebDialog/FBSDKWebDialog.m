@@ -146,11 +146,7 @@ static FBSDKWebDialog *g_currentDialog = nil;
   BOOL animated = [FBSDKTypeUtility boolValue:notification.userInfo[@"UIDeviceOrientationRotateAnimatedUserInfoKey"]];
   Class CATransactionClass = fbsdkdfl_CATransactionClass();
   CFTimeInterval animationDuration = (animated ? [CATransactionClass animationDuration] : 0.0);
-  [self _updateViewsWithScale:1.0 alpha:1.0 animationDuration:animationDuration completion:^(BOOL finished) {
-    if (finished) {
-      [_dialogView setNeedsDisplay];
-    }
-  }];
+  [self _updateViewsWithScale:1.0 alpha:1.0 animationDuration:animationDuration completion:NULL];
 }
 
 - (void)_removeObservers

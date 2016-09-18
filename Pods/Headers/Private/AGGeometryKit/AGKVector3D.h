@@ -1,1 +1,1 @@
-../../../AGGeometryKit/AGGeometryKit/AGKVector3D.h
+../../../AGGeometryKit/Source/AGKVector3D.h

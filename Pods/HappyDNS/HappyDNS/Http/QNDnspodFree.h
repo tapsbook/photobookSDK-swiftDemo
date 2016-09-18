@@ -6,15 +6,14 @@
 //  Copyright (c) 2015年 Qiniu Cloud Storage. All rights reserved.
 //
 
-#import "QNResolverDelegate.h"
 #import <Foundation/Foundation.h>
+#import "QNResolverDelegate.h"
 
 @interface QNDnspodFree : NSObject <QNResolverDelegate>
+@property (readonly, strong) NSString *server;
 - (NSArray *)query:(QNDomain *)domain networkInfo:(QNNetworkInfo *)netInfo error:(NSError *__autoreleasing *)error;
 
 - (instancetype)init;
-- (instancetype)initWithServer:(NSString *)server;
-- (instancetype)initWithServer:(NSString *)server
-                       timeout:(NSUInteger)time;
+- (instancetype)initWithServer:(NSString*)server;
 
 @end

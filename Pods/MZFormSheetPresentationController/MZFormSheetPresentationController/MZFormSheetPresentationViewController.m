@@ -59,8 +59,8 @@
 @interface MZFormSheetPresentationViewController ()
 @property (nonatomic, strong) UIViewController *contentViewController;
 
-@property (nonatomic, strong) UIPanGestureRecognizer *edgeDismissalPanGestureRecognizer;
-@property (nonatomic, strong) UIPanGestureRecognizer *presentedViewDismissalPanGestureRecognizer;
+@property (nonatomic, strong) UIPanGestureRecognizer *edgeDissmisalPanGestureRecognizer;
+@property (nonatomic, strong) UIPanGestureRecognizer *presentedViewDissmisalPanGestureRecognizer;
 @property (nonatomic, assign, getter=isPanGestureRecognized) BOOL panGestureRecognized;
 @end
 
@@ -128,9 +128,9 @@
     self.view.layer.shadowRadius = shadowRadius;
 }
 
-- (void)setInteractivePanGestureDismissalDirection:(MZFormSheetPanGestureDismissDirection)interactivePanGestureDismissalDirection {
-    _interactivePanGestureDismissalDirection = interactivePanGestureDismissalDirection;
-    if (_interactivePanGestureDismissalDirection != MZFormSheetPanGestureDismissDirectionNone) {
+- (void)setInteractivePanGestureDissmisalDireciton:(MZFormSheetPanGestureDismissDirection)interactivePanGestureDissmisalDireciton {
+    _interactivePanGestureDissmisalDireciton = interactivePanGestureDissmisalDireciton;
+    if (_interactivePanGestureDissmisalDireciton != MZFormSheetPanGestureDismissDirectionNone) {
         [self addEdgeDismissalPanGestureRecognizer];
     } else {
         [self removeEdgeDismissalPanGestureRecognizer];
@@ -140,9 +140,9 @@
 - (void)setAllowDismissByPanningPresentedView:(BOOL)allowDismissByPanningPresentedView {
     _allowDismissByPanningPresentedView = allowDismissByPanningPresentedView;
     if (_allowDismissByPanningPresentedView) {
-        [self addPresentingViewDismissalPanGestureRecognizer];
+        [self addPresentaingViewDismissalPanGestureRecognizer];
     } else {
-        [self removePresentingViewDismissalPanGestureRecognizer];
+        [self removePresentaingViewDismissalPanGestureRecognizer];
     }
 }
 
@@ -168,32 +168,14 @@
 
 #pragma mark - View Life cycle
 
-- (instancetype)initWithContentView:(UIView *)contentView {
-    UIViewController *viewController = [[UIViewController alloc] init];
-    contentView.translatesAutoresizingMaskIntoConstraints = NO;
-    [viewController.view addSubview:contentView];
-    [viewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[contentView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(contentView)]];
-    [viewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contentView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(contentView)]];
-
-    if (self = [self initWithContentViewController:viewController]) {
-        self.presentationController.contentViewSize = contentView.frame.size;
-    }
-
-    return self;
-}
-
 - (instancetype)initWithContentViewController:(UIViewController *)viewController {
     if (self = [self init]) {
 
         NSParameterAssert(viewController);
         self.contentViewController = viewController;
         self.modalPresentationStyle = UIModalPresentationCustom;
-#if !TARGET_OS_TV
-        self.modalPresentationCapturesStatusBarAppearance = YES;
-#endif
         self.transitioningDelegate = self;
-        self.definesPresentationContext = YES;
-        
+
         id appearance = [[self class] appearance];
         [appearance applyInvocationTo:self];
     }
@@ -214,12 +196,12 @@
     [super viewWillAppear:animated];
     if (!self.presentedViewController) {
 
-        if (self.interactivePanGestureDismissalDirection != MZFormSheetPanGestureDismissDirectionNone) {
+        if (self.interactivePanGestureDissmisalDireciton != MZFormSheetPanGestureDismissDirectionNone) {
             [self addEdgeDismissalPanGestureRecognizer];
         }
         
         if (self.allowDismissByPanningPresentedView) {
-            [self addPresentingViewDismissalPanGestureRecognizer];
+            [self addPresentaingViewDismissalPanGestureRecognizer];
         }
 
         if (self.willPresentContentViewControllerHandler) {
@@ -259,27 +241,27 @@
 
 #pragma mark - UIGestureRecognizer
 
-- (void)addPresentingViewDismissalPanGestureRecognizer {
+- (void)addPresentaingViewDismissalPanGestureRecognizer {
     
-    [self removePresentingViewDismissalPanGestureRecognizer];
-    self.presentedViewDismissalPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleDismissalPanGestureRecognizer:)];
-    [self.view addGestureRecognizer:self.presentedViewDismissalPanGestureRecognizer];
+    [self removePresentaingViewDismissalPanGestureRecognizer];
+    self.presentedViewDissmisalPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleDismissalPanGestureRecognizer:)];
+    [self.view addGestureRecognizer:self.presentedViewDissmisalPanGestureRecognizer];
 }
 
-- (void)removePresentingViewDismissalPanGestureRecognizer {
-    [self.presentedViewDismissalPanGestureRecognizer.view removeGestureRecognizer:self.presentedViewDismissalPanGestureRecognizer];
-    self.presentedViewDismissalPanGestureRecognizer = nil;
+- (void)removePresentaingViewDismissalPanGestureRecognizer {
+    [self.presentedViewDissmisalPanGestureRecognizer.view removeGestureRecognizer:self.presentedViewDissmisalPanGestureRecognizer];
+    self.presentedViewDissmisalPanGestureRecognizer = nil;
 }
 
 - (void)addEdgeDismissalPanGestureRecognizer {
     [self removeEdgeDismissalPanGestureRecognizer];
-    self.edgeDismissalPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleDismissalPanGestureRecognizer:)];
-    [self.presentationController.containerView addGestureRecognizer:self.edgeDismissalPanGestureRecognizer];
+    self.edgeDissmisalPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleDismissalPanGestureRecognizer:)];
+    [self.presentationController.containerView addGestureRecognizer:self.edgeDissmisalPanGestureRecognizer];
 }
 
 - (void)removeEdgeDismissalPanGestureRecognizer {
-    [self.edgeDismissalPanGestureRecognizer.view removeGestureRecognizer:self.edgeDismissalPanGestureRecognizer];
-    self.edgeDismissalPanGestureRecognizer = nil;
+    [self.edgeDissmisalPanGestureRecognizer.view removeGestureRecognizer:self.edgeDissmisalPanGestureRecognizer];
+    self.edgeDissmisalPanGestureRecognizer = nil;
 }
 
 - (void)handleDismissalPanGestureRecognizer:(UIPanGestureRecognizer *)recognizer {
@@ -292,14 +274,14 @@
         self.panGestureRecognized = NO;
     }
     
-    if (recognizer == self.presentedViewDismissalPanGestureRecognizer) {
+    if (recognizer == self.presentedViewDissmisalPanGestureRecognizer) {
         if ([self.interactionAnimatorForPresentationController respondsToSelector:@selector(handlePresentingViewDismissalPanGestureRecognizer:forPresentingView:fromViewController:)]) {
             [self.interactionAnimatorForPresentationController handlePresentingViewDismissalPanGestureRecognizer:recognizer forPresentingView:self.view fromViewController:self];
         }
         
     } else {
         if ([self.interactionAnimatorForPresentationController respondsToSelector:@selector(handleEdgeDismissalPanGestureRecognizer:dismissDirection:forPresentingView:fromViewController:)]) {
-            [self.interactionAnimatorForPresentationController handleEdgeDismissalPanGestureRecognizer:recognizer dismissDirection:self.interactivePanGestureDismissalDirection forPresentingView:self.view fromViewController:self];
+            [self.interactionAnimatorForPresentationController handleEdgeDismissalPanGestureRecognizer:recognizer dismissDirection:self.interactivePanGestureDissmisalDireciton forPresentingView:self.view fromViewController:self];
         }
     }
     

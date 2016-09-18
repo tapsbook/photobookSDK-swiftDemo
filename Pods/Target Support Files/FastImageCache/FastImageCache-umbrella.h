@@ -9,7 +9,6 @@
 #import "FICImageTableEntry.h"
 #import "FICImports.h"
 #import "FICUtilities.h"
-#import "FastImageCache.h"
 
 FOUNDATION_EXPORT double FastImageCacheVersionNumber;
 FOUNDATION_EXPORT const unsigned char FastImageCacheVersionString[];

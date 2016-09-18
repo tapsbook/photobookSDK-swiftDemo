@@ -1,1 +1,1 @@
-../../../AGGeometryKit/AGGeometryKit/AGKBaseDefines.h
+../../../AGGeometryKit/Source/AGKBaseDefines.h

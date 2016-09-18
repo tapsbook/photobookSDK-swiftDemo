@@ -17,8 +17,6 @@
     [self createTokenWithData:[self.class formEncodedDataForPayment:payment] completion:completion];
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated"
 + (NSData *)formEncodedDataForPayment:(PKPayment *)payment {
     NSCAssert(payment != nil, @"Cannot create a token with a nil payment.");
     NSMutableCharacterSet *set = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
@@ -91,7 +89,6 @@
 
     return [payloadString dataUsingEncoding:NSUTF8StringEncoding];
 }
-#pragma clang diagnostic pop
 
 @end
 

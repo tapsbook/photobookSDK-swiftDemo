@@ -1,25 +1,31 @@
-//
-//  ASStackLayoutSpec.mm
-//  AsyncDisplayKit
-//
-//  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
-//  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
-//
+/*
+ *  Copyright (c) 2014-present, Facebook, Inc.
+ *  All rights reserved.
+ *
+ *  This source code is licensed under the BSD-style license found in the
+ *  LICENSE file in the root directory of this source tree. An additional grant
+ *  of patent rights can be found in the PATENTS file in the same directory.
+ *
+ */
+
+#import "ASStackLayoutSpec.h"
 
 #import <numeric>
 #import <vector>
 
+#import "ASBaseDefines.h"
 #import "ASInternalHelpers.h"
 
 #import "ASLayoutSpecUtilities.h"
 #import "ASStackBaselinePositionedLayout.h"
+#import "ASStackLayoutSpecUtilities.h"
+#import "ASStackPositionedLayout.h"
+#import "ASStackUnpositionedLayout.h"
 #import "ASThread.h"
 
 @implementation ASStackLayoutSpec
 {
-  ASDN::RecursiveMutex __instanceLock__;
+ ASDN::RecursiveMutex _propertyLock;
 }
 
 - (instancetype)init
@@ -52,10 +58,8 @@
     return nil;
   }
   _direction = direction;
-  _spacing = spacing;
-  _horizontalAlignment = ASHorizontalAlignmentNone;
-  _verticalAlignment = ASVerticalAlignmentNone;
   _alignItems = alignItems;
+  _spacing = spacing;
   _justifyContent = justifyContent;
   
   [self setChildren:children];
@@ -65,44 +69,18 @@
 - (void)setDirection:(ASStackLayoutDirection)direction
 {
   ASDisplayNodeAssert(self.isMutable, @"Cannot set properties when layout spec is not mutable");
-  if (_direction != direction) {
-    _direction = direction;
-    [self resolveHorizontalAlignment];
-    [self resolveVerticalAlignment];
-  }
-}
-
-- (void)setHorizontalAlignment:(ASHorizontalAlignment)horizontalAlignment
-{
-  ASDisplayNodeAssert(self.isMutable, @"Cannot set properties when layout spec is not mutable");
-  if (_horizontalAlignment != horizontalAlignment) {
-    _horizontalAlignment = horizontalAlignment;
-    [self resolveHorizontalAlignment];
-  }
-}
-
-- (void)setVerticalAlignment:(ASVerticalAlignment)verticalAlignment
-{
-  ASDisplayNodeAssert(self.isMutable, @"Cannot set properties when layout spec is not mutable");
-  if (_verticalAlignment != verticalAlignment) {
-    _verticalAlignment = verticalAlignment;
-    [self resolveVerticalAlignment];
-  }
+  _direction = direction;
 }
 
 - (void)setAlignItems:(ASStackLayoutAlignItems)alignItems
 {
   ASDisplayNodeAssert(self.isMutable, @"Cannot set properties when layout spec is not mutable");
-  ASDisplayNodeAssert(_horizontalAlignment == ASHorizontalAlignmentNone, @"Cannot set this property directly because horizontalAlignment is being used");
-  ASDisplayNodeAssert(_verticalAlignment == ASVerticalAlignmentNone, @"Cannot set this property directly because verticalAlignment is being used");
   _alignItems = alignItems;
 }
 
 - (void)setJustifyContent:(ASStackLayoutJustifyContent)justifyContent
 {
   ASDisplayNodeAssert(self.isMutable, @"Cannot set properties when layout spec is not mutable");
-  ASDisplayNodeAssert(_horizontalAlignment == ASHorizontalAlignmentNone, @"Cannot set this property directly because horizontalAlignment is being used");
-  ASDisplayNodeAssert(_verticalAlignment == ASVerticalAlignmentNone, @"Cannot set this property directly because verticalAlignment is being used");
   _justifyContent = justifyContent;
 }
 
@@ -118,14 +96,19 @@
   _baselineRelativeArrangement = baselineRelativeArrangement;
 }
 
+- (void)setChild:(id<ASLayoutable>)child forIdentifier:(NSString *)identifier
+{
+  ASDisplayNodeAssert(NO, @"ASStackLayoutSpec only supports setChildren");
+}
+
+- (id<ASLayoutable>)childForIdentifier:(NSString *)identifier
+{
+  ASDisplayNodeAssert(NO, @"ASStackLayoutSpec only supports children");
+  return nil;
+}
+
 - (ASLayout *)measureWithSizeRange:(ASSizeRange)constrainedSize
 {
-  if (self.children.count == 0) {
-    return [ASLayout layoutWithLayoutableObject:self
-                           constrainedSizeRange:constrainedSize
-                                           size:constrainedSize.min];
-  }
-  
   ASStackLayoutSpecStyle style = {.direction = _direction, .spacing = _spacing, .justifyContent = _justifyContent, .alignItems = _alignItems, .baselineRelativeArrangement = _baselineRelativeArrangement};
   BOOL needsBaselinePass = _baselineRelativeArrangement || _alignItems == ASStackLayoutAlignItemsBaselineFirst || _alignItems == ASStackLayoutAlignItemsBaselineLast;
   
@@ -144,11 +127,11 @@
   // and min descender in case this spec is a child in another spec that wants to align to a baseline.
   const auto baselinePositionedLayout = ASStackBaselinePositionedLayout::compute(positionedLayout, style, constrainedSize);
   if (self.direction == ASStackLayoutDirectionVertical) {
-    ASDN::MutexLocker l(__instanceLock__);
+    ASDN::MutexLocker l(_propertyLock);
     self.ascender = [[self.children firstObject] ascender];
     self.descender = [[self.children lastObject] descender];
   } else {
-    ASDN::MutexLocker l(__instanceLock__);
+    ASDN::MutexLocker l(_propertyLock);
     self.ascender = baselinePositionedLayout.ascender;
     self.descender = baselinePositionedLayout.descender;
   }
@@ -162,36 +145,8 @@
   }
   
   return [ASLayout layoutWithLayoutableObject:self
-                         constrainedSizeRange:constrainedSize
                                          size:ASSizeRangeClamp(constrainedSize, finalSize)
                                    sublayouts:sublayouts];
-}
-
-- (void)resolveHorizontalAlignment
-{
-  if (_direction == ASStackLayoutDirectionHorizontal) {
-    _justifyContent = justifyContent(_horizontalAlignment, _justifyContent);
-  } else {
-    _alignItems = alignment(_horizontalAlignment, _alignItems);
-  }
-}
-
-- (void)resolveVerticalAlignment
-{
-  if (_direction == ASStackLayoutDirectionHorizontal) {
-    _alignItems = alignment(_verticalAlignment, _alignItems);
-  } else {
-    _justifyContent = justifyContent(_verticalAlignment, _justifyContent);
-  }
-}
-
-@end
-
-@implementation ASStackLayoutSpec (ASEnvironment)
-
-- (BOOL)supportsUpwardPropagation
-{
-  return NO;
 }
 
 @end

@@ -1,18 +1,15 @@
-//
-//  ASScrollNode.h
-//  AsyncDisplayKit
-//
-//  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
-//  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
-//
+/* Copyright (c) 2014-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
 
 #import <UIKit/UIKit.h>
 
 #import <AsyncDisplayKit/ASDisplayNode.h>
 
-NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Simple node that wraps UIScrollView.
@@ -25,5 +22,3 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, strong) UIScrollView *view;
 
 @end
-
-NS_ASSUME_NONNULL_END

@@ -1,1 +1,1 @@
-../../../GoogleAnalytics/Sources/GAIEcommerceProductAction.h
+../../../GoogleAnalytics/Headers/Public/GAIEcommerceProductAction.h

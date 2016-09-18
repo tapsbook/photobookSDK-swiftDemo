@@ -1,1 +1,1 @@
-../../../AGGeometryKit/AGGeometryKit/AGKCorner.h
+../../../AGGeometryKit/Source/AGKCorner.h

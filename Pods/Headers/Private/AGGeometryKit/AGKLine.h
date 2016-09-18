@@ -1,1 +1,1 @@
-../../../AGGeometryKit/AGGeometryKit/AGKLine.h
+../../../AGGeometryKit/Source/AGKLine.h

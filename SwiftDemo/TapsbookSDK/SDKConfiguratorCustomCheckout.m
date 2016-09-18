@@ -26,7 +26,7 @@ extern NSString * const kTBUseExternalCheckout;
                                         @(TBProductType_Card) : @YES,
                                         },
                                 kTBSendAlbumJSONDictToHostingApp : @YES,          // (Optional) YES when you want to generate page image on your own.
-                                kTBGeneratePageImagesInDebugMode : @NO,          // (Optional) Helps you debug when kTBSendAlbumJSONDictToHostingApp is YES
+                                
                                 kTBSendAlbumKeyToHostingAppWhenCheckout : @NO,
                                 kTBUseExternalPrintProductInfo : @NO,
                                 kTBUseExternalCheckout : @YES,

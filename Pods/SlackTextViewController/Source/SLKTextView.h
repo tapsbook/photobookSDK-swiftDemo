@@ -1,13 +1,30 @@
 //
-//  SlackTextViewController
-//  https://github.com/slackhq/SlackTextViewController
+//   Copyright 2014 Slack Technologies, Inc.
 //
-//  Copyright 2014-2016 Slack Technologies, Inc.
-//  Licence: MIT-Licence
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
 //
 
 #import <UIKit/UIKit.h>
-#import "SLKTextInput.h"
+
+UIKIT_EXTERN NSString * const SLKTextViewTextWillChangeNotification;
+UIKIT_EXTERN NSString * const SLKTextViewContentSizeDidChangeNotification;
+UIKIT_EXTERN NSString * const SLKTextViewSelectedRangeDidChangeNotification;
+UIKIT_EXTERN NSString * const SLKTextViewDidPasteItemNotification;
+UIKIT_EXTERN NSString * const SLKTextViewDidShakeNotification;
+
+UIKIT_EXTERN NSString * const SLKTextViewPastedItemContentType;
+UIKIT_EXTERN NSString * const SLKTextViewPastedItemMediaType;
+UIKIT_EXTERN NSString * const SLKTextViewPastedItemData;
 
 typedef NS_OPTIONS(NSUInteger, SLKPastableMediaType) {
     SLKPastableMediaTypeNone        = 0,
@@ -22,30 +39,14 @@ typedef NS_OPTIONS(NSUInteger, SLKPastableMediaType) {
     SLKPastableMediaTypeAll         = SLKPastableMediaTypeImages|SLKPastableMediaTypeMOV
 };
 
-NS_ASSUME_NONNULL_BEGIN
-
-UIKIT_EXTERN NSString * const SLKTextViewTextWillChangeNotification;
-UIKIT_EXTERN NSString * const SLKTextViewContentSizeDidChangeNotification;
-UIKIT_EXTERN NSString * const SLKTextViewSelectedRangeDidChangeNotification;
-UIKIT_EXTERN NSString * const SLKTextViewDidPasteItemNotification;
-UIKIT_EXTERN NSString * const SLKTextViewDidShakeNotification;
-
-UIKIT_EXTERN NSString * const SLKTextViewPastedItemContentType;
-UIKIT_EXTERN NSString * const SLKTextViewPastedItemMediaType;
-UIKIT_EXTERN NSString * const SLKTextViewPastedItemData;
-
-@protocol SLKTextViewDelegate;
-
 /** @name A custom text input view. */
-@interface SLKTextView : UITextView <SLKTextInput>
-
-@property (nonatomic, weak) id<SLKTextViewDelegate,UITextViewDelegate>delegate;
+@interface SLKTextView : UITextView
 
 /** The placeholder text string. Default is nil. */
-@property (nonatomic, copy) NSString *_Nullable placeholder;
+@property (nonatomic, copy) NSString *placeholder;
 
 /** The placeholder color. Default is lightGrayColor. */
-@property (nonatomic, copy) UIColor *_Null_unspecified placeholderColor;
+@property (nonatomic, copy) UIColor *placeholderColor;
 
 /** The maximum number of lines before enabling scrolling. Default is 0 wich means limitless.
  If dynamic type is enabled, the maximum number of lines will be calculated proportionally to the user preferred font size. */
@@ -63,11 +64,8 @@ UIKIT_EXTERN NSString * const SLKTextViewPastedItemData;
 /** YES if quickly refreshed the textview without the intension to dismiss the keyboard. @view -disableQuicktypeBar: for more details. */
 @property (nonatomic, readwrite) BOOL didNotResignFirstResponder;
 
-/** YES if the magnifying glass is visible.
- This feature is deprecated since there are no legit alternatives to detect the magnifying glass.
- Open Radar: http://openradar.appspot.com/radar?id=5021485877952512
- */
-@property (nonatomic, getter=isLoupeVisible) BOOL loupeVisible DEPRECATED_ATTRIBUTE;
+/** YES if the magnifying glass is visible. */
+@property (nonatomic, getter=isLoupeVisible) BOOL loupeVisible;
 
 /** YES if the keyboard track pad has been recognized. iOS 9 only. */
 @property (nonatomic, readonly, getter=isTrackpadEnabled) BOOL trackpadEnabled;
@@ -94,71 +92,6 @@ UIKIT_EXTERN NSString * const SLKTextViewPastedItemData;
 /**
  Notifies the text view that the user pressed any arrow key. This is used to move the cursor up and down while having multiple lines.
  */
-- (void)didPressArrowKey:(UIKeyCommand *)keyCommand;
-
-
-#pragma mark - Markdown Formatting
-
-/** YES if the a markdown closure symbol should be added automatically after double spacebar tap, just like the native gesture to add a sentence period. Default is YES.
- This will always be NO if there isn't any registered formatting symbols.
- */
-@property (nonatomic, readonly, getter=isFormattingEnabled) BOOL formattingEnabled;
-
-/** An array of the registered formatting symbols. */
-@property (nonatomic, readonly) NSArray *_Nullable registeredSymbols;
-
-/**
- Registers any string markdown symbol for formatting tooltip, presented after selecting some text.
- The symbol must be valid string (i.e: '*', '~', '_', and so on). This also checks if no repeated symbols are inserted, and respects the ordering for the tooltip.
- 
- @param symbol A markdown symbol to be prefixed and sufixed to a text selection.
- @param title The tooltip item title for this formatting.
- */
-- (void)registerMarkdownFormattingSymbol:(NSString *)symbol
-                               withTitle:(NSString *)title;
-
-
-#pragma mark - External Keyboard Support
-
-/**
- Registers and observes key commands' updates, when the text view is first responder.
- Instead of typically overriding UIResponder's -keyCommands method, it is better to use this API for easier and safer implementation of key input detection.
- 
- @param input The keys that must be pressed by the user. Required.
- @param modifiers The bit mask of modifier keys that must be pressed. Use 0 if none.
- @param title The title to display to the user. Optional.
- @param completion A completion block called whenever the key combination is detected. Required.
- */
-- (void)observeKeyInput:(NSString *)input
-              modifiers:(UIKeyModifierFlags)modifiers
-                  title:(NSString *_Nullable)title
-             completion:(void (^)(UIKeyCommand *keyCommand))completion;
+- (void)didPressAnyArrowKey:(id)sender;
 
 @end
-
-
-@protocol SLKTextViewDelegate <UITextViewDelegate>
-@optional
-
-/**
- Asks the delegate whether the specified formatting symbol should be displayed in the tooltip.
- This is useful to remove some tooltip options when they no longer apply in some context.
- For example, Blockquotes formatting requires the symbol to be prefixed at the begining of a paragraph.
- 
- @param textView The text view containing the changes.
- @param symbol The formatting symbol to be verified.
- @return YES if the formatting symbol should be displayed in the tooltip. Default is YES.
- */
-- (BOOL)textView:(SLKTextView *)textView shouldOfferFormattingForSymbol:(NSString *)symbol;
-
-/**
- Asks the delegate whether the specified formatting symbol should be suffixed, to close the formatting wrap.
-
- @para  The prefix range
- */
-- (BOOL)textView:(SLKTextView *)textView shouldInsertSuffixForFormattingWithSymbol:(NSString *)symbol prefixRange:(NSRange)prefixRange;
-
-@end
-
-NS_ASSUME_NONNULL_END
-

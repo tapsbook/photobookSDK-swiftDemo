@@ -38,8 +38,6 @@ typedef NS_ENUM(NSInteger, MZFormSheetPresentationTransitionStyle) {
   MZFormSheetPresentationTransitionStyleSlideFromBottom,
   MZFormSheetPresentationTransitionStyleSlideFromLeft,
   MZFormSheetPresentationTransitionStyleSlideFromRight,
-  MZFormSheetPresentationTransitionStyleSlideAndBounceFromTop,
-  MZFormSheetPresentationTransitionStyleSlideAndBounceFromBottom,
   MZFormSheetPresentationTransitionStyleSlideAndBounceFromLeft,
   MZFormSheetPresentationTransitionStyleSlideAndBounceFromRight,
   MZFormSheetPresentationTransitionStyleFade,
@@ -64,13 +62,9 @@ typedef NS_ENUM(NSInteger, MZFormSheetPresentationTransitionStyle) {
 
 @end
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED < 100000
 @interface MZTransition
-: NSObject <MZFormSheetPresentationViewControllerTransitionProtocol>
-#else
-@interface MZTransition
-: NSObject <MZFormSheetPresentationViewControllerTransitionProtocol, CAAnimationDelegate>
-#endif
+    : NSObject <MZFormSheetPresentationViewControllerTransitionProtocol>
+
 /**
  *  Register custom transition animation style.
  *  You need to setup transitionStyle to MZFormSheetTransitionStyleCustom.

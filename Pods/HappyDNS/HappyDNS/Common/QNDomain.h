@@ -9,14 +9,14 @@
 #import <Foundation/Foundation.h>
 
 @interface QNDomain : NSObject
-@property (nonatomic, strong, readonly) NSString *domain;
+@property (nonatomic, readonly) NSString *domain;
 
 // 用来判断劫持
-@property (nonatomic, readonly) BOOL hasCname;
+@property (readonly) BOOL hasCname;
 // 用来判断劫持
-@property (nonatomic, readonly) int maxTtl;
+@property (readonly) int maxTtl;
 
-@property (nonatomic, readonly) BOOL hostsFirst;
+@property (readonly) BOOL hostsFirst;
 
 - (instancetype)init:(NSString *)domain;
 

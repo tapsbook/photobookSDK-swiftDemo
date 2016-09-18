@@ -1,7 +1,7 @@
 CLANG_CXX_LANGUAGE_STANDARD = c++11
 CLANG_CXX_LIBRARY = libc++
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 $(inherited) PIN_REMOTE_IMAGE=1
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/AsyncDisplayKit" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/GoogleAnalytics" "${PODS_ROOT}/Headers/Public/MOBFoundation" "${PODS_ROOT}/Headers/Public/ShareSDK3"
-OTHER_LDFLAGS = -l"c++" -framework "AssetsLibrary" -weak_framework "MapKit" -weak_framework "Photos"
+OTHER_LDFLAGS = -l"c++" -framework "AssetsLibrary" -weak_framework "Photos"
 PODS_ROOT = ${SRCROOT}
 SKIP_INSTALL = YES

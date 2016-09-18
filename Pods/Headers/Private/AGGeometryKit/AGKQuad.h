@@ -1,1 +1,1 @@
-../../../AGGeometryKit/AGGeometryKit/AGKQuad.h
+../../../AGGeometryKit/Source/AGKQuad.h

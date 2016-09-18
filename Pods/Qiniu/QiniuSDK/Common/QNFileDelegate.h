@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+
 /**
  *    文件处理接口，支持ALAsset, NSFileHandle, NSData
  */

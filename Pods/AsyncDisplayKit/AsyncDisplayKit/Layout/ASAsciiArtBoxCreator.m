@@ -1,13 +1,14 @@
-//
-//  ASAsciiArtBoxCreator.m
-//  AsyncDisplayKit
-//
-//  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
-//  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
-//
+/*
+ *  Copyright (c) 2014-present, Facebook, Inc.
+ *  All rights reserved.
+ *
+ *  This source code is licensed under the BSD-style license found in the
+ *  LICENSE file in the root directory of this source tree. An additional grant
+ *  of patent rights can be found in the PATENTS file in the same directory.
+ *
+ */
 
+@import UIKit;
 #import "ASAsciiArtBoxCreator.h"
 
 static const NSUInteger kDebugBoxPadding = 2;
@@ -111,7 +112,7 @@ typedef NS_ENUM(NSUInteger, PIDebugBoxPaddingLocation)
       [paddedLines addObject:paddedLine];
     }
     concatenatedLines = paddedLines;
-    // totalLineLength += difference;
+    totalLineLength += difference;
   }
   concatenatedLines = [self appendTopAndBottomToBoxString:concatenatedLines parent:parent];
   return [concatenatedLines componentsJoinedByString:@"\n"];

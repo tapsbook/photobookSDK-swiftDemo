@@ -17,18 +17,14 @@
 @property (nonatomic, nullable) STPCard *card;
 @property (nonatomic, nullable) STPBankAccount *bankAccount;
 @property (nonatomic, nullable) NSDate *created;
-@property (nonatomic, readwrite, nonnull, copy) NSDictionary *allResponseFields;
 @end
 
 @implementation STPToken
 
 - (NSString *)description {
-    return self.tokenId ?: @"Unknown token";
-}
-
-- (NSString *)debugDescription {
     NSString *token = self.tokenId ?: @"Unknown token";
     NSString *livemode = self.livemode ? @"live mode" : @"test mode";
+
     return [NSString stringWithFormat:@"%@ (%@)", token, livemode];
 }
 
@@ -87,8 +83,6 @@
     if (bankAccountDictionary) {
         token.bankAccount = [STPBankAccount decodedObjectFromAPIResponse:bankAccountDictionary];
     }
-    
-    token.allResponseFields = dict;
     return token;
 }
 

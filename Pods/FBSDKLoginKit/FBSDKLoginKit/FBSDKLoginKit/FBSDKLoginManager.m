@@ -72,7 +72,7 @@ static NSString *const FBSDKExpectedChallengeKey = @"expected_login_challenge";
 {
   [self assertPermissions:permissions];
   NSSet *permissionSet = [NSSet setWithArray:permissions];
-  if (![FBSDKInternalUtility areAllPermissionsReadPermissions:permissionSet]) {
+  if (![FBSDKLoginUtility areAllPermissionsReadPermissions:permissionSet]) {
     [[NSException exceptionWithName:NSInvalidArgumentException
                              reason:@"Publish or manage permissions are not permitted to be requested with read permissions."
                            userInfo:nil]
@@ -95,7 +95,7 @@ static NSString *const FBSDKExpectedChallengeKey = @"expected_login_challenge";
 {
   [self assertPermissions:permissions];
   NSSet *permissionSet = [NSSet setWithArray:permissions];
-  if (![FBSDKInternalUtility areAllPermissionsPublishPermissions:permissionSet]) {
+  if (![FBSDKLoginUtility areAllPermissionsPublishPermissions:permissionSet]) {
     [[NSException exceptionWithName:NSInvalidArgumentException
                              reason:@"Read permissions are not permitted to be requested with publish or manage permissions."
                            userInfo:nil]
@@ -240,11 +240,8 @@ static NSString *const FBSDKExpectedChallengeKey = @"expected_login_challenge";
                                          [FBSDKAccessToken currentAccessToken].permissions :
                                          nil);
   if (previouslyGrantedPermissions.count > 0) {
-      // If there were no requested permissions for this auth - treat all permissions as granted.
-      // Otherwise this is a reauth, so recentlyGranted should be a subset of what was requested.
-      if (_requestedPermissions.count != 0) {
-          [recentlyGrantedPermissions intersectSet:_requestedPermissions];
-      }
+    // this is a reauth, so recentlyGranted should be a subset of what was requested.
+    [recentlyGrantedPermissions intersectSet:_requestedPermissions];
   }
 
   NSMutableSet *recentlyDeclinedPermissions = [_requestedPermissions mutableCopy];
@@ -296,8 +293,9 @@ static NSString *const FBSDKExpectedChallengeKey = @"expected_login_challenge";
   loginParams[@"return_scopes"] = @"true";
   loginParams[@"sdk_version"] = FBSDK_VERSION_STRING;
   loginParams[@"fbapp_pres"] = @([FBSDKInternalUtility isFacebookAppInstalled]);
-  loginParams[@"auth_type"] = @"rerequest";
-
+  if ([FBSDKAccessToken currentAccessToken]) {
+    loginParams[@"auth_type"] = @"rerequest";
+  }
   [FBSDKInternalUtility dictionary:loginParams setObject:[FBSDKSettings appURLSchemeSuffix] forKey:@"local_client_id"];
   [FBSDKInternalUtility dictionary:loginParams setObject:[FBSDKLoginUtility stringForAudience:self.defaultAudience] forKey:@"default_audience"];
   [FBSDKInternalUtility dictionary:loginParams setObject:[[permissions allObjects] componentsJoinedByString:@","] forKey:@"scope"];
@@ -368,7 +366,11 @@ static NSString *const FBSDKExpectedChallengeKey = @"expected_login_challenge";
       [self performBrowserLogInWithParameters:loginParams handler:^(BOOL openedURL,
                                                                     NSString *authMethod,
                                                                     NSError *openedURLError) {
-        completion(openedURL, authMethod, openedURLError);
+        if (openedURL) {
+          completion(YES, authMethod, openedURLError);
+        } else {
+          completion(NO, authMethod, openedURLError);
+        }
       }];
       break;
     }
@@ -563,7 +565,7 @@ static NSString *const FBSDKExpectedChallengeKey = @"expected_login_challenge";
 - (void)beginSystemLogIn
 {
   // First, we need to validate the current access token. The user may have uninstalled the
-  // app, changed their password, etc., or the access token may have expired, which
+  // app, changed their password, etc., or the acceess token may have expired, which
   // requires us to renew the account before asking for additional permissions.
   NSString *accessTokenString = [FBSDKSystemAccountStoreAdapter sharedInstance].accessTokenString;
   if (accessTokenString.length > 0) {
@@ -741,7 +743,7 @@ static NSString *const FBSDKExpectedChallengeKey = @"expected_login_challenge";
                                                            [FBSDKInternalUtility bundleForStrings],
                                                            @"Log In",
                                                            @"Title of the web dialog that prompts the user to log in to Facebook.");
-  [FBSDKWebDialog showWithName:@"oauth" parameters:parameters delegate:self];
+  [FBSDKWebDialog showWithName:@"oauth" parameters:loginParams delegate:self];
 
   if (handler) {
     handler(YES, nil);

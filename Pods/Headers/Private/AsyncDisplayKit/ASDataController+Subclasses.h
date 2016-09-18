@@ -1,1 +1,1 @@
-../../../AsyncDisplayKit/AsyncDisplayKit/Private/ASDataController+Subclasses.h
+../../../AsyncDisplayKit/AsyncDisplayKit/Details/ASDataController+Subclasses.h

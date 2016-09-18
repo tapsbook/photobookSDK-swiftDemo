@@ -8,15 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "QNDnsManager.h"
-#import "QNDnspodEnterprise.h"
-#import "QNDnspodFree.h"
-#import "QNDomain.h"
-#import "QNHijackingDetectWrapper.h"
-#import "QNIP.h"
-#import "QNNetworkInfo.h"
-#import "QNRecord.h"
 #import "QNResolver.h"
 #import "QNResolverDelegate.h"
-
-#import "QNGetAddrInfo.h"
+#import "QNDomain.h"
+#import "QNDnsManager.h"
+#import "QNRecord.h"
+#import "QNNetworkInfo.h"
+#import "QNHijackingDetectWrapper.h"
+#import "QNDnspodFree.h"
+#import "QNDnspodEnterprise.h"

@@ -37,7 +37,11 @@
     [login logInWithPermissions:currentPermissions handler:^(FBSDKLoginManagerLoginResult *result, NSError *loginError) {
       // we can only consider a recovery successful if there are no declines
       // (note this could still set an updated currentAccessToken).
-      handler(!loginError && !result.isCancelled && result.declinedPermissions.count == 0);
+      if (!loginError && !result.isCancelled && result.declinedPermissions.count == 0) {
+        handler(YES);
+      } else {
+        handler(NO);
+      }
     }];
   } else {
     handler(NO);

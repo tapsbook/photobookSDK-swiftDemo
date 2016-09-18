@@ -1,17 +1,20 @@
-//
-//  ASStaticLayoutSpec.mm
-//  AsyncDisplayKit
-//
-//  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
-//  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
-//
+/*
+ *  Copyright (c) 2014-present, Facebook, Inc.
+ *  All rights reserved.
+ *
+ *  This source code is licensed under the BSD-style license found in the
+ *  LICENSE file in the root directory of this source tree. An additional grant
+ *  of patent rights can be found in the PATENTS file in the same directory.
+ *
+ */
 
 #import "ASStaticLayoutSpec.h"
 
 #import "ASLayoutSpecUtilities.h"
+#import "ASLayoutOptions.h"
+#import "ASInternalHelpers.h"
 #import "ASLayout.h"
+#import "ASStaticLayoutable.h"
 
 @implementation ASStaticLayoutSpec
 
@@ -36,49 +39,49 @@
 
 - (ASLayout *)measureWithSizeRange:(ASSizeRange)constrainedSize
 {
-  CGSize maxConstrainedSize = CGSizeMake(constrainedSize.max.width, constrainedSize.max.height);
-  
-  NSArray *children = self.children;
-  NSMutableArray *sublayouts = [NSMutableArray arrayWithCapacity:children.count];
+  CGSize size = {
+    constrainedSize.max.width,
+    constrainedSize.max.height
+  };
 
-  for (id<ASLayoutable> child in children) {
-    CGPoint layoutPosition = child.layoutPosition;
-    CGSize autoMaxSize = CGSizeMake(maxConstrainedSize.width  - layoutPosition.x,
-                                    maxConstrainedSize.height - layoutPosition.y);
-    
-    ASRelativeSizeRange childSizeRange = child.sizeRange;
-    BOOL childIsUnconstrained = ASRelativeSizeRangeEqualToRelativeSizeRange(ASRelativeSizeRangeUnconstrained, childSizeRange);
-    ASSizeRange childConstraint = childIsUnconstrained ? ASSizeRangeMake({0, 0}, autoMaxSize)
-                                                       : ASRelativeSizeRangeResolve(childSizeRange, maxConstrainedSize);
-    
+  NSMutableArray *sublayouts = [NSMutableArray arrayWithCapacity:self.children.count];
+  for (id<ASLayoutable> child in self.children) {
+    CGSize autoMaxSize = {
+      constrainedSize.max.width - child.layoutPosition.x,
+      constrainedSize.max.height - child.layoutPosition.y
+    };
+    ASSizeRange childConstraint = ASRelativeSizeRangeEqualToRelativeSizeRange(ASRelativeSizeRangeUnconstrained, child.sizeRange)
+      ? ASSizeRangeMake({0, 0}, autoMaxSize)
+      : ASRelativeSizeRangeResolve(child.sizeRange, size);
     ASLayout *sublayout = [child measureWithSizeRange:childConstraint];
-    sublayout.position = layoutPosition;
+    sublayout.position = child.layoutPosition;
     [sublayouts addObject:sublayout];
   }
   
-  CGSize size = CGSizeMake(constrainedSize.min.width, constrainedSize.min.height);
-
+  size.width = constrainedSize.min.width;
   for (ASLayout *sublayout in sublayouts) {
-    CGPoint sublayoutPosition = sublayout.position;
-    CGSize  sublayoutSize     = sublayout.size;
-    
-    size.width  = MAX(size.width,  sublayoutPosition.x + sublayoutSize.width);
-    size.height = MAX(size.height, sublayoutPosition.y + sublayoutSize.height);
+    size.width = MAX(size.width, sublayout.position.x + sublayout.size.width);
+  }
+
+  size.height = constrainedSize.min.height;
+  for (ASLayout *sublayout in sublayouts) {
+    size.height = MAX(size.height, sublayout.position.y + sublayout.size.height);
   }
 
   return [ASLayout layoutWithLayoutableObject:self
-                         constrainedSizeRange:constrainedSize
                                          size:ASSizeRangeClamp(constrainedSize, size)
                                    sublayouts:sublayouts];
 }
 
-@end
-
-@implementation ASStaticLayoutSpec (ASEnvironment)
-
-- (BOOL)supportsUpwardPropagation
+- (void)setChild:(id<ASLayoutable>)child forIdentifier:(NSString *)identifier
 {
-  return NO;
+  ASDisplayNodeAssert(NO, @"ASStackLayoutSpec only supports setChildren");
+}
+
+- (id<ASLayoutable>)childForIdentifier:(NSString *)identifier
+{
+  ASDisplayNodeAssert(NO, @"ASStackLayoutSpec only supports children");
+  return nil;
 }
 
 @end

@@ -7,7 +7,7 @@ DZNSegmentedControl
 
 A drop-in replacement for UISegmentedControl for showing counts, to be used typically on a user profile.
 
-![Demo Gif](Screenshots/segmentedcontrol_demo.gif)
+![gif](https://dl.dropboxusercontent.com/u/2452151/Permalink/DZNSegmentedControl.gif)
 
 ### Features
 * Customizable control with tint color, font, sizes and animation duration.

@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, FBSDKAppEventsFlushReason)
 + (NSString *)advertiserID;
 + (FBSDKAdvertisingTrackingStatus)advertisingTrackingStatus;
 + (NSString *)attributionID;
-+ (void)ensureOnMainThread:(NSString *)methodName className:(NSString *)className;
++ (void)ensureOnMainThread;
 + (NSString *)flushReasonToString:(FBSDKAppEventsFlushReason)flushReason;
 + (void)logAndNotify:(NSString *)msg allowLogAsDeveloperError:(BOOL)allowLogAsDeveloperError;
 + (void)logAndNotify:(NSString *)msg;

@@ -115,14 +115,14 @@
                                                 FBSDK_WEB_DIALOG_VIEW_BORDER_WIDTH,
                                                 FBSDK_WEB_DIALOG_VIEW_BORDER_WIDTH,
                                                 FBSDK_WEB_DIALOG_VIEW_BORDER_WIDTH);
-  _webView.frame = CGRectIntegral(UIEdgeInsetsInsetRect(bounds, webViewInsets));
+  _webView.frame = UIEdgeInsetsInsetRect(bounds, webViewInsets);
 
   CGRect webViewBounds = _webView.bounds;
   _loadingView.center = CGPointMake(CGRectGetMidX(webViewBounds), CGRectGetMidY(webViewBounds));
 
   CGRect closeButtonFrame = _closeButton.bounds;
   closeButtonFrame.origin = bounds.origin;
-  _closeButton.frame = CGRectIntegral(closeButtonFrame);
+  _closeButton.frame = closeButtonFrame;
 }
 
 #pragma mark - Actions

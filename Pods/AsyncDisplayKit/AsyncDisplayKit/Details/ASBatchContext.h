@@ -1,16 +1,12 @@
-//
-//  ASBatchContext.h
-//  AsyncDisplayKit
-//
-//  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
-//  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
-//
+/* Copyright (c) 2014-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
 
 #import <Foundation/Foundation.h>
-
-NS_ASSUME_NONNULL_BEGIN
 
 /**
  * @abstract A context object to notify when batch fetches are finished or cancelled.
@@ -18,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ASBatchContext : NSObject
 
 /**
- * Retrieve the state of the current batch process.
+ * Retreive the state of the current batch process.
  *
  * @returns A boolean reflecting if the owner of the context object is fetching another batch.
  */
@@ -46,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)batchFetchingWasCancelled;
 
 /**
- * Notify the context object that something has interrupted the batch fetching process.
+ * Notify the context object that something has interupted the batch fetching process.
  *
  * @discussion Call this method only when something has corrupted the batch fetching process. Calling this method should
  * be left to the owner of the batch process unless there is a specific purpose.
@@ -62,5 +58,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)beginBatchFetching;
 
 @end
-
-NS_ASSUME_NONNULL_END

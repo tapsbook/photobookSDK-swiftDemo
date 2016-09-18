@@ -205,7 +205,6 @@ static NSMutableDictionary *gInstancesDictionary;
       handler(error);
     }
   }];
-  [_accounts removeObjectForKey:userId];
 }
 
 #pragma mark - private methods

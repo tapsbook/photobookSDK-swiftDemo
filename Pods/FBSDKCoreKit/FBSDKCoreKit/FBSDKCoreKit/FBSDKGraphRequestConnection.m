@@ -23,6 +23,7 @@
 #import "FBSDKCoreKit+Internal.h"
 #import "FBSDKError.h"
 #import "FBSDKErrorConfiguration.h"
+#import "FBSDKGraphErrorRecoveryProcessor.h"
 #import "FBSDKGraphRequest+Internal.h"
 #import "FBSDKGraphRequestBody.h"
 #import "FBSDKGraphRequestDataAttachment.h"
@@ -31,7 +32,7 @@
 #import "FBSDKInternalUtility.h"
 #import "FBSDKLogger.h"
 #import "FBSDKSettings+Internal.h"
-#import "FBSDKURLSessionTask.h"
+#import "FBSDKURLConnection.h"
 
 NSString *const FBSDKNonJSONResponseProperty = @"FACEBOOK_NON_JSON_RESULT";
 
@@ -47,13 +48,9 @@ static NSString *const kBatchFileNamePrefix = @"file";
 static NSString *const kBatchEntryName = @"name";
 
 static NSString *const kAccessTokenKey = @"access_token";
-#if TARGET_OS_TV
-static NSString *const kSDK = @"tvos";
-static NSString *const kUserAgentBase = @"FBtvOSSDK";
-#else
 static NSString *const kSDK = @"ios";
 static NSString *const kUserAgentBase = @"FBiOSSDK";
-#endif
+
 static NSString *const kBatchRestMethodBaseURL = @"method/";
 
 static NSTimeInterval g_defaultTimeout = 60.0;
@@ -75,19 +72,13 @@ typedef NS_ENUM(NSUInteger, FBSDKGraphRequestConnectionState)
 // ----------------------------------------------------------------------------
 // Private properties and methods
 
-@interface FBSDKGraphRequestConnection () <
-NSURLSessionDataDelegate
-#if !TARGET_OS_TV
-, FBSDKGraphErrorRecoveryProcessorDelegate
-#endif
->
+@interface FBSDKGraphRequestConnection () <FBSDKURLConnectionDelegate, FBSDKGraphErrorRecoveryProcessorDelegate>
 
-@property (nonatomic, strong) NSURLSession *session;
-@property (nonatomic, strong) FBSDKURLSessionTask *task;
+@property (nonatomic, retain) FBSDKURLConnection *connection;
 @property (nonatomic, retain) NSMutableArray *requests;
-@property (nonatomic, assign) FBSDKGraphRequestConnectionState state;
-@property (nonatomic, strong) FBSDKLogger *logger;
-@property (nonatomic, assign) unsigned long requestStartTime;
+@property (nonatomic) FBSDKGraphRequestConnectionState state;
+@property (nonatomic, retain) FBSDKLogger *logger;
+@property (nonatomic) unsigned long requestStartTime;
 
 @end
 
@@ -97,12 +88,10 @@ NSURLSessionDataDelegate
 @implementation FBSDKGraphRequestConnection
 {
   NSString *_overrideVersionPart;
-  NSUInteger _expectingResults;
-  NSOperationQueue *_delegateQueue;
-#if !TARGET_OS_TV
   FBSDKGraphRequestMetadata *_recoveringRequestMetadata;
   FBSDKGraphErrorRecoveryProcessor *_errorRecoveryProcessor;
-#endif
+  NSUInteger _expectingResults;
+  NSOperationQueue *_delegateQueue;
 }
 
 - (instancetype)init
@@ -118,7 +107,8 @@ NSURLSessionDataDelegate
 
 - (void)dealloc
 {
-  [_session invalidateAndCancel];
+  _connection.delegate = nil;
+  [_connection cancel];
 }
 
 #pragma mark - Public
@@ -163,8 +153,8 @@ NSURLSessionDataDelegate
 - (void)cancel
 {
   self.state = kStateCancelled;
-  [self.task cancel];
-  [self cleanUpSession];
+  [self.connection cancel];
+  self.connection = nil;
 }
 
 - (void)overrideVersionPartWith:(NSString *)version
@@ -196,22 +186,24 @@ NSURLSessionDataDelegate
   [self logRequest:request bodyLength:0 bodyLogger:nil attachmentLogger:nil];
   _requestStartTime = [FBSDKInternalUtility currentTimeInMilliseconds];
 
-  FBSDKURLSessionTaskHandler handler =  ^(NSError *error,
-                                          NSURLResponse *response,
-                                          NSData *responseData) {
-    [self completeFBSDKURLSessionWithResponse:response
-                                         data:responseData
-                                 networkError:error];
+  FBSDKURLConnectionHandler handler =
+  ^(FBSDKURLConnection *connection,
+    NSError *error,
+    NSURLResponse *response,
+    NSData *responseData) {
+    [self completeFBSDKURLConnectionWithResponse:response
+                                            data:responseData
+                                    networkError:error];
   };
 
-  if (!self.session) {
-    self.session = [self defaultSession];
+  FBSDKURLConnection *connection = [[FBSDKURLConnection alloc] initWithRequest:request
+                                                             completionHandler:handler];
+  if (_delegateQueue) {
+    [connection setDelegateQueue:_delegateQueue];
   }
-
-  self.task = [[FBSDKURLSessionTask alloc] initWithRequest:request
-                                               fromSession:self.session
-                                         completionHandler:handler];
-  [self.task start];
+  connection.delegate = self;
+  self.connection = connection;
+  [connection start];
 
   id<FBSDKGraphRequestConnectionDelegate> delegate = self.delegate;
   if ([delegate respondsToSelector:@selector(requestConnectionWillBeginLoading:)]) {
@@ -501,9 +493,9 @@ NSURLSessionDataDelegate
 
 #pragma mark - Private methods (response parsing)
 
-- (void)completeFBSDKURLSessionWithResponse:(NSURLResponse *)response
-                                       data:(NSData *)data
-                               networkError:(NSError *)error
+- (void)completeFBSDKURLConnectionWithResponse:(NSURLResponse *)response
+                                          data:(NSData *)data
+                                  networkError:(NSError *)error
 {
   if (self.state != kStateCancelled) {
     NSAssert(self.state == kStateStarted,
@@ -524,7 +516,7 @@ NSURLSessionDataDelegate
     if (!error && [response.MIMEType hasPrefix:@"image"]) {
       error = [FBSDKError errorWithCode:FBSDKGraphRequestNonTextMimeTypeReturnedErrorCode
                                 message:@"Response is a non-text MIME type; endpoints that return images and other "
-               @"binary data should be fetched using NSURLRequest and NSURLSession"];
+               @"binary data should be fetched using NSURLRequest and NSURLConnection"];
     } else {
       results = [self parseJSONResponse:data
                                   error:&error
@@ -558,7 +550,7 @@ NSURLSessionDataDelegate
 
   [self completeWithResults:results networkError:error];
 
-  [self cleanUpSession];
+  self.connection = nil;
 }
 
 //
@@ -609,7 +601,7 @@ NSURLSessionDataDelegate
     [results addObject:@{
                          @"code":@(statusCode),
                          @"body":response
-                         }];
+                        }];
   } else if ([response isKindOfClass:[NSArray class]]) {
     // response is the array of responses, but the body element of each needs
     // to be decoded from JSON.
@@ -638,7 +630,7 @@ NSURLSessionDataDelegate
     NSDictionary *result = @{
                              @"code":@(statusCode),
                              @"body":response
-                             };
+                            };
 
     for (NSUInteger resultIndex = 0, resultCount = self.requests.count; resultIndex < resultCount; ++resultIndex) {
       [results addObject:result];
@@ -660,7 +652,7 @@ NSURLSessionDataDelegate
   id parsed = nil;
   if (!(*error)) {
     parsed = [FBSDKInternalUtility objectForJSONString:utf8 error:error];
-    // if we fail parse we attempt a re-parse of a modified input to support results in the form "foo=bar", "true", etc.
+    // if we fail parse we attemp a reparse of a modified input to support results in the form "foo=bar", "true", etc.
     // which is shouldn't be necessary since Graph API v2.1.
     if (*error) {
       // we round-trip our hand-wired response through the parser in order to remain
@@ -689,9 +681,7 @@ NSURLSessionDataDelegate
       disabledRecoveryCount++;
     }
   }
-#if !TARGET_OS_TV
   BOOL isSingleRequestToRecover = (count - disabledRecoveryCount == 1);
-#endif
 
   [self.requests enumerateObjectsUsingBlock:^(FBSDKGraphRequestMetadata *metadata, NSUInteger i, BOOL *stop) {
     id result = networkError ? nil : [results objectAtIndex:i];
@@ -703,7 +693,6 @@ NSURLSessionDataDelegate
       body = [FBSDKTypeUtility dictionaryValue:resultDictionary[@"body"]];
     }
 
-#if !TARGET_OS_TV
     if (resultError && ![metadata.request isGraphErrorRecoveryDisabled] && isSingleRequestToRecover) {
       _recoveringRequestMetadata = metadata;
       _errorRecoveryProcessor = [[FBSDKGraphErrorRecoveryProcessor alloc] init];
@@ -711,9 +700,8 @@ NSURLSessionDataDelegate
         return;
       }
     }
-#endif
 
-    [self processResultBody:body error:resultError metadata:metadata canNotifyDelegate:networkError == nil];
+    [self processResultBody:body error:resultError metadata:metadata canNotifyDelegate:(networkError ? NO : YES)];
   }];
 
   if (networkError) {
@@ -725,6 +713,11 @@ NSURLSessionDataDelegate
 
 - (void)processResultBody:(NSDictionary *)body error:(NSError *)error metadata:(FBSDKGraphRequestMetadata *)metadata canNotifyDelegate:(BOOL)canNotifyDelegate
 {
+  void (^clearToken)(void) = ^{
+    if (!(metadata.request.flags & FBSDKGraphRequestFlagDoNotInvalidateTokenOnError)) {
+      [FBSDKAccessToken setCurrentAccessToken:nil];
+    }
+  };
   void (^finishAndInvokeCompletionHandler)(void) = ^{
     NSDictionary *graphDebugDict = [body objectForKey:@"__debug__"];
     if ([graphDebugDict isKindOfClass:[NSDictionary class]]) {
@@ -736,13 +729,6 @@ NSURLSessionDataDelegate
       if (canNotifyDelegate && [_delegate respondsToSelector:@selector(requestConnectionDidFinishLoading:)]) {
         [_delegate requestConnectionDidFinishLoading:self];
       }
-    }
-  };
-
-#if !TARGET_OS_TV
-  void (^clearToken)(void) = ^{
-    if (!(metadata.request.flags & FBSDKGraphRequestFlagDoNotInvalidateTokenOnError)) {
-      [FBSDKAccessToken setCurrentAccessToken:nil];
     }
   };
 
@@ -785,8 +771,7 @@ NSURLSessionDataDelegate
       return;
     }
   }
-#endif
-  // this is already on the queue since we are currently in the NSURLSession callback.
+  // this is already on the queue since we are currently in the NSURLConnection callback.
   finishAndInvokeCompletionHandler();
 }
 
@@ -941,52 +926,42 @@ NSURLSessionDataDelegate
 + (NSString *)userAgent
 {
   static NSString *agent = nil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    agent = [NSString stringWithFormat:@"%@.%@", kUserAgentBase, FBSDK_VERSION_STRING];
-  });
 
+  if (!agent) {
+    agent = [NSString stringWithFormat:@"%@.%@", kUserAgentBase, FBSDK_VERSION_STRING];
+  }
   if ([FBSDKSettings userAgentSuffix]) {
     return [NSString stringWithFormat:@"%@/%@", agent, [FBSDKSettings userAgentSuffix]];
   }
   return agent;
 }
 
-- (NSURLSession *)defaultSession
+- (void)setConnection:(FBSDKURLConnection *)connection
 {
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    return [NSURLSession sessionWithConfiguration:config
-                                         delegate:self
-                                    delegateQueue:_delegateQueue];
+  if (_connection != connection) {
+    _connection.delegate = nil;
+    _connection = connection;
+  }
 }
 
-- (void)cleanUpSession
-{
-  [self.session invalidateAndCancel];
-  self.session = nil;
-}
+#pragma mark - FBSDKURLConnectionDelegate
 
-#pragma mark - NSURLSessionDataDelegate
-
-- (void)URLSession:(NSURLSession *)session
-              task:(NSURLSessionTask *)task
-   didSendBodyData:(int64_t)bytesSent
-    totalBytesSent:(int64_t)totalBytesSent
-totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
-{
-  id<FBSDKGraphRequestConnectionDelegate> delegate = self.delegate;
+- (void)facebookURLConnection:(FBSDKURLConnection *)connection
+              didSendBodyData:(NSInteger)bytesWritten
+            totalBytesWritten:(NSInteger)totalBytesWritten
+    totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
+  id<FBSDKGraphRequestConnectionDelegate> delegate = [self delegate];
 
   if ([delegate respondsToSelector:@selector(requestConnection:didSendBodyData:totalBytesWritten:totalBytesExpectedToWrite:)]) {
     [delegate requestConnection:self
-                didSendBodyData:(NSUInteger)bytesSent
-              totalBytesWritten:(NSUInteger)totalBytesSent
-      totalBytesExpectedToWrite:(NSUInteger)totalBytesExpectedToSend];
+                didSendBodyData:bytesWritten
+              totalBytesWritten:totalBytesWritten
+      totalBytesExpectedToWrite:totalBytesExpectedToWrite];
   }
 }
 
 #pragma mark - FBSDKGraphErrorRecoveryProcessorDelegate
 
-#if !TARGET_OS_TV
 - (void)processorDidAttemptRecovery:(FBSDKGraphErrorRecoveryProcessor *)processor didRecover:(BOOL)didRecover error:(NSError *)error
 {
   if (didRecover) {
@@ -1010,7 +985,6 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
     _recoveringRequestMetadata = nil;
   }
 }
-#endif
 
 #pragma mark - Debugging helpers
 

@@ -1,1 +1,1 @@
-../../../GoogleAnalytics/Sources/GAIEcommerceFields.h
+../../../GoogleAnalytics/Headers/Public/GAIEcommerceFields.h

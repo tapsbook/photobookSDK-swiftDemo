@@ -1,15 +1,13 @@
-//
-//  _ASCoreAnimationExtras.mm
-//  AsyncDisplayKit
-//
-//  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
-//  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
-//
+/* Copyright (c) 2014-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
 
 #import "_ASCoreAnimationExtras.h"
-#import "ASEqualityHelpers.h"
+
 #import "ASAssert.h"
 
 extern void ASDisplayNodeSetupLayerContentsWithResizableImage(CALayer *layer, UIImage *image)
@@ -89,8 +87,7 @@ static const struct _UIContentModeStringLUTEntry UIContentModeDescriptionLUT[] =
   {UIViewContentModeBottomRight,     @"bottomRight"},
 };
 
-NSString *ASDisplayNodeNSStringFromUIContentMode(UIViewContentMode contentMode)
-{
+NSString *ASDisplayNodeNSStringFromUIContentMode(UIViewContentMode contentMode) {
   for (int i=0; i< ARRAY_COUNT(UIContentModeDescriptionLUT); i++) {
     if (UIContentModeDescriptionLUT[i].contentMode == contentMode) {
       return UIContentModeDescriptionLUT[i].string;
@@ -99,10 +96,16 @@ NSString *ASDisplayNodeNSStringFromUIContentMode(UIViewContentMode contentMode)
   return [NSString stringWithFormat:@"%d", (int)contentMode];
 }
 
-UIViewContentMode ASDisplayNodeUIContentModeFromNSString(NSString *string)
-{
+UIViewContentMode ASDisplayNodeUIContentModeFromNSString(NSString *string) {
+  // If you passed one of the constants (this is just an optimization to avoid string comparison)
   for (int i=0; i < ARRAY_COUNT(UIContentModeDescriptionLUT); i++) {
-    if (ASObjectIsEqual(UIContentModeDescriptionLUT[i].string, string)) {
+    if (UIContentModeDescriptionLUT[i].string == string) {
+      return UIContentModeDescriptionLUT[i].contentMode;
+    }
+  }
+  // If you passed something isEqualToString: to one of the constants
+  for (int i=0; i < ARRAY_COUNT(UIContentModeDescriptionLUT); i++) {
+    if ([UIContentModeDescriptionLUT[i].string isEqualToString:string]) {
       return UIContentModeDescriptionLUT[i].contentMode;
     }
   }
@@ -121,34 +124,20 @@ NSString *const ASDisplayNodeCAContentsGravityFromUIContentMode(UIViewContentMod
   return nil;
 }
 
-#define ContentModeCacheSize 10
 UIViewContentMode ASDisplayNodeUIContentModeFromCAContentsGravity(NSString *const contentsGravity)
 {
-  static int currentCacheIndex = 0;
-  static NSMutableArray *cachedStrings = [NSMutableArray arrayWithCapacity:ContentModeCacheSize];
-  static UIViewContentMode cachedModes[ContentModeCacheSize] = {};
-  
-  NSInteger foundCacheIndex = [cachedStrings indexOfObjectIdenticalTo:contentsGravity];
-  if (foundCacheIndex != NSNotFound && foundCacheIndex < ContentModeCacheSize) {
-    return cachedModes[foundCacheIndex];
-  }
-  
-  for (int i = 0; i < ARRAY_COUNT(UIContentModeCAGravityLUT); i++) {
-    if (ASObjectIsEqual(UIContentModeCAGravityLUT[i].string, contentsGravity)) {
-      UIViewContentMode foundContentMode = UIContentModeCAGravityLUT[i].contentMode;
-      
-      if (currentCacheIndex < ContentModeCacheSize) {
-        // Cache the input value.  This is almost always a different pointer than in our LUT and will frequently
-        // be the same value for an overwhelming majority of inputs.
-        [cachedStrings addObject:contentsGravity];
-        cachedModes[currentCacheIndex] = foundContentMode;
-        currentCacheIndex++;
-      }
-      
-      return foundContentMode;
+  // If you passed one of the constants (this is just an optimization to avoid string comparison)
+  for (int i=0; i < ARRAY_COUNT(UIContentModeCAGravityLUT); i++) {
+    if (UIContentModeCAGravityLUT[i].string == contentsGravity) {
+      return UIContentModeCAGravityLUT[i].contentMode;
     }
   }
-
+  // If you passed something isEqualToString: to one of the constants
+  for (int i=0; i < ARRAY_COUNT(UIContentModeCAGravityLUT); i++) {
+    if ([UIContentModeCAGravityLUT[i].string isEqualToString:contentsGravity]) {
+      return UIContentModeCAGravityLUT[i].contentMode;
+    }
+  }
   ASDisplayNodeCAssert(contentsGravity, @"Encountered an unknown contentsGravity \"%@\". Is this a new version of iOS?", contentsGravity);
   ASDisplayNodeCAssert(!contentsGravity, @"You passed nil to ASDisplayNodeUIContentModeFromCAContentsGravity. We're falling back to resize, but this is probably a bug.");
   // If asserts disabled, fall back to this
