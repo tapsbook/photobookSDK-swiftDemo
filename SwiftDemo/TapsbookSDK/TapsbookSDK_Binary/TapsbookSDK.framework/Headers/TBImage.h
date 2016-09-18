@@ -8,7 +8,6 @@
 
 #import "TBContent.h"
 #import "TBPriority.h"
-#import <UIKit/UIKit.h>
 
 /// Size of the image
 typedef NS_ENUM(NSInteger, TBImageSize) {
@@ -121,6 +120,13 @@ typedef NS_ENUM(NSInteger, TBImageStatus) {
 ///---------------------------------------
 
 - (void)setImagePath:(NSString *)path size:(TBImageSize)size;
+
+/** Set the image cloud storage URL as a reference, this URL will be printed in the output JSON.
+ *  TapsbookSDK will load image form the path.
+ *  @param path The path of a image, should be a local path, a remote path won't work
+ *  @param size TBImageSize
+ */
+- (void)setImageCSURLString:(NSString *)urlString size:(TBImageSize)size;
 
 /** Get the path of a image
  *  @param size TBImageSize
