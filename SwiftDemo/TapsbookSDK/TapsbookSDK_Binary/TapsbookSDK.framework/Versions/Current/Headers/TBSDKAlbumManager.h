@@ -102,28 +102,6 @@
  */
 
 //Once you are ready to print from these source data, typically after you have cleared the payment from your customer, you can retrieve the JSON data via the order API as such
-//
-//{
-//    "order_type" : "claim_only",
-//    "album_key" : "THE_ALBUM_KEY",
-//    “api_key":"YOUR_API_KEY ",
-//    "external_order_id":"YOUR ORDER ID",
-//    "currency": "CNY",
-//    "total_price": "1.00",
-//    "customer": {
-//        "address": {
-//            "phone": "",
-//            "address1": "",
-//            "lastname": "",
-//            "firstname": "",
-//            "email": "",
-//            "state_id": "99",
-//            "country_id": "48",
-//        }
-//    },
-//    "action": "create",
-//    "controller": "api/v1/preorder"
-//}
 
 
 @interface TBSDKAlbumManager : NSObject
@@ -145,16 +123,21 @@
  */
 + (instancetype)sharedInstance;
 
-
-
 ///---------------------------------------
-/// @name Interact with an existing book: edit, printing etc
+/// @name Presenting an existing book: edit, printing etc
 ///---------------------------------------
 
-/** Open a album, let the user edit album pages, print the album
+/** Async retrieve all image metedata (TBImage) of a album from the datastore. By default, allSDKAlbumsWithCompletionBlock: will return TBSDKAlbum with empty images property, you must use this method to populate the image metadata prior to the call of OpenSDKAlbum
  *  @param sdkAlbum
+ *  @param completionBlock Get called after finish
+ */
+
+- (void)loadImagesOfSDKAlbum:(TBSDKAlbum *)sdkAlbum completionBlock:(void (^)(BOOL success, NSError *error))completionBlock;
+
+/** Present the album pages in a User Interface and let the user edit album pages, print the album.
+ *  @param sdkAlbum. The TBSDKAlbum object must be created via the Creation method first.
  *  @param presentOnViewController viewControllers of TapsbookSDK will be presented on this viewController
- *  @param shouldPrintDirectly  NO: Go to page edit; YES: Print directly
+ *  @param shouldPrintDirectly  NO: Go to page edit; YES: Go to checkout page directly (only useful if you use SDK checkout views)
  */
 
 - (BOOL)openSDKAlbum:(TBSDKAlbum *)sdkAlbum presentOnViewController:(UIViewController *)viewController shouldPrintDirectly:(BOOL)shouldPrintDirectly;
@@ -170,26 +153,6 @@
 
 - (void)dismissTBSDKViewControllersAnimated:(BOOL)animated completion:(void (^)(void))completion;
 
-/**
- * get Cache Size
- */
-- (NSUInteger)getCacheSize;
-
-/**
- *  clear cache on disk
- */
-
-- (void)clearCache;
-
-
-
-/** TapsbookSDK calls dataSource to get images
- *
- *  All TBImage's `dataSource` will be assigned `imageDataSource`
- *
- *  @see TBImage
- */
-
 @property (weak, nonatomic) id<TBImageDataSource> imageDataSource;
 
 /** NO(default, recommanded): Image is stored as a file on disk, and your app gives the path to that file,
@@ -204,6 +167,35 @@
  */
 
 @property (assign, nonatomic) BOOL isImageLoadingHandledByImageDataSource DEPRECATED_ATTRIBUTE;
+
+///---------------------------------------
+/// @name Utility method
+///---------------------------------------
+
+/**
+ * SDK uses a local cache to store the rendered page images.  Use this method to get the disk space used by the Cache
+ */
+- (NSUInteger)getCacheSize;
+
+/**
+ *  clear cache on disk if you want to save the space.
+ */
+
+- (void)clearCache;
+
+/**
+ * Generate a zip file contains all logs to the Tapsbook SDK developers
+ */
+
+- (void)generateReportZipWithPrefix:(NSString*) prefix completeBlock:(void (^)(id result))completeBlock errorBlock:(void (^)(NSError *error))errorBlock;
+
+/** TapsbookSDK calls dataSource to get images
+ *
+ *  All TBImage's `dataSource` will be assigned `imageDataSource`
+ *
+ *  @see TBImage
+ */
+
 
 
 @end
@@ -231,6 +223,8 @@
  * the book to add photos from outside the book.
  */
 - (UIViewController *)photoSelectionViewControllerInstanceForAlbumManager:(TBSDKAlbumManager *)albumManager withSDKAlbum:(TBSDKAlbum *)sdkAlbum existingTBImages:(NSArray *)existingTBImages completionBlock:(void (^)(NSArray *newImages))completionBlock;
+
+- (UIViewController *)photoSelectionViewControllerInstanceForAlbumManager:(TBSDKAlbumManager *)albumManager withSDKAlbum:(TBSDKAlbum *)sdkAlbum existingTBImages:(NSArray *)existingTBImages maxPhotoCount:(NSInteger) maxPhotoCount completionBlock:(void (^)(NSArray *newImages))completionBlock;
 
 ///---------------------------------------
 /// @name Need full size images for print

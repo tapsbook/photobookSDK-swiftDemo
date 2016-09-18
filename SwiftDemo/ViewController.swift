@@ -104,6 +104,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func createBookWithSelectedAssets (){
+        //the root path of cache, tip: strongly recommend you control
+        //your cache disk usage, it may use a lot of space.
+        //e.g. you can try SDWebImage's cache
         let cachePath : String = NSHomeDirectory().stringByAppendingPathComponent("Library").stringByAppendingPathComponent("ImageCache")
         let fileManager : NSFileManager = NSFileManager.defaultManager()
         if(!fileManager.fileExistsAtPath(cachePath, isDirectory: nil)){
@@ -139,12 +142,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             tbImages.append(tbImage)
         }
         hud.hide(true, afterDelay: 1.0)
+
+        //Custom product options if using SDK without a product server
+        //Ignore this if using Tapsbook server API to control products
+        let albumOption : NSDictionary = [
+        kTBPreferredProductSKU:     "1003", //1003 is a layflat
+        kTBProductPreferredTheme:   "200",  //200 is for square book
+        kTBProductMaxPageCount:     "20",   //set max=min will limit the page count
+        kTBProductMinPageCount:     "20",
+        kTBPreferredUIDirection:    "RTL"   //set this RTL or LTR
+        ]
         
         //launch SDK with images
-        let albumOption : NSDictionary = [
-        kTBPreferredProductSKU:     "1003"
-        ] //sku=1003 is a layflat book
-        
         TBSDKAlbumManager.sharedInstance().createSDKAlbumWithImages(tbImages , identifier: nil, title: "Album", tag: 0, options: albumOption as [NSObject : AnyObject], completionBlock: { (success, sdkAlbum, error) -> Void in
             
             TBSDKAlbumManager.sharedInstance().openSDKAlbum(sdkAlbum, presentOnViewController: self, shouldPrintDirectly: false)
