@@ -1,4 +1,6 @@
+#ifdef __OBJC__
 #import <UIKit/UIKit.h>
+#endif
 
 #import "MZFormSheetBackgroundWindow.h"
 #import "MZFormSheetBackgroundWindowViewController.h"

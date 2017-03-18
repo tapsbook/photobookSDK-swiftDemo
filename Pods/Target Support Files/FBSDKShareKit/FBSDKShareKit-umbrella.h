@@ -1,4 +1,6 @@
+#ifdef __OBJC__
 #import <UIKit/UIKit.h>
+#endif
 
 #import "FBSDKAppGroupAddDialog.h"
 #import "FBSDKAppGroupContent.h"
@@ -7,6 +9,7 @@
 #import "FBSDKAppInviteDialog.h"
 #import "FBSDKGameRequestContent.h"
 #import "FBSDKGameRequestDialog.h"
+#import "FBSDKHashtag.h"
 #import "FBSDKLikeButton.h"
 #import "FBSDKLikeControl.h"
 #import "FBSDKLikeObjectType.h"
@@ -20,6 +23,7 @@
 #import "FBSDKShareDialogMode.h"
 #import "FBSDKShareKit.h"
 #import "FBSDKShareLinkContent.h"
+#import "FBSDKShareMediaContent.h"
 #import "FBSDKShareOpenGraphAction.h"
 #import "FBSDKShareOpenGraphContent.h"
 #import "FBSDKShareOpenGraphObject.h"

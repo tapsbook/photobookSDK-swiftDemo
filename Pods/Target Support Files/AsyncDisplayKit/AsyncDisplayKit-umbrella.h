@@ -1,4 +1,6 @@
+#ifdef __OBJC__
 #import <UIKit/UIKit.h>
+#endif
 
 #import "ASButtonNode.h"
 #import "ASCellNode.h"
@@ -22,8 +24,6 @@
 #import "ASTextNode.h"
 #import "ASViewController.h"
 #import "AsyncDisplayKit.h"
-#import "_ASDisplayLayer.h"
-#import "_ASDisplayView.h"
 #import "ASAbstractLayoutController.h"
 #import "ASBasicImageDownloader.h"
 #import "ASBatchContext.h"
@@ -61,6 +61,8 @@
 #import "_ASAsyncTransactionGroup.h"
 #import "UICollectionViewLayout+ASConvenience.h"
 #import "UIView+ASConvenience.h"
+#import "_ASDisplayLayer.h"
+#import "_ASDisplayView.h"
 #import "ASAsciiArtBoxCreator.h"
 #import "ASBackgroundLayoutSpec.h"
 #import "ASCenterLayoutSpec.h"

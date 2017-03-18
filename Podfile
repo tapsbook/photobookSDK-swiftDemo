@@ -3,21 +3,21 @@ platform :ios, 8.0
 def available_pods
 
     pod 'AFAmazonS3Manager', '~> 3.2'
-    pod 'AFNetworking', '~> 2.0'
-    pod 'AGGeometryKit', '1.2.2'
+    pod 'AFNetworking', '~> 2.0’
+    pod 'AGGeometryKit', '~> 1.2'
     pod 'AHEasing', '~> 1.2'
     pod 'AsyncDisplayKit', '1.9.1'
     pod 'BlocksKit', '~> 2.2'
     #depended by Facebook
-    pod 'Bolts', '1.5.0'
+    pod 'Bolts', '~> 1.5'
     pod 'HappyDNS','0.2.3'
     pod 'CocoaLumberjack', '2.2.0'
     pod 'DZNSegmentedControl', '1.3.2'
     pod 'FastImageCache', '1.3'
-    pod 'FBSDKCoreKit', '4.8.0'
-    pod 'FBSDKLoginKit', '4.8.0'
-    pod 'FBSDKShareKit', '4.8.0'
-    pod 'FMDB', '2.5'
+    pod 'FBSDKCoreKit'
+    pod 'FBSDKLoginKit'
+    pod 'FBSDKShareKit'
+    pod 'FMDB'
     pod 'FormatterKit', '1.8.0'
     pod 'FXBlurView', '~> 1.6'
     pod 'FXLabel', '1.5.8'

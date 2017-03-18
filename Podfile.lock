@@ -22,11 +22,11 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - AGGeometryKit (1.2.2):
-    - AGGeometryKit/CALayerProperties (= 1.2.2)
-    - AGGeometryKit/UIViewProperties (= 1.2.2)
-  - AGGeometryKit/CALayerProperties (1.2.2)
-  - AGGeometryKit/UIViewProperties (1.2.2)
+  - AGGeometryKit (1.2.4):
+    - AGGeometryKit/CALayerProperties (= 1.2.4)
+    - AGGeometryKit/UIViewProperties (= 1.2.4)
+  - AGGeometryKit/CALayerProperties (1.2.4)
+  - AGGeometryKit/UIViewProperties (1.2.4)
   - AHEasing (1.2)
   - AsyncDisplayKit (1.9.1):
     - AsyncDisplayKit/ASDealloc2MainObject (= 1.9.1)
@@ -46,12 +46,12 @@ PODS:
   - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
-  - Bolts (1.5.0):
-    - Bolts/AppLinks (= 1.5.0)
-    - Bolts/Tasks (= 1.5.0)
-  - Bolts/AppLinks (1.5.0):
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
-  - Bolts/Tasks (1.5.0)
+  - Bolts/Tasks (1.8.4)
   - CocoaLumberjack (2.2.0):
     - CocoaLumberjack/Default (= 2.2.0)
     - CocoaLumberjack/Extensions (= 2.2.0)
@@ -60,31 +60,22 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.2.0):
     - CocoaLumberjack/Default
-  - DKImagePickerController (3.3.4):
-    - DKImagePickerController/Camera (= 3.3.4)
-    - DKImagePickerController/ImageManager (= 3.3.4)
-  - DKImagePickerController/Camera (3.3.4)
-  - DKImagePickerController/ImageManager (3.3.4)
+  - DKImagePickerController (3.5.1):
+    - DKImagePickerController/Camera (= 3.5.1)
+    - DKImagePickerController/ImageManager (= 3.5.1)
+  - DKImagePickerController/Camera (3.5.1)
+  - DKImagePickerController/ImageManager (3.5.1)
   - DZNSegmentedControl (1.3.2)
   - FastImageCache (1.3)
-  - FBSDKCoreKit (4.8.0):
-    - Bolts (~> 1.1)
-    - FBSDKCoreKit/arc (= 4.8.0)
-    - FBSDKCoreKit/no-arc (= 4.8.0)
-  - FBSDKCoreKit/arc (4.8.0):
-    - Bolts (~> 1.1)
-  - FBSDKCoreKit/no-arc (4.8.0):
-    - Bolts (~> 1.1)
-    - FBSDKCoreKit/arc
-  - FBSDKLoginKit (4.8.0):
+  - FBSDKCoreKit (4.20.2):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.20.2):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.8.0):
+  - FBSDKShareKit (4.20.2):
     - FBSDKCoreKit
-  - FMDB (2.5):
-    - FMDB/standard (= 2.5)
-  - FMDB/common (2.5)
-  - FMDB/standard (2.5):
-    - FMDB/common
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
   - FormatterKit (1.8.0):
     - FormatterKit/AddressFormatter (= 1.8.0)
     - FormatterKit/ArrayFormatter (= 1.8.0)
@@ -179,24 +170,24 @@ PODS:
     - AHEasing
   - TTTAttributedLabel (1.13.4)
   - TTTRandomizedEnumerator (0.0.3)
-  - UICKeyChainStore (2.1.0)
+  - UICKeyChainStore (2.1.1)
 
 DEPENDENCIES:
   - AFAmazonS3Manager (~> 3.2)
   - AFNetworking (~> 2.0)
-  - AGGeometryKit (= 1.2.2)
+  - AGGeometryKit (~> 1.2)
   - AHEasing (~> 1.2)
   - AsyncDisplayKit (= 1.9.1)
   - BlocksKit (~> 2.2)
-  - Bolts (= 1.5.0)
+  - Bolts (~> 1.5)
   - CocoaLumberjack (= 2.2.0)
   - DKImagePickerController
   - DZNSegmentedControl (= 1.3.2)
   - FastImageCache (= 1.3)
-  - FBSDKCoreKit (= 4.8.0)
-  - FBSDKLoginKit (= 4.8.0)
-  - FBSDKShareKit (= 4.8.0)
-  - FMDB (= 2.5)
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKShareKit
+  - FMDB
   - FormatterKit (= 1.8.0)
   - FXBlurView (~> 1.6)
   - FXLabel (= 1.5.8)
@@ -229,19 +220,19 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFAmazonS3Manager: 688f9238511bb86011159d0155fcda09838b0e0d
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  AGGeometryKit: 46e712c5a3958e23b98fef15e57df1149670f231
+  AGGeometryKit: 2c2c39c9f99eb7a966f0aa16b2a97027dacc4761
   AHEasing: 847f583bcd83a2bb850e38ccdb26d22e2593f34d
   AsyncDisplayKit: 7bf2b3fa444284f80fd0c1e36655e324549f79d2
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
-  Bolts: 722ab9a4f8b50fc4ed1b9998a5a7a2b3f16d80b4
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
-  DKImagePickerController: 4de1703ad3ba8bc216753447cbb00e482d8d4604
+  DKImagePickerController: 8db7e76a88a7a66a893ba30e935cc4c9bb7ed335
   DZNSegmentedControl: b78b19d0b11d521a2be56ecff8a8a25d09a289d4
   FastImageCache: 25f214fd46405daca3d1995d783fb83b9036c62e
-  FBSDKCoreKit: 66a935d17b6e00b6b64e604f2eb9b72c9ab7deb8
-  FBSDKLoginKit: d893fcbb98d854496925e9ff73c67b896982d3c4
-  FBSDKShareKit: e7577ee3adf80fc04fb656dd133fbb522250672b
-  FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
+  FBSDKCoreKit: 82eac696eb6157da5f4266c3a241f00e9bd72471
+  FBSDKLoginKit: 2211bede07c83391349eacc1fd86cf6d9289ce38
+  FBSDKShareKit: ca9b22264ea49a896dafb2467c1a4f72aa41996f
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
   FXLabel: 14f7d4abb0eb531a0824b327a86f5b790171207f
@@ -269,6 +260,8 @@ SPEC CHECKSUMS:
   TLLayoutTransitioning: 286f546cc309ea9693dce2e3b1c4cab77f3308cf
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   TTTRandomizedEnumerator: 27eefafc5d45b01465c7303d59b5b94c46dcf824
-  UICKeyChainStore: f1cbd42216a113f0165de1e733e62905b8823432
+  UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 01b3a84f7cf0046887ca1972e82206f9df127fbe
+
+COCOAPODS: 1.1.1

@@ -6,6 +6,7 @@
 //  Copyright (c) 2014年 tapsbook. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <TapsbookSDK/TBSDKAlbum.h>
 

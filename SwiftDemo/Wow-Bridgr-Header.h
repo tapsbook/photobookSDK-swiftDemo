@@ -38,16 +38,16 @@ _Pragma("clang diagnostic pop")
 //#import "extobjc.h"
 
 #import "ALAssetRepresentation+Helper.h"
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import <FBSDKShareKit/FBSDKShareKit.h>
+//#import <FBSDKCoreKit/FBSDKCoreKit.h>
+//#import <FBSDKLoginKit/FBSDKLoginKit.h>
+//#import <FBSDKShareKit/FBSDKShareKit.h>
 //#import <GooglePlus/GooglePlus.h>
 //#import <GoogleOpenSource/GoogleOpenSource.h>
 //#import <SimpleAuth/SimpleAuth.h>
 #import <TapsbookSDK/TBWeChatManager.h>
 #import <TapsbookSDK/TBFacebookManager.h>
 
-#import <AFNetworking/AFNetworking.h>
+//#import <AFNetworking/AFNetworking.h>
 //#import "MHFacebookImageViewer.h"
 //#import "UIAlertView+BlocksKit.h"
 #endif /* Wow_Bridgr_Header_h */

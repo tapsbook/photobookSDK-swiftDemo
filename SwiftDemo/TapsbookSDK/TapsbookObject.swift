@@ -17,7 +17,7 @@ class TapsbookObject: NSObject {
         static let PhotoListViewControllerMode_AddPhoto : Int = 1;
     }
     static let sharedInstance : TapsbookObject = TapsbookObject()
-    func createProcuctWithType(productType : TBProductType,mode : Int,assetsArray : [PHAsset], completionBlock: (([AnyObject]!) -> Void)?,completeToOpen :(sdkAlbum : TBSDKAlbum? )->Void)
+    func createProcuctWithType(_ productType : TBProductType,mode : Int,assetsArray : [PHAsset], completionBlock: (([AnyObject]?) -> Void)?,completeToOpen :@escaping (_ sdkAlbum : TBSDKAlbum? )->Void)
     {
 //        let selectedIndex : [NSIndexPath] = collectionView.indexPathsForSelectedItems()!
         if(assetsArray.count > 0)
@@ -28,31 +28,31 @@ class TapsbookObject: NSObject {
 //                indexSet.addIndex(indexPath.row)
 //            }
 //            let selectedAssets : Array = assetsArray
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: { () -> Void in
                 let cachePath : String = NSHomeDirectory().stringByAppendingPathComponent("Library").stringByAppendingPathComponent("ImageCache")
-                let fileManager : NSFileManager = NSFileManager.defaultManager()
-                if(!fileManager.fileExistsAtPath(cachePath, isDirectory: nil)){
-                    try! fileManager.createDirectoryAtPath(cachePath, withIntermediateDirectories: true, attributes: nil)
+                let fileManager : FileManager = FileManager.default
+                if(!fileManager.fileExists(atPath: cachePath, isDirectory: nil)){
+                    try! fileManager.createDirectory(atPath: cachePath, withIntermediateDirectories: true, attributes: nil)
                 }
                 var tbImages : [TBImage] = []
                 var counter : NSInteger = 0;
                 for asset : PHAsset in assetsArray
                 {
-                    autoreleasepool({ () -> () in
+                    autoreleasepool(invoking: { () -> () in
                         
-                        let name : String = asset.localIdentifier.componentsSeparatedByString("/").first!;
+                        let name : String = asset.localIdentifier.components(separatedBy: "/").first!;
                         //Size
-                        let boundingSize_s : CGSize = TBPSSizeUtil.sizeFromPSImageSize(TBPSImageSize.s)
-                        let boundingSize_l : CGSize = TBPSSizeUtil.sizeFromPSImageSize(TBPSImageSize.l)
+                        let boundingSize_s : CGSize = TBPSSizeUtil.size(from: TBPSImageSize.s)
+                        let boundingSize_l : CGSize = TBPSSizeUtil.size(from: TBPSImageSize.l)
                         
                         var convertedSize_s : CGSize = boundingSize_s;
                         var convertedSize_l : CGSize = boundingSize_l;
                         
                         if(asset.pixelWidth * asset.pixelHeight > 0)
                         {
-                            let photoSize : CGSize = CGSizeMake(CGFloat(asset.pixelWidth), CGFloat(asset.pixelHeight));
-                            convertedSize_s = TBPSSizeUtil.convertSize(photoSize, toSize: boundingSize_s, contentMode: UIViewContentMode.ScaleAspectFill);
-                            convertedSize_l = TBPSSizeUtil.convertSize(photoSize, toSize: boundingSize_l, contentMode: UIViewContentMode.ScaleAspectFill);
+                            let photoSize : CGSize = CGSize(width: CGFloat(asset.pixelWidth), height: CGFloat(asset.pixelHeight));
+                            convertedSize_s = TBPSSizeUtil.convert(photoSize, to: boundingSize_s, contentMode: UIViewContentMode.scaleAspectFill);
+                            convertedSize_l = TBPSSizeUtil.convert(photoSize, to: boundingSize_l, contentMode: UIViewContentMode.scaleAspectFill);
                         }
                         
                         let sPath : String = cachePath.stringByAppendingPathComponent(String(format:"%@_s",name));
@@ -61,43 +61,44 @@ class TapsbookObject: NSObject {
                         print("lPAth : " + lPath)
                         print("downloading file for:" + name)
                         let requestOptions : PHImageRequestOptions = PHImageRequestOptions()
-                        requestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.Opportunistic;
-                        requestOptions.networkAccessAllowed = true;
+                        requestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.opportunistic;
+                        requestOptions.isNetworkAccessAllowed = true;
                         
-                        requestOptions.resizeMode = PHImageRequestOptionsResizeMode.Fast;
+                        requestOptions.resizeMode = PHImageRequestOptionsResizeMode.fast;
                         
-                        if(!fileManager.fileExistsAtPath(sPath)){
+                        if(!fileManager.fileExists(atPath: sPath)){
                             
-                            PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: convertedSize_s, contentMode: PHImageContentMode.AspectFill, options: requestOptions, resultHandler: { (result , info) -> Void in
+                            PHImageManager.default().requestImage(for: asset, targetSize: convertedSize_s, contentMode: PHImageContentMode.aspectFill, options: requestOptions, resultHandler: { (result , info) -> Void in
 
-                                result?.writeToFile(sPath, withCompressQuality: 1);
+                                result?.write(toFile: sPath, withCompressQuality: 1);
                             })
                         }
-                        if(!fileManager.fileExistsAtPath(lPath)){
+                        if(!fileManager.fileExists(atPath: lPath)){
                             
-                            PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: convertedSize_l, contentMode: PHImageContentMode.AspectFill, options: requestOptions, resultHandler: { (result , info) -> Void in
+                            PHImageManager.default().requestImage(for: asset, targetSize: convertedSize_l, contentMode: PHImageContentMode.aspectFill, options: requestOptions, resultHandler: { (result , info) -> Void in
                                 
-                                result?.writeToFile(lPath, withCompressQuality: 1);
+                                result?.write(toFile: lPath, withCompressQuality: 1);
                             })
                         }
                         let tbImage : TBImage = TBImage(identifier: name)
                         tbImage.setImagePath(sPath, size: TBImageSize.s)
                         tbImage.setImagePath(lPath, size: TBImageSize.l)
-                        tbImage.desc = NSNumber(integer: counter++).description
+                        counter += 1
+                        tbImage.desc = NSNumber(value: counter as Int).description
                         tbImages.append(tbImage)
                         
                     })
                 }
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     if mode == PhotoListViewControllerMode.PhotoListViewControllerMode_CreateAlbum
                     {
                         var albumOption : NSDictionary;
                         let subTypeDict : NSDictionary = [11 : WZProductType_8x8layflat,10 : WZProductType_8x8layflat];
                         albumOption = [kTBProductSubType : subTypeDict]
                         
-                        TBSDKAlbumManager.sharedInstance().createSDKAlbumWithImages(tbImages , identifier: nil, title: "Album", tag: 0, options: albumOption as [NSObject : AnyObject], completionBlock: { (success, sdkAlbum, error) -> Void in
+                        TBSDKAlbumManager.sharedInstance().createSDKAlbum(withImages: tbImages , identifier: nil, title: "Album", tag: 0, options: albumOption as! [AnyHashable: Any], completionBlock: { (success, sdkAlbum, error) -> Void in
                             
-                            completeToOpen(sdkAlbum: sdkAlbum)
+                            completeToOpen(sdkAlbum)
                             
                         })
                     }
@@ -112,7 +113,7 @@ class TapsbookObject: NSObject {
         }
     }
 
-    func preloadImageWithEnumerator(assetsLibrary : [AnyObject],enumerator : NSEnumerator,currentIdx : NSInteger, total : NSInteger, progressBlock :(int1 : NSInteger,int2:NSInteger,float : Float)->Void,completionBlock :(int1 : NSInteger,int2:NSInteger,error : NSError)->Void)
+    func preloadImageWithEnumerator(_ assetsLibrary : [AnyObject],enumerator : NSEnumerator,currentIdx : NSInteger, total : NSInteger, progressBlock :(_ int1 : NSInteger,_ int2:NSInteger,_ float : Float)->Void,completionBlock :(_ int1 : NSInteger,_ int2:NSInteger,_ error : NSError)->Void)
     {
         let tbImage : TBImage = enumerator.nextObject() as! TBImage
     
