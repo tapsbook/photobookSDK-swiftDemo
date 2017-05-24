@@ -2,7 +2,6 @@
 #import <UIKit/UIKit.h>
 #endif
 
-#import "GTM_Base64.h"
 #import "QNALAssetFile.h"
 #import "QNAsyncRun.h"
 #import "QNCrc32.h"
@@ -10,18 +9,16 @@
 #import "QNFile.h"
 #import "QNFileDelegate.h"
 #import "QNPHAssetFile.h"
+#import "QNPHAssetResource.h"
 #import "QNSystem.h"
 #import "QNUrlSafeBase64.h"
 #import "QNVersion.h"
-#import "QNDns.h"
+#import "QN_GTM_Base64.h"
 #import "QNHttpDelegate.h"
-#import "QNHttpManager.h"
 #import "QNResponseInfo.h"
 #import "QNSessionManager.h"
-#import "QNStats.h"
 #import "QNUserAgent.h"
 #import "QiniuSDK.h"
-#import "QNReachability.h"
 #import "QNFileRecorder.h"
 #import "QNRecorderDelegate.h"
 #import "QNConfiguration.h"

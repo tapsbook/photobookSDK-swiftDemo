@@ -10,13 +10,15 @@
 #import <TapsbookSDK/TapsbookSDK.h>
 #import <TapsbookSDK/TBProduct.h>
 
-static NSString * const kTBS3AppKey = @"AKIAJYNE4PTKKS4FNDBA";
-static NSString * const kTBS3AppSecret = @"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";
+static NSString * const kTBS3AppKey = @"AKIAJ7D2AGAC6S24OXMQ";
+static NSString * const kTBS3AppSecret = @"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";
 #if DEBUG
 static NSString * const kTBS3BucketNameDefault = @"tapstest";
+static NSString * const kStripeKey = @"pk_test_d5alHjczpNGKCRL539vo14TL";
 #else
 //USE CDN link
 static NSString * const kTBS3BucketNameDefault = @"tapsbookapp";
+static NSString * const kStripeKey = @"pk_live_vgeBiZVkdp1z3yWpBQgjjQjp";
 #endif
 
 @implementation SDKConfigurator
@@ -30,15 +32,26 @@ static NSString * const kTBS3BucketNameDefault = @"tapsbookapp";
                                        
                                        kTBSupportedRegions : @[               // (Optional) TBSDKRegions, customize the SDK to support multiple ship to regions (countries)
                                                // TBSDKRegions
-                                               @(TBSDKRegion_UnitedStates),
+//                                               @(TBSDKRegion_UnitedStates),
+                                               @(TBSDKRegion_China)
                                                ],
                                        
                                        kTBMerchantKeys : @{                   // (Required) Your app keys that you setup from http://dashboard.tapsbook.com, Append a string prefix "test_[ACTUAL_KEY]" will connect to the test server
                                                // Region : merchantKey
 #ifdef DEBUG
-                                               @(TBSDKRegion_UnitedStates) : @"test_CLEEN_587a7f4ae3b2060a4822aadafb6f72fb",
+                                               @(TBSDKRegion_UnitedStates) :@"live_canvas_7c5041f868a53ab26abf24b110d9bec7",
+                                               //live_canvas_7c5041f868a53ab26abf24b110d9bec7
+                                               //
+                                               @(TBSDKRegion_China) :
+                                                   @"live_clntw_1bad7d47623c98b4d280c823dc08866e",
+                                               //live_192f1444303ff0fff8461ad9f72be65e                                         //                         //live_tpsbk_a724462b7f2694f53631ac1c445908b7
+                                               //                                     @"live_CLEEN_192f1444303ff0fff8461ad9f72be65e",
+                                               //                                     @"test_CLEEN_587a7f4ae3b2060a4822aadafb6f72fb",
 #else
-                                               @(TBSDKRegion_UnitedStates) : @"test_CLEEN_587a7f4ae3b2060a4822aadafb6f72fb",
+                                               @(TBSDKRegion_UnitedStates) : @"live_CLEEN_6d11aa4454d745d25322085911a0ec60",
+                                               @(TBSDKRegion_China) :
+                                                   @"live_CLEEN_192f1444303ff0fff8461ad9f72be65e",
+                                               //    live_tpsbk_a724462b7f2694f53631ac1c445908b7                                 @"",
 #endif
                                                kTBMerchantKeyDefault : @"test_CLEEN_587a7f4ae3b2060a4822aadafb6f72fb",   // (Optional) The default key
                                                },
@@ -65,61 +78,88 @@ static NSString * const kTBS3BucketNameDefault = @"tapsbookapp";
                                        kTBAWSS3BucketName : kTBS3BucketNameDefault,       // (Optional) AWS uses bucket name to organize your uploaded images, your images will be uploaded to this URL pattern
                                        },
                                
-                               kTBBookGeneration : @{                       // (Optional)
-                                       kTBTemplateDatabaseName : @"TBTemplate_MultiProduct_02_RTL_spread.sqlite", // (Optional) The name of the template database
+                               kTBBookGeneration : @{
+                                       kTBTemplateDatabaseName : @"TBTemplate_MultiProduct_02_example.sqlite",
+                                       // (Optional)
+//                                       kTBTemplateDatabaseName : @"TBTemplate_MultiProduct_02_example.sqlite", // (Optional) The name of the template database
                                        kTBDefaultThemeID : @{              // (Optional)
                                                @(TBProductType_Photobook) : @200,
                                                @(TBProductType_Canvas) : @1000,
+                                               @(TBProductType_Pillow) : @2000,
+                                               @(TBProductType_Phonecase) : @3000
                                                },
                                        kTBUseSameBackgroundImageOnTheSameSpread : @{    // (Optional) Retrun YES is you want SDK's page generation use the same background image on the same spread
                                                @(TBProductType_Photobook) : @YES,
                                                @(TBProductType_Canvas) : @NO,
+                                               @(TBProductType_Pillow) : @NO,
+                                               @(TBProductType_Phonecase) : @NO,
                                                @(TBProductType_Calendar) : @NO,
                                                @(TBProductType_Card) : @NO,
+                                               },
+                                       kTBPageViewDisplayEdgeInsets : @{
+                                               @(TBProductType_Pillow) : [NSValue valueWithUIEdgeInsets:UIEdgeInsetsMake(5, 60, 10, 60)],
+                                               @(TBProductType_Phonecase) : [NSValue valueWithUIEdgeInsets:UIEdgeInsetsMake(30, 10, 10, 10)]
                                                },
                                        kTBMaxNumberofImagesPerPage : @{                 // (Optional)
                                                @(TBProductType_Photobook) : @2,
                                                @(TBProductType_Canvas) : @1,
+                                               @(TBProductType_Pillow) : @1,
+                                               @(TBProductType_Phonecase) : @1,
                                                @(TBProductType_Calendar) : @1,
                                                @(TBProductType_Card) : @1,
                                                },
                                        kTBMinNumberofImagesPerPage : @{                 // (Optional)
                                                @(TBProductType_Photobook) : @1,
                                                @(TBProductType_Canvas) : @1,
+                                               @(TBProductType_Pillow) : @1,
+                                               @(TBProductType_Phonecase) : @1,
                                                @(TBProductType_Calendar) : @1,
                                                @(TBProductType_Card) : @1,
                                                },
                                        kTBMaxNumberofImagesPerSpread : @{               // (Optional)
                                                @(TBProductType_Photobook) : @3,
                                                @(TBProductType_Canvas) : @1,
+                                               @(TBProductType_Pillow) : @1,
+                                               @(TBProductType_Phonecase) : @1,
                                                @(TBProductType_Calendar) : @1,
                                                @(TBProductType_Card) : @1,
                                                },
                                        kTBMinNumberofImagesPerSpread : @{               // (Optional)
                                                @(TBProductType_Photobook) : @2,
                                                @(TBProductType_Canvas) : @1,
+                                               @(TBProductType_Pillow) : @1,
+                                               @(TBProductType_Phonecase) : @1,
                                                @(TBProductType_Calendar) : @1,
                                                @(TBProductType_Card) : @1,
                                                },
                                        kTBAllowAddOrRemovePage : @{                     // (Optional)
                                                @(TBProductType_Photobook) : @YES,
                                                @(TBProductType_Canvas) : @NO,
+                                               @(TBProductType_Pillow) : @NO,
+                                               @(TBProductType_Phonecase) : @NO,
                                                @(TBProductType_Calendar) : @NO,
                                                @(TBProductType_Card) : @NO,
                                                },
                                        },
                                
                                kTBBehaviorCustomization : @{
+                                       kTBUseEmptyTemplateForPageWithNoContent : @YES,
                                        kTBRemindUserToOrderWhenClosingBooks : @NO,      // (Optional) Whether to remind a user they will lose their work in progress if they close.
                                        kTBShowOptionsOfBuildingPagesManuallyOrAutomatically : @{  // (Optional)
                                                @(TBProductType_Photobook) : @NO,
                                                @(TBProductType_Canvas) : @NO,
+                                               @(TBProductType_Pillow) : @NO,
+                                               @(TBProductType_Phonecase) : @NO,
                                                @(TBProductType_Calendar) : @NO,
                                                @(TBProductType_Card) : @NO,
                                                },
-//                                       kTBShowPhotoMenuByDefault:@YES,
+                                       //                                       kTBShowPhotoMenuByDefault:@YES,
+                                       
                                        kTBUseEmptyTemplateForPageWithNoContent : @NO,   // (Optional)
-                                       kTBLoadProductFromServerWhenPreparingLocalAlbum : @(NO), // (Optional)
+                                       
+                                       //                                       kTBRequireBookTitle: @NO,
+                                       
+                                       kTBLoadProductFromServerWhenPreparingLocalAlbum : @(YES), // (Optional)
                                        },
                                
                                kTBCheckoutCustomization : @{                    // (Optional)

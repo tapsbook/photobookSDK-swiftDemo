@@ -3,7 +3,7 @@
 //  SCLAlertView
 //
 //  Created by Diogo Autilio on 9/26/14.
-//  Copyright (c) 2014 AnyKey Entertainment. All rights reserved.
+//  Copyright (c) 2014-2016 AnyKey Entertainment. All rights reserved.
 //
 
 #import "SCLAlertView.h"
@@ -15,8 +15,10 @@
 
 #if defined(__has_feature) && __has_feature(modules)
 @import AVFoundation;
+@import AudioToolbox;
 #else
 #import <AVFoundation/AVFoundation.h>
+#import <AudioToolbox/AudioToolbox.h>
 #endif
 
 #define KEYBOARD_HEIGHT 80
@@ -27,21 +29,22 @@
 @interface SCLAlertView ()  <UITextFieldDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *inputs;
+@property (nonatomic, strong) NSMutableArray *customViews;
 @property (nonatomic, strong) NSMutableArray *buttons;
 @property (nonatomic, strong) UIImageView *circleIconImageView;
 @property (nonatomic, strong) UIView *circleView;
 @property (nonatomic, strong) UIView *circleViewBackground;
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIImageView *backgroundView;
-@property (nonatomic, strong) AVAudioPlayer *audioPlayer;
 @property (nonatomic, strong) UITapGestureRecognizer *gestureRecognizer;
 @property (nonatomic, strong) NSString *titleFontFamily;
 @property (nonatomic, strong) NSString *bodyTextFontFamily;
 @property (nonatomic, strong) NSString *buttonsFontFamily;
-@property (nonatomic, strong) UIViewController *rootViewController;
 @property (nonatomic, strong) UIWindow *previousWindow;
 @property (nonatomic, strong) UIWindow *SCLAlertWindow;
-@property (nonatomic, copy) DismissBlock dismissBlock;
+@property (nonatomic, copy) SCLDismissBlock dismissBlock;
+@property (nonatomic, assign) SystemSoundID soundID;
+@property (nonatomic, weak) UIViewController *rootViewController;
 @property (nonatomic, weak) id<UIGestureRecognizerDelegate> restoreInteractivePopGestureDelegate;
 @property (nonatomic) BOOL canAddObservers;
 @property (nonatomic) BOOL keyboardIsVisible;
@@ -148,7 +151,6 @@ SCLTimerDisplay *buttonTimer;
 - (void)setupViewWindowWidth:(CGFloat)windowWidth
 {
     // Default values
-    kCircleTopPosition = -12.0f;
     kCircleBackgroundTopPosition = -15.0f;
     kCircleHeight = 56.0f;
     kCircleHeightBackground = 62.0f;
@@ -186,23 +188,14 @@ SCLTimerDisplay *buttonTimer;
     _backgroundView = [[UIImageView alloc]initWithFrame:[self mainScreenFrame]];
     _buttons = [[NSMutableArray alloc] init];
     _inputs = [[NSMutableArray alloc] init];
+    _customViews = [[NSMutableArray alloc] init];
     
     // Add Subviews
     [self.view addSubview:_contentView];
     [self.view addSubview:_circleViewBackground];
     
-    // Background View
-    _backgroundView.userInteractionEnabled = YES;
-    
-    // Content View
-    _contentView.backgroundColor = [UIColor whiteColor];
-    _contentView.layer.cornerRadius = 5.0f;
-    _contentView.layer.masksToBounds = YES;
-    _contentView.layer.borderWidth = 0.5f;
-    [_contentView addSubview:_labelTitle];
-    [_contentView addSubview:_viewText];
-    
     // Circle View
+    _tintTopCircle = YES;
     _circleViewBackground.backgroundColor = [UIColor whiteColor];
     _circleViewBackground.layer.cornerRadius = _circleViewBackground.frame.size.height / 2;
     CGFloat x = (kCircleHeightBackground - kCircleHeight) / 2;
@@ -210,8 +203,12 @@ SCLTimerDisplay *buttonTimer;
     _circleView.layer.cornerRadius = _circleView.frame.size.height / 2;
     x = (kCircleHeight - _circleIconHeight) / 2;
     _circleIconImageView.frame = CGRectMake(x, x, _circleIconHeight, _circleIconHeight);
+    _circleIconImageView.contentMode = UIViewContentModeScaleAspectFill;    
     [_circleViewBackground addSubview:_circleView];
     [_circleView addSubview:_circleIconImageView];
+    
+    // Background View
+    _backgroundView.userInteractionEnabled = YES;
     
     // Title
     _labelTitle.numberOfLines = 1;
@@ -230,7 +227,19 @@ SCLTimerDisplay *buttonTimer;
     {
         _viewText.textContainerInset = UIEdgeInsetsZero;
         _viewText.textContainer.lineFragmentPadding = 0;
+        self.automaticallyAdjustsScrollViewInsets = NO;
     }
+    
+    // Content View
+    _contentView.backgroundColor = [UIColor whiteColor];
+    _contentView.layer.cornerRadius = 5.0f;
+    _contentView.layer.masksToBounds = YES;
+    _contentView.layer.borderWidth = 0.5f;
+    [_contentView addSubview:_viewText];    
+
+    CGRect position = [self.contentView convertRect:self.labelTitle.frame toView:self.view];
+    _labelTitle.frame = position;
+    [self.view addSubview:_labelTitle];
     
     // Colors
     self.backgroundViewColor = [UIColor whiteColor];
@@ -265,6 +274,25 @@ SCLTimerDisplay *buttonTimer;
     [super viewWillLayoutSubviews];
     
     CGSize sz = [self mainScreenFrame].size;
+    
+    // Check for larger top circle icon flag
+    if (_useLargerIcon) {
+        // Adjust icon
+        _circleIconHeight = 70.0f;
+        _circleViewBackground.layer.cornerRadius = _circleViewBackground.frame.size.height / 2;
+        
+        // Adjust coordinate variables for larger sized top circle
+        kCircleBackgroundTopPosition = -61.0f;
+        kCircleHeight = 106.0f;
+        kCircleHeightBackground = 122.0f;
+        kTitleTop = _tintTopCircle ? kCircleHeightBackground / 2: _circleIconHeight / 2 + 8.0f;
+        
+        // Reposition inner circle appropriately
+        CGFloat x = (kCircleHeightBackground - kCircleHeight) / 2;
+        _circleView.frame = CGRectMake(x, x, kCircleHeight, kCircleHeight);
+    } else {
+        kCircleBackgroundTopPosition = -(kCircleHeightBackground / 2);
+    }
     
     // Check if the rootViewController is modal, if so we need to get the modal size not the main screen size
     if([self isModal] && !_usingNewWindow)
@@ -304,53 +332,70 @@ SCLTimerDisplay *buttonTimer;
         
         // Set frames
         self.view.frame = r;
-        _contentView.frame = CGRectMake(0.0f, kCircleHeight / 4, _windowWidth, _windowHeight);
+        _contentView.frame = CGRectMake(0.0f, 0.0f, _windowWidth, _windowHeight);
         _circleViewBackground.frame = CGRectMake(_windowWidth / 2 - kCircleHeightBackground / 2, kCircleBackgroundTopPosition, kCircleHeightBackground, kCircleHeightBackground);
+        _circleView.layer.cornerRadius = _circleView.frame.size.height / 2;
         _circleIconImageView.frame = CGRectMake(kCircleHeight / 2 - _circleIconHeight / 2, kCircleHeight / 2 - _circleIconHeight / 2, _circleIconHeight, _circleIconHeight);
+        kTitleTop = _useLargerIcon ? kTitleTop : kTitleTop + 4.0f;
+        _labelTitle.frame = CGRectMake(12.0f, kTitleTop, _windowWidth - 24.0f, kTitleHeight);
     }
     else
     {
         CGFloat x = (sz.width - _windowWidth) / 2;
-        CGFloat y = (sz.height - _windowHeight -  (kCircleHeight / 8)) / 2;
+        CGFloat y = (sz.height - _windowHeight - (kCircleHeight / 8)) / 2;
         
         _contentView.frame = CGRectMake(x, y, _windowWidth, _windowHeight);
-        y -= kCircleHeightBackground * 0.6f;
+        y -= kCircleHeightBackground / 2;
         x = (sz.width - kCircleHeightBackground) / 2;
+        _circleView.layer.cornerRadius = _circleView.frame.size.height / 2;        
         _circleViewBackground.frame = CGRectMake(x, y, kCircleHeightBackground, kCircleHeightBackground);
         _circleIconImageView.frame = CGRectMake(kCircleHeight / 2 - _circleIconHeight / 2, kCircleHeight / 2 - _circleIconHeight / 2, _circleIconHeight, _circleIconHeight);
+        kTitleTop = _useLargerIcon ? kTitleTop : kTitleTop + 4.0f;
+        _labelTitle.frame = CGRectMake(12.0f + self.contentView.frame.origin.x, kTitleTop + self.contentView.frame.origin.y, _windowWidth - 24.0f, kTitleHeight);
     }
     
+    // Text fields
+    CGFloat y = (_labelTitle.text == nil) ? kTitleTop : kTitleTop + _labelTitle.frame.size.height;
+    _viewText.frame = CGRectMake(12.0f, y, _windowWidth - 24.0f, _subTitleHeight);
+    y += _subTitleHeight + 14.0f;
+    for (SCLTextView *textField in _inputs)
     {
-        // Text fields
-        CGFloat y = (_labelTitle.text == nil) ? (kCircleHeight - 20.0f) : 74.0f;
-        y += _subTitleHeight + 14.0f;
-        for (SCLTextView *textField in _inputs)
-        {
-            textField.frame = CGRectMake(12.0f, y, _windowWidth - 24.0f, textField.frame.size.height);
-            textField.layer.cornerRadius = 3.0f;
-            y += textField.frame.size.height + 10.0f;
-        }
-        
-        // Buttons
-        for (SCLButton *btn in _buttons)
-        {
-            btn.frame = CGRectMake(12.0f, y, btn.frame.size.width, btn.frame.size.height);
-            btn.layer.cornerRadius = 3.0f;
-            y += btn.frame.size.height + 10.0f;
-        }
+        textField.frame = CGRectMake(12.0f, y, _windowWidth - 24.0f, textField.frame.size.height);
+        textField.layer.cornerRadius = 3.0f;
+        y += textField.frame.size.height + 10.0f;
     }
+    
+    // Custom views
+    for (UIView *view in _customViews)
+    {
+        view.frame = CGRectMake(12.0f, y, view.frame.size.width, view.frame.size.height);
+        y += view.frame.size.height + 10.0f;
+    }
+    
+    // Buttons
+    for (SCLButton *btn in _buttons)
+    {
+        btn.frame = CGRectMake(12.0f, y, btn.frame.size.width, btn.frame.size.height);
+        y += btn.frame.size.height + 10.0f;
+    }
+    
+    // Adapt window height according to icon size
+    self.windowHeight = _useLargerIcon ? y : self.windowHeight;
+    
+    // Adjust corner radius, if a value has been passed
+    _contentView.layer.cornerRadius = self.cornerRadius ? self.cornerRadius : 5.0f;
 }
 
 #pragma mark - UIViewController
 
 - (BOOL)prefersStatusBarHidden
 {
-  return self.statusBarHidden;
+    return self.statusBarHidden;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-  return self.statusBarStyle;
+    return self.statusBarStyle;
 }
 
 #pragma mark - Handle gesture
@@ -465,9 +510,15 @@ SCLTimerDisplay *buttonTimer;
 
 - (void)setSoundURL:(NSURL *)soundURL
 {
-    NSError *error;
     _soundURL = soundURL;
-    _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:_soundURL error:&error];
+    
+    //DisposeSound
+    AudioServicesDisposeSystemSoundID(_soundID);
+    
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)_soundURL, &_soundID);
+    
+    //PlaySound
+    AudioServicesPlaySystemSound(_soundID);
 }
 
 #pragma mark - Subtitle Height
@@ -485,6 +536,40 @@ SCLTimerDisplay *buttonTimer;
     _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     _activityIndicatorView.frame = CGRectMake(kCircleHeight / 2 - kActivityIndicatorHeight / 2, kCircleHeight / 2 - kActivityIndicatorHeight / 2, kActivityIndicatorHeight, kActivityIndicatorHeight);
     [_circleView addSubview:_activityIndicatorView];
+}
+
+#pragma mark - UICustomView
+
+- (UIView *)addCustomView:(UIView *)customView
+{
+    // Update view height
+    self.windowHeight += customView.bounds.size.height + 10.0f;
+    
+    [_contentView addSubview:customView];
+    [_customViews addObject:customView];
+    
+    return customView;
+}
+
+#pragma mark - SwitchView
+
+- (SCLSwitchView *)addSwitchViewWithLabel:(NSString *)label
+{
+    // Add switch view
+    SCLSwitchView *switchView = [[SCLSwitchView alloc] initWithFrame:CGRectMake(0, 0, self.windowWidth, 31.0f)];
+    
+    // Update view height
+    self.windowHeight += switchView.bounds.size.height + 10.0f;
+    
+    if (label != nil)
+    {
+        switchView.labelText = label;
+    }
+    
+    [_contentView addSubview:switchView];
+    [_inputs addObject:switchView];
+    
+    return switchView;
 }
 
 #pragma mark - TextField
@@ -659,11 +744,7 @@ SCLTimerDisplay *buttonTimer;
     if (btn.validationBlock && !btn.validationBlock()) {
         return;
     }
-    if([self isVisible])
-    {
-        [self hideView];
-    }
-
+    
     if (btn.actionType == SCLBlock)
     {
         if (btn.actionBlock)
@@ -677,6 +758,11 @@ SCLTimerDisplay *buttonTimer;
     else
     {
         NSLog(@"Unknown action type for button");
+    }
+    
+    if([self isVisible])
+    {
+        [self hideView];
     }
 }
 
@@ -763,6 +849,11 @@ SCLTimerDisplay *buttonTimer;
             viewColor = UIColorFromHEX(0x6c125d);
             break;
             
+        case Question:
+            viewColor = UIColorFromHEX(0x727375);
+            iconImage = SCLAlertViewStyleKit.imageOfQuestion;
+            break;
+            
         case Custom:
             viewColor = color;
             iconImage = image;
@@ -806,45 +897,19 @@ SCLTimerDisplay *buttonTimer;
         
         // Adjust text view size, if necessary
         CGSize sz = CGSizeMake(_windowWidth - 24.0f, CGFLOAT_MAX);
-        NSDictionary *attr = @{NSFontAttributeName:self.viewText.font};
         
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
+        CGSize size = [_viewText sizeThatFits:sz];
+        
+        CGFloat ht = ceilf(size.height);
+        if (ht < _subTitleHeight)
         {
-            CGRect r = CGRectNull;
-            if(_attributedFormatBlock == nil) {
-                NSString *str = subTitle;
-                r = [str boundingRectWithSize:sz options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attr context:nil];
-            } else {
-                r = [_viewText.attributedText boundingRectWithSize:sz options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
-            }
-            
-            CGFloat ht = ceilf(r.size.height);
-            if (ht < _subTitleHeight)
-            {
-                self.windowHeight -= (_subTitleHeight - ht);
-                self.subTitleHeight = ht;
-            }
-            else
-            {
-                self.windowHeight += (ht - _subTitleHeight);
-                self.subTitleHeight = ht;
-            }
+            self.windowHeight -= (_subTitleHeight - ht);
+            self.subTitleHeight = ht;
         }
         else
         {
-            NSAttributedString *str =[[NSAttributedString alloc] initWithString:subTitle attributes:attr];
-            CGRect r = [str boundingRectWithSize:sz options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
-            CGFloat ht = ceilf(r.size.height) + 10.0f;
-            if (ht < _subTitleHeight)
-            {
-                self.windowHeight -= (_subTitleHeight - ht);
-                self.subTitleHeight = ht;
-            }
-            else
-            {
-                self.windowHeight += (ht - _subTitleHeight);
-                self.subTitleHeight = ht;
-            }
+            self.windowHeight += (ht - _subTitleHeight);
+            self.subTitleHeight = ht;
         }
         _viewText.frame = CGRectMake(12.0f, _subTitleY, _windowWidth - 24.0f, _subTitleHeight);
     }
@@ -859,19 +924,6 @@ SCLTimerDisplay *buttonTimer;
         _labelTitle.frame = CGRectMake(12.0f, 37.0f, _windowWidth - 24.0f, kTitleHeight);
     }
     
-    // Play sound, if necessary
-    if(_soundURL != nil)
-    {
-        if (_audioPlayer == nil)
-        {
-            NSLog(@"You need to set your sound file first");
-        }
-        else
-        {
-            [_audioPlayer play];
-        }
-    }
-    
     // Add button, if necessary
     if(completeText != nil)
     {
@@ -879,7 +931,7 @@ SCLTimerDisplay *buttonTimer;
     }
     
     // Alert view color and images
-    self.circleView.backgroundColor = viewColor;
+    self.circleView.backgroundColor = self.tintTopCircle ? viewColor : _backgroundViewColor;
     
     if (style == Waiting)
     {
@@ -925,8 +977,8 @@ SCLTimerDisplay *buttonTimer;
     {
         [durationTimer invalidate];
         
-        if (buttonTimer && _buttons.count > 0) {
-            
+        if (buttonTimer && _buttons.count > 0)
+        {
             SCLButton *btn = _buttons[buttonTimer.buttonIndex];
             btn.timer = buttonTimer;
             [buttonTimer startTimerWithTimeLimit:duration completed:^{
@@ -1003,6 +1055,12 @@ SCLTimerDisplay *buttonTimer;
     [self showTitle:vc image:nil color:nil title:title subTitle:subTitle duration:duration completeText:closeButtonTitle style:Waiting];
 }
 
+- (void)showQuestion:(UIViewController *)vc title:(NSString *)title subTitle:(NSString *)subTitle closeButtonTitle:(NSString *)closeButtonTitle duration:(NSTimeInterval)duration
+{
+    [self showTitle:vc image:nil color:nil title:title subTitle:subTitle duration:duration completeText:closeButtonTitle style:Question];
+}
+
+
 #pragma mark - Show using new window
 
 - (void)showSuccess:(NSString *)title subTitle:(NSString *)subTitle closeButtonTitle:(NSString *)closeButtonTitle duration:(NSTimeInterval)duration
@@ -1051,6 +1109,11 @@ SCLTimerDisplay *buttonTimer;
     [self showTitle:nil image:nil color:nil title:title subTitle:subTitle duration:duration completeText:closeButtonTitle style:Waiting];
 }
 
+- (void)showQuestion:(NSString *)title subTitle:(NSString *)subTitle closeButtonTitle:(NSString *)closeButtonTitle duration:(NSTimeInterval)duration
+{
+    [self showTitle:nil image:nil color:nil title:title subTitle:subTitle duration:duration completeText:closeButtonTitle style:Question];
+}
+
 #pragma mark - Visibility
 
 - (void)removeTopCircle
@@ -1064,14 +1127,25 @@ SCLTimerDisplay *buttonTimer;
     return (self.view.alpha);
 }
 
-- (void)alertIsDismissed:(DismissBlock)dismissBlock
+- (void)alertIsDismissed:(SCLDismissBlock)dismissBlock
 {
     self.dismissBlock = dismissBlock;
 }
 
+- (SCLForceHideBlock)forceHideBlock:(SCLForceHideBlock)forceHideBlock
+{
+    _forceHideBlock = forceHideBlock;
+    
+    if (_forceHideBlock)
+    {
+        [self hideView];
+    }
+    return _forceHideBlock;
+}
+
 - (CGRect)mainScreenFrame
 {
-    return [self isAppExtension] ? _extensionBounds : [UIScreen mainScreen].bounds;
+    return [self isAppExtension] ? _extensionBounds : [UIApplication sharedApplication].keyWindow.bounds;
 }
 
 - (BOOL)isAppExtension
@@ -1201,7 +1275,7 @@ SCLTimerDisplay *buttonTimer;
             break;
     }
     
-    if(_activityIndicatorView)
+    if (_activityIndicatorView)
     {
         [_activityIndicatorView stopAnimating];
     }
@@ -1211,11 +1285,18 @@ SCLTimerDisplay *buttonTimer;
         self.dismissBlock();
     }
     
-    if(_usingNewWindow)
+    if (_usingNewWindow)
     {
         // Restore previous window
         [self.previousWindow makeKeyAndVisible];
         self.previousWindow = nil;
+    }
+    
+    for (SCLButton *btn in _buttons)
+    {
+        btn.actionBlock = nil;
+        btn.target = nil;
+        btn.selector = nil;
     }
 }
 
@@ -1228,9 +1309,9 @@ SCLTimerDisplay *buttonTimer;
         self.view.alpha = 0.0f;
     } completion:^(BOOL completed) {
         [self.backgroundView removeFromSuperview];
-        if(_usingNewWindow)
+        if (_usingNewWindow)
         {
-            // Remove current window            
+            // Remove current window
             [self.SCLAlertWindow setHidden:YES];
             self.SCLAlertWindow = nil;
         }

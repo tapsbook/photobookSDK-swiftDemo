@@ -11,4 +11,9 @@
 
 @interface TBFacebookManager : TBSocialManager
 
+/**
+ ios9以上请使用该方法
+ */
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options ;
+
 @end

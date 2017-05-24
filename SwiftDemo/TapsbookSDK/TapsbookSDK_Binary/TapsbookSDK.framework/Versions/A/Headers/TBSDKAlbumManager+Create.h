@@ -54,4 +54,24 @@
                                   tag:(NSInteger)tag
                       completionBlock:(void (^)(BOOL success, TBSDKAlbum *sdkAlbum, NSError *error))completionBlock;
 
+
+/**
+ Create a TBSDK product
+
+ @param productType Product type
+ @param images A array of TBImage.
+ @param identifier An unipue string,length <= 20
+ @param title album title
+ @param tag sign
+ @param productOptions Protuct Options
+ @param completionBlock callback
+ */
+- (void)createSDKAlbumWithProductType:(TBProductType)productType
+                               images:(NSArray *)images
+                           identifier:(NSString *)identifier
+                                title:(NSString *)title
+                                  tag:(NSInteger)tag
+                              options:(NSDictionary *)productOptions
+                      completionBlock:(void (^)(BOOL success, TBSDKAlbum *sdkAlbum, NSError *error))completionBlock;
+
 @end

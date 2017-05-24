@@ -16,9 +16,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     var assets: [DKAsset]?
     var tbImages : [TBImage] = []
+    var dataSource:Array<Any>?
+    var tbProductType : TBProductType = .photobook
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        getDataSource()
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,7 +32,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                                       allowMultipleType: Bool,
                                       sourceType: DKImagePickerControllerSourceType = .both,
                                       allowsLandscape: Bool,
-                                      singleSelect: Bool) {
+                                      singleSelect: Bool, maxSelectableCount: NSInteger) {
         
         let pickerController = DKImagePickerController()
         
@@ -38,13 +41,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         pickerController.allowMultipleTypes = allowMultipleType
         pickerController.sourceType = sourceType
         pickerController.singleSelect = singleSelect
-        pickerController.defaultSelectedAssets = self.assets
+//        pickerController.defaultSelectedAssets = self.assets
         pickerController.didSelectAssets = { [unowned self] (assets: [DKAsset]) in
             print("didSelectAssets")
             self.assets = assets
-            
-            self.createBookWithSelectedAssets()
+            if assets.count > 0 {
+                self.createBookWithSelectedAssets()
+            }
         }
+        pickerController.didCancel = { (Void) in
+            
+        }
+        pickerController.maxSelectableCount = maxSelectableCount
         
         if UI_USER_INTERFACE_IDIOM() == .pad {
             pickerController.modalPresentationStyle = .formSheet
@@ -56,10 +64,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     struct Demo {
         static let titles = [
             ["Create Book"],
+            ["Create Phonecase"],
             ["View Books"],
             ["View Shopping cart"]
         ]
         static let types: [DKImagePickerControllerAssetType] = [.allPhotos]
+    }
+    func getDataSource() {
+        TBSDKAlbumManager.sharedInstance().fetchProductList { (success, products, error) in
+            if success {
+                print(1)
+            }else {
+                print(2)
+            }
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -81,12 +99,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if (indexPath.row == 0) {
-            showPhotoPicker()
+        if (indexPath.section == 0) {
+            showPhotoPicker(30)
+            tbProductType = .photobook
+        } else if indexPath.section == 1 {
+            showPhotoPicker(1)
+            tbProductType = .phonecase
+        } else if indexPath.section == 2 {
+            
+        } else if indexPath.section == 3 {
+            
         }
     }
     
-    func showPhotoPicker() {
+    func showPhotoPicker(_ maxSelectCount : NSInteger) {
         let assetType = Demo.types[0]
         let allowMultipleType = false
         let sourceType: DKImagePickerControllerSourceType = .photo
@@ -98,7 +124,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             allowMultipleType: allowMultipleType,
             sourceType: sourceType,
             allowsLandscape: allowsLandscape,
-            singleSelect: singleSelect
+            singleSelect: singleSelect,
+            maxSelectableCount: maxSelectCount
         )
         
     }
@@ -145,21 +172,55 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
         //Custom product options if using SDK without a product server
         //Ignore this if using Tapsbook server API to control products
-        let albumOption : NSDictionary = [
-        kTBPreferredProductSKU:     "1003", //1003 is a layflat
-        kTBProductPreferredTheme:   "200",  //200 is for square book
-        kTBProductMaxPageCount:     "20",   //set max=min will limit the page count
-        kTBProductMinPageCount:     "20",
-        kTBPreferredUIDirection:    "RTL"   //set this RTL or LTR
-        ]
+//        let albumOption : NSDictionary = [
+////        ktbproduct:     "1003", //1003 is a layflat
+//        kTBProductPreferredSKU:     "1003",
+//        kTBProductPreferredTheme:   "200",  //200 is for square book
+//        kTBProductMaxPageCount:     "20",   //set max=min will limit the page count
+//        kTBProductMinPageCount:     "20",
+//        kTBPreferredUIDirection:    "LTR"   //set this RTL or LTR
+//        ]
         
-        //launch SDK with images
-        TBSDKAlbumManager.sharedInstance().createSDKAlbum(withImages: tbImages , identifier: nil, title: "Album", tag: 0, options: albumOption as! [AnyHashable: Any], completionBlock: { (success, sdkAlbum, error) -> Void in
-            
-            TBSDKAlbumManager.sharedInstance().open(sdkAlbum, presentOn: self, shouldPrintDirectly: false)
-        })
+        var albumOption : NSDictionary = [:]
+        switch tbProductType {
+        case .photobook:
+            albumOption = [
+                kTBProductPreferredSKU:     "1003",
+                kTBProductPreferredTheme:   "200",  //200 is for square book
+                kTBProductMaxPageCount:     "20",   //set max=min will limit the page count
+                kTBProductMinPageCount:     "20",
+                kTBPreferredUIDirection:    "LTR"   //set this RTL or LTR
+            ]
+        case .phonecase:
+            albumOption = [
+                kTBProductPreferredSKU : "220002"//iphone6壳子的sku
+            ]
+        default:
+            albumOption = [:]
+        }
+        
+        TBSDKAlbumManager.sharedInstance().createSDKAlbum(with: tbProductType, images: tbImages, identifier: nil, title: "Album", tag: 0, options: albumOption as! [AnyHashable : Any]) { (success, sdkAlbum, error) in
+            if success {
+                TBSDKAlbumManager.sharedInstance().open(sdkAlbum!, presentOn: self, shouldPrintDirectly: false)
+            }
+        }
+        
+//        let albumOption : NSDictionary = [
+//            kTBProductPreferredSKU:     "200",
+//            kTBProductPreferredTheme:   "2000",
+//            ]
+//        
+//        TBSDKAlbumManager.sharedInstance().createSDKAlbum(with: .pillow, images: tbImages, identifier: nil, title: "Album", tag: 0, options: albumOption as! [AnyHashable : Any]) { (success, sdkAlbum, error) in
+//            TBSDKAlbumManager.sharedInstance().open(sdkAlbum, presentOn: self, shouldPrintDirectly: false)
+//        }
         
     }
 
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
 }
 

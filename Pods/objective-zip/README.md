@@ -18,7 +18,7 @@ The source repository contains full sources for ZLib, MiniZip and
 Objective-Zip, together with some unit tests. The versions included are:
 
 - 1.2.8 for [ZLib](http://zlib.net).
-- 1.1 for [MiniZip](https://github.com/nmoinvaz/minizip).
+- 1.1 (as of 13/5/2017) for [MiniZip](https://github.com/nmoinvaz/minizip).
 - latest version for Objective-Zip.
 
 Please note that ZLib and MiniZip are included here only to provide a
@@ -98,6 +98,55 @@ OZZipWriteStream *stream= [zipFile writeFileInZipWithName:@"abc.txt"
 ```
 
 
+Adding a file to a zip file using encryption
+--------------------------------------------
+
+Objective-Zip supports only traditional PKWare encryption, which is also the
+format most widely supported by common unzip utilities.
+
+To add a file with encryption, it is necessary to precompute a CRC32 of
+the file being added. This is needed by traditional PKWare encryption 
+to later verify that the password provided for decryption is correct.
+
+The library includes a handy crc32 method as an NSData category 
+(automatically imported under the umbrella header): 
+
+```objective-c
+NSData *fileData= // Your file data
+uint32_t crc= [fileData crc32];
+
+OZZipWriteStream *stream= [zipFile writeFileInZipWithName:@"abc.txt"
+    compressionLevel:OZZipCompressionLevelBest
+    password:@"password"
+    crc32:crc];
+
+[stream writeData:fileData];
+[stream finishedWriting];
+```
+
+Note that passing 0 (or any other non-CRC32 number) as the crc32 argument will make
+the decryption fail, even if the correct password is specified.
+
+Note also that if your file is too large to be stored in a single NSData, you
+can still compute the CRC32 progressively by using a loop:
+
+```objective-c
+NSFileHandle *fileHandle= // Your file handle
+
+uint32_t crc= 0;
+do {
+
+    // Read a chunk of the file in data buffer 
+    NSData *data= [fileHandle readDataOfLength:BUFFER_SIZE];
+    if ([data length] == 0)
+        break;
+
+    crc= [data crc32withInitialCrc32:crc];
+
+} while (YES);
+```
+
+
 Reading a file from a zip file
 ------------------------------
 
@@ -122,16 +171,16 @@ NSMutableData *data= [[NSMutableData alloc] initWithLength:BUFFER_SIZE];
 do {
 
     // Reset buffer length
-    [buffer setLength:BUFFER_SIZE];
+    [data setLength:BUFFER_SIZE];
 
     // Read bytes and check for end of file
     int bytesRead= [read readDataWithBuffer:data];
     if (bytesRead <= 0)
         break;
 
-    [buffer setLength:bytesRead];
+    [data setLength:bytesRead];
 
-    // Do something with buffer
+    // Do something with data
 
 } while (YES);
 
@@ -279,6 +328,16 @@ The library is distributed under the New BSD License.
 Version history
 ===============
 
+Version 1.0.5:
+
+- Improved support for computation of CRC32
+
+Version 1.0.4:
+
+- Updated to latest version of MiniZip (as of 13/5/2017)
+- Added unit tests for 32/64 cross compatibility
+- Added unit tests for encryption/decryption with password
+
 Version 1.0.3:
 
 - Fixed some memory leaks in MiniZip (contributed by @SheffieldKevin)
@@ -357,7 +416,7 @@ Version 0.7.0:
 Compatibility
 =============
 
-Version 1.0.3 has been tested with iOS up to 9.3 and OS X up to 10.11, but
-should be compatible with earlier versions too, down to iOS 5.1 and OS X 10.7.
+Version 1.0.5 has been tested with iOS up to 10.3 and OS X up to 10.12, but
+should be compatible with earlier versions too, down to iOS 8.0 and OS X 10.7.
 Le me know of any issues that should arise.
 

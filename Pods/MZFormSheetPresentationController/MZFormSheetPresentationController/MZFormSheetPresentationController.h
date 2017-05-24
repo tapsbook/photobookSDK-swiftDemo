@@ -1,6 +1,6 @@
 //
-//  MZFormSheetPresentationViewControllerAnimator.m
-//  MZFormSheetPresentationViewControllerAnimator
+//  MZFormSheetPresentationViewController.h
+//  MZFormSheetPresentationViewController
 //
 //  Created by Michał Zaborowski on 24.02.2015.
 //  Copyright (c) 2015 Michał Zaborowski. All rights reserved.
@@ -30,14 +30,24 @@
 typedef void(^MZFormSheetPresentationControllerTransitionBeginCompletionHandler)(UIViewController * __nonnull presentingViewController);
 typedef void(^MZFormSheetPresentationControllerTransitionEndCompletionHandler)(UIViewController * __nonnull presentingViewController, BOOL completed);
 typedef void(^MZFormSheetPresentationControllerTapHandler)(CGPoint location);
-typedef CGRect(^MZFormSheetPresentationFrameConfigurationHandler)(UIView * __nonnull presentedView, CGRect currentFrame);
+typedef CGRect(^MZFormSheetPresentationFrameConfigurationHandler)(UIView * __nonnull presentedView, CGRect currentFrame, BOOL isKeyboardVisible);
 
 typedef NS_ENUM(NSInteger, MZFormSheetActionWhenKeyboardAppears) {
     MZFormSheetActionWhenKeyboardAppearsDoNothing = 0,
     MZFormSheetActionWhenKeyboardAppearsCenterVertically,
     MZFormSheetActionWhenKeyboardAppearsMoveToTop,
     MZFormSheetActionWhenKeyboardAppearsMoveToTopInset,
-    MZFormSheetActionWhenKeyboardAppearsAboveKeyboard
+    /**
+     *  If contentViewSize is less than screenSize when keyboard appeard
+     *  then formSheet will move to the top inset
+     */
+    MZFormSheetActionWhenKeyboardAppearsAboveKeyboard,
+    
+    /**
+     *  This will force that formSheet will always move above keyboard
+     *  even if contentViewSize is larger than screenSize
+     */
+    MZFormSheetActionWhenKeyboardAppearsAlwaysAboveKeyboard
 };
 
 @interface MZFormSheetPresentationController : UIPresentationController <MZAppearance>
@@ -84,6 +94,10 @@ typedef NS_ENUM(NSInteger, MZFormSheetActionWhenKeyboardAppears) {
  */
 @property (nonatomic, assign) BOOL shouldCenterVertically MZ_APPEARANCE_SELECTOR;
 
+/**
+ *  Returns whether the keyboard is visible
+ */
+@property (nonatomic, assign, readonly, getter=isKeyboardVisible) BOOL keyboardVisible;
 
 /**
  The background color of the background view.
@@ -105,7 +119,7 @@ typedef NS_ENUM(NSInteger, MZFormSheetActionWhenKeyboardAppears) {
 
 /**
  The movement action to use when the keyboard appears.
- By default, this is MZFormSheetActionWhenKeyboardAppears.
+ By default, this is MZFormSheetActionWhenKeyboardAppearsDoNothing.
  */
 @property (nonatomic, assign) MZFormSheetActionWhenKeyboardAppears movementActionWhenKeyboardAppears MZ_APPEARANCE_SELECTOR;
 

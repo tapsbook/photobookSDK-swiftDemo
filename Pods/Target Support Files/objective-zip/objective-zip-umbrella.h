@@ -17,6 +17,8 @@
 #import "OZFileInZipInfo.h"
 #import "Objective-Zip.h"
 #import "Objective-Zip+NSError.h"
+#import "NSDate+DOSDate.h"
+#import "NSData+CRC32.h"
 
 FOUNDATION_EXPORT double objective_zipVersionNumber;
 FOUNDATION_EXPORT const unsigned char objective_zipVersionString[];

@@ -20,7 +20,6 @@
 
 @property (nonatomic, assign) CGPoint scrollOffset;
 
-@property (nonatomic, getter = isTransitioning) BOOL transitioning;
 @property (nonatomic, getter = isImageMode) BOOL imageMode; // Default NO
 
 @end
@@ -125,8 +124,12 @@
     
     [[self buttons] enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
         
-        CGRect rect = CGRectMake(roundf(self.bounds.size.width/self.numberOfSegments)*idx, 0.0f, roundf(self.bounds.size.width/self.numberOfSegments),
-                                 self.bounds.size.height);
+        CGFloat width = self.bounds.size.width / self.numberOfSegments;
+        CGFloat height = self.bounds.size.height;
+        CGFloat x = width*idx;
+
+        CGRect rect = CGRectMake(x, 0.0f, width, height);
+        
         [button setFrame:rect];
         
         if (_adjustsButtonTopInset) {
@@ -429,14 +432,21 @@
     
     id firstItem = [items firstObject];
     
-    NSPredicate *classPredicate = [NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [firstItem class]];
-    NSAssert([items filteredArrayUsingPredicate:classPredicate].count == items.count, @"Cannot include different objects in the array. Please make sure to either pass an array of NSString or UIImage objects.");
-    
     _imageMode = [firstItem isKindOfClass:[UIImage class]];
+    
+#if DEBUG
+    Class class = _imageMode ? [UIImage class] : [NSString class];
+    
+    // Consider cases where NSCFConstantString can also be used
+    class = [class isSubclassOfClass:[NSString class]] ? [NSString class] : class;
+    
+    __unused NSPredicate *classPredicate = [NSPredicate predicateWithFormat:@"self isKindOfClass: %@", class];
+    NSAssert([items filteredArrayUsingPredicate:classPredicate].count == items.count, @"Cannot include different objects in the array. Please make sure to either pass an array of NSString or UIImage objects.");
+#endif
     
     _items = [NSArray arrayWithArray:items];
     
-    if (!self.imageMode) {
+    if (!_imageMode) {
         _counts = [NSMutableArray arrayWithCapacity:items.count];
         
         for (int i = 0; i < items.count; i++) {
@@ -455,8 +465,21 @@
     
     [super setTintColor:color];
     
-    [self setTitleColor:color forState:UIControlStateHighlighted];
-    [self setTitleColor:color forState:UIControlStateSelected];
+    if (self.isImageMode) {
+
+        for (UIButton *btn in self.buttons) {
+            
+            UIImage *normalImage = [btn imageForState:UIControlStateNormal];
+            UIImage *selectedImage = [normalImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            
+            [btn setImage:selectedImage forState:UIControlStateSelected];
+            btn.tintColor = color;
+        }
+    }
+    else {
+        [self setTitleColor:color forState:UIControlStateHighlighted];
+        [self setTitleColor:color forState:UIControlStateSelected];
+    }
 }
 
 - (void)setDelegate:(id<DZNSegmentedControlDelegate>)delegate
@@ -513,24 +536,21 @@
 
 - (void)setSelectedSegmentIndex:(NSInteger)segment animated:(BOOL)animated
 {
-    if (self.selectedSegmentIndex == segment || self.isTransitioning) {
+    if (self.numberOfSegments == 0 || self.selectedSegmentIndex == segment) {
         return;
     }
     
     [self unselectAllButtons];
+    [self enableAllButtonsInteraction:YES];
     
-    self.userInteractionEnabled = NO;
+    UIButton *targetButton = self.buttons[segment];
+    targetButton.selected = YES;
+    targetButton.userInteractionEnabled = NO;
     
     _selectedSegmentIndex = segment;
-    _transitioning = YES;
     
     void (^animations)() = ^void(){
         self.selectionIndicator.frame = [self selectionIndicatorRect];
-    };
-    
-    void (^completion)(BOOL finished) = ^void(BOOL finished){
-        self.userInteractionEnabled = YES;
-        _transitioning = NO;
     };
     
     if (animated) {
@@ -544,11 +564,10 @@
               initialSpringVelocity:velocity
                             options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut
                          animations:animations
-                         completion:completion];
+                         completion:NULL];
     }
     else {
         animations();
-        completion(NO);
     }
 }
 
@@ -564,7 +583,10 @@
     NSAssert([tintColor isKindOfClass:[UIColor class]], @"Cannot assign a tint color with an unvalid color object.");
     
     UIButton *button = [self buttonAtIndex:segment];
-    button.backgroundColor = tintColor;
+    
+    if (!self.isImageMode) {
+        button.backgroundColor = tintColor;
+    }
 }
 
 - (void)setTitle:(NSString *)title forSegmentAtIndex:(NSUInteger)segment
@@ -727,7 +749,7 @@
 
 - (void)setFont:(UIFont *)font
 {
-    if ([self.font.fontName isEqualToString:font.fontName]) {
+    if ( [self.font.fontName isEqualToString:font.fontName] && self.font.pointSize == font.pointSize ) {
         return;
     }
     
@@ -885,7 +907,7 @@
 {
     UIButton *button = (UIButton *)sender;
     
-    if (self.selectedSegmentIndex != button.tag && !self.isTransitioning) {
+    if (self.selectedSegmentIndex != button.tag) {
         [self setSelectedSegmentIndex:button.tag animated:YES];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
@@ -915,10 +937,6 @@
 
 - (void)removeAllSegments
 {
-    if (self.isTransitioning) {
-        return;
-    }
-    
     // Removes all the buttons
     [[self buttons] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     

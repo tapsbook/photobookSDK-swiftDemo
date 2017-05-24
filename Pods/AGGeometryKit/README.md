@@ -1,6 +1,5 @@
-![# AGGeometryKit](/logo.png?raw=true "AGGeometryKit")
-
-[![Build Status](https://travis-ci.org/hfossli/AGGeometryKit.svg?branch=master)](https://travis-ci.org/hfossli/AGGeometryKit)
+# <img src="/logo.png?raw=true" width="191" alt="AGGeometryKit" />
+[![Build Status](https://travis-ci.org/agens-no/AGGeometryKit.svg?branch=master)](https://travis-ci.org/agens-no/AGGeometryKit)
 
 Quadrilaterals on CALayer (control each corner point individually), CGGeometry-functions, UIView/CALayer properties and other invaluable tools.
 
@@ -26,12 +25,12 @@ import AGGeometryKit
 
 ## Demo
 
-[![Demo video](/video-aggeometrykit.png)](https://vimeo.com/95376358)
+[![Demo video](/video-aggeometrykit.png)](https://vimeo.com/95376358)  
 [See the video on vimeo ](https://vimeo.com/95376358)
 
 Used in conjunction with [POP](https://github.com/facebook/pop) this allows you to do really awesome stuff. Visit [AGGeometryKit+POP](https://github.com/hfossli/AGGeometryKit-Pop).
 
-[![Demo video](/video-aggeometrykit-pop.png)](https://vimeo.com/95383807)
+[![Demo video](/video-aggeometrykit-pop.png)](https://vimeo.com/95383807)  
 [See the video on vimeo ](https://vimeo.com/95383807)
 
 
@@ -153,5 +152,4 @@ You can reach me on twitter as [@hfossli](https://twitter.com/hfossli).
 
 Agens.no a company situated in Oslo, Norway with some help from some very clever stackoverflow.com guys.
 
-
-[![Agens | Digital craftsmanship](http://static.agens.no/images/agens_logo_w_slogan_avenir_small.png)](http://agens.no/)
+[<img src="http://static.agens.no/images/agens_logo_w_slogan_avenir_medium.png" width="340" />](http://agens.no/)

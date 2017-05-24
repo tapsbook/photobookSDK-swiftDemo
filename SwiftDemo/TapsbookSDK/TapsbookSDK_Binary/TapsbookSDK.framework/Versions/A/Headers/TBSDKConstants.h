@@ -30,6 +30,24 @@ typedef NS_ENUM(NSInteger, TBSDKRegion) {
     TBSDKRegion_Other = 1000,
 };
 
+/// 事件统计方式
+typedef NS_ENUM(NSInteger, TBUserTrackerUsingType) {//
+    TBUserTrackerUsingType_None   = 0,
+    TBUserTrackerUsingType_Google = 1,
+    TBUserTrackerUsingType_UMeng  = 2,
+};
+
+typedef NS_ENUM(NSInteger, TBPhotobookErrorType) {
+    TBPhotobookErrorType_None = 10000,
+    //产品列表返回空
+    TBPhotobookErrorType_NoProducts = 10001,
+    //
+    TBPhotobookErrorType_NoVisibilityProduct = 10002,
+    //没有找到sku对应的产品
+    TBPhotobookErrorType_NotSearchProduct = 10003,
+    //数据库中没有找到sku对应的产品
+    TBPhotobookErrorType_NotSameProduct = 10004,
+};
 
 ///---------------------------------------
 /// @name Checkout Info Keys
@@ -64,6 +82,8 @@ extern NSString * const kTBAppKey;
 extern NSString * const kTBAppSecret;
 extern NSString * const kTBSupportedRegions;
 extern NSString * const kTBMerchantKeys;
+extern NSString * const kTBAppURLScheme;
+
 // 2
 extern NSString * const kTBMerchantKeyDefault;
 // 1
@@ -102,6 +122,8 @@ extern NSString * const kTBBehaviorCustomization;
 // 1
 extern NSString * const kTBRemindUserToOrderWhenClosingBooks;
 extern NSString * const kTBEnableAddingText;
+extern NSString * const kTBEnablePhotoTray;
+extern NSString * const kTBRequireBookTitle;
 extern NSString * const kTBShowOptionsOfBuildingPagesManuallyOrAutomatically;
 extern NSString * const kTBUseEmptyTemplateForPageWithNoContent;
 extern NSString * const kTBLoadProductFromServerWhenPreparingLocalAlbum;
@@ -114,20 +136,28 @@ extern NSString * const kTBCheckoutCustomization;
 extern NSString * const kTBNoCover;
 extern NSString * const kTBSendAlbumJSONDictToHostingApp;
 extern NSString * const kTBGeneratePageImagesToHostingApp;
-extern NSString * const kTBPreferredProductSKU;
 extern NSString * const kTBProductSubType;
 extern NSString * const kTBProductPreferredTheme;
+extern NSString * const kTBProductPreferredSKU;
 extern NSString * const kTBProductMaxPageCount;
 extern NSString * const kTBProductMinPageCount;
+extern NSString * const kTBProductMaxPhotoCount;
+extern NSString * const kTBProductMinPhotoCount;
+extern NSString * const kTBBookHasInsideCover;
 extern NSString * const kTBPreferredUIDirection;
 extern NSString * const kTBSendOrderInfoToHostingApp;
 extern NSString * const kTBExternalCheckoutType;
+extern NSString * const kTBPreferredPageTypeSpread;
+extern NSString * const kTBPageViewDisplayEdgeInsets;
 
 // 0
 extern NSString * const kTBSocial;
 // 1
 extern NSString * const kTBSocialWeixinAppID;
 extern NSString * const kTBSocialWeixinAppSecret;
+extern NSString * const kTBSocialWeixinPayApiKey;
+extern NSString * const kTBSocialAlipayPartnerID;
+extern NSString * const kTBSocialAlipayAccountName;
 
 // 0
 extern NSString * const kTBHostingAppInfo;

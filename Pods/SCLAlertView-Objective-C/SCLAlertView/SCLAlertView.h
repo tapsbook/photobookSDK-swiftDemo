@@ -3,7 +3,7 @@
 //  SCLAlertView
 //
 //  Created by Diogo Autilio on 9/26/14.
-//  Copyright (c) 2014 AnyKey Entertainment. All rights reserved.
+//  Copyright (c) 2014-2016 AnyKey Entertainment. All rights reserved.
 //
 
 #if defined(__has_feature) && __has_feature(modules)
@@ -13,11 +13,13 @@
 #endif
 #import "SCLButton.h"
 #import "SCLTextView.h"
+#import "SCLSwitchView.h"
 
 typedef NSAttributedString* (^SCLAttributedFormatBlock)(NSString *value);
-typedef void (^DismissBlock)(void);
+typedef void (^SCLDismissBlock)(void);
+typedef void (^SCLForceHideBlock)(void);
 
-@interface SCLAlertView : UIViewController
+@interface SCLAlertView : UIViewController 
 
 /** Alert Styles
  *
@@ -32,6 +34,7 @@ typedef NS_ENUM(NSInteger, SCLAlertViewStyle)
     Info,
     Edit,
     Waiting,
+    Question,
     Custom
 };
 
@@ -76,6 +79,26 @@ typedef NS_ENUM(NSInteger, SCLAlertViewBackground)
     Transparent
 };
 
+/** Content view corner radius
+ *
+ * A float value that replaces the standard content viuew corner radius.
+ */
+@property CGFloat cornerRadius;
+
+/** Tint top circle
+ *
+ * A boolean value that determines whether to tint the SCLAlertView top circle.
+ * (Default: YES)
+ */
+@property BOOL tintTopCircle;
+
+/** Use larger icon
+ *
+ * A boolean value that determines whether to make the SCLAlertView top circle icon larger.
+ * (Default: NO)
+ */
+@property BOOL useLargerIcon;
+    
 /** Title Label
  *
  * The text displayed as title.
@@ -126,6 +149,12 @@ typedef NS_ENUM(NSInteger, SCLAlertViewBackground)
  * Support keys : backgroundColor, borderWidth, borderColor, textColor
  */
 @property (nonatomic, copy) ButtonFormatBlock buttonFormatBlock;
+
+/** Set force hide block.
+ *
+ * When set force hideview method invocation.
+ */
+@property (nonatomic, copy) SCLForceHideBlock forceHideBlock;
 
 /** Hide animation type
  *
@@ -207,7 +236,7 @@ typedef NS_ENUM(NSInteger, SCLAlertViewBackground)
  *
  * Warns that alerts is gone using block
  */
-- (void)alertIsDismissed:(DismissBlock)dismissBlock;
+- (void)alertIsDismissed:(SCLDismissBlock)dismissBlock;
 
 /** Hide SCLAlertView
  *
@@ -227,6 +256,12 @@ typedef NS_ENUM(NSInteger, SCLAlertViewBackground)
  */
 - (void)removeTopCircle;
 
+/** Add a custom UIView
+ *
+ * @param customView UIView object to be added above the first SCLButton.
+ */
+- (UIView *)addCustomView:(UIView *)customView;
+
 /** Add Text Field
  *
  * @param title The text displayed on the textfield.
@@ -238,6 +273,12 @@ typedef NS_ENUM(NSInteger, SCLAlertViewBackground)
  * @param textField The custom textfield provided by the programmer.
  */
 - (void)addCustomTextField:(UITextField *)textField;
+
+/** Add a switch view
+ *
+ * @param label The label displayed for the switch.
+ */
+- (SCLSwitchView *)addSwitchViewWithLabel:(NSString *)label;
 
 /** Add Timer Display
  *
@@ -392,5 +433,15 @@ typedef NS_ENUM(NSInteger, SCLAlertViewBackground)
 - (void)showWaiting:(UIViewController *)vc title:(NSString *)title subTitle:(NSString *)subTitle closeButtonTitle:(NSString *)closeButtonTitle duration:(NSTimeInterval)duration;
 - (void)showWaiting:(NSString *)title subTitle:(NSString *)subTitle closeButtonTitle:(NSString *)closeButtonTitle duration:(NSTimeInterval)duration;
 
+/** Show Question SCLAlertView
+ *
+ * @param vc The view controller the alert view will be displayed in.
+ * @param title The text displayed on the button.
+ * @param subTitle The subtitle text of the alert view.
+ * @param closeButtonTitle The text for the close button.
+ * @param duration The amount of time the alert will remain on screen until it is automatically dismissed. If automatic dismissal is not desired, set to 0.
+ */
+- (void)showQuestion:(UIViewController *)vc title:(NSString *)title subTitle:(NSString *)subTitle closeButtonTitle:(NSString *)closeButtonTitle duration:(NSTimeInterval)duration;
+- (void)showQuestion:(NSString *)title subTitle:(NSString *)subTitle closeButtonTitle:(NSString *)closeButtonTitle duration:(NSTimeInterval)duration;
 
 @end

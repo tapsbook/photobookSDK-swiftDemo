@@ -7,6 +7,7 @@
 //
 
 #import <TapsbookSDK/TapsbookSDK.h>
+@class TBCouponsListViewController;
 
 @protocol TBCouponListViewControllerProtocol <NSObject>
 
@@ -23,5 +24,7 @@
 
 - (void)applyCouponToNextCreatedAlbum:(NSDictionary *)coupon;
 - (void)clearCoupon;
+
+- (void)addCouponCode:(NSString *)couponCode couponListVC:(TBCouponsListViewController *)couponListVC;
 
 @end

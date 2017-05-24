@@ -1,0 +1,30 @@
+{
+  "name": "GoogleAnalytics-CN",
+  "version": "3.14.0",
+  "license": "MIT",
+  "summary": "Google Analytics - measure your app performance",
+  "description": "Google Analytics lets you track application events you care about and gain insights from discovery and installation to conversion and engagement",
+  "homepage": "https://github.com/CaryGo/GoogleAnalytics-CN",
+  "authors": {
+    "Cary": "guojiashuang@live.com"
+  },
+  "source": {
+    "git": "https://github.com/CaryGo/GoogleAnalytics-CN.git",
+    "tag": "3.14.0"
+  },
+  "platforms": {
+    "ios": null
+  },
+  "source_files": "GoogleAnalytics/Headers/Public/*.h",
+  "public_header_files": "GoogleAnalytics/Headers/Public/*.h",
+  "vendored_libraries": "GoogleAnalytics/Libraries/libGoogleAnalytics.a",
+  "libraries": [
+    "sqlite3",
+    "z"
+  ],
+  "frameworks": [
+    "CoreData",
+    "SystemConfiguration"
+  ],
+  "requires_arc": true
+}

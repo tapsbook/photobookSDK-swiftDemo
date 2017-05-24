@@ -64,5 +64,11 @@
 	<string>lingmall requires access to the photo library.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>For taking selfies!</string>
+	<key>UISupportedInterfaceOrientations - 2</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
 </dict>
 </plist>

@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "TTTArrayFormatter.h"
+#import "NSBundle+FormatterKit.h"
 
 @implementation TTTArrayFormatter
 @synthesize arrayStyle = _arrayStyle;
@@ -37,10 +38,10 @@
         return nil;
     }
 
-    self.delimiter = NSLocalizedStringFromTable(@",", @"FormatterKit", @"List delimiter");
-    self.separator = NSLocalizedStringFromTable(@" ", @"FormatterKit", @"List separator");
-    self.conjunction = NSLocalizedStringFromTable(@"and", @"FormatterKit", @"List conjunction");
-    self.abbreviatedConjunction = NSLocalizedStringFromTable(@"&", @"FormatterKit", nil);
+    self.delimiter = NSLocalizedStringFromTableInBundle(@",", @"FormatterKit", [NSBundle formatterKitBundle], @"List delimiter");
+    self.separator = NSLocalizedStringFromTableInBundle(@" ", @"FormatterKit", [NSBundle formatterKitBundle], @"List separator");
+    self.conjunction = NSLocalizedStringFromTableInBundle(@"and", @"FormatterKit", [NSBundle formatterKitBundle], @"List conjunction");
+    self.abbreviatedConjunction = NSLocalizedStringFromTableInBundle(@"&", @"FormatterKit", [NSBundle formatterKitBundle], nil);
     self.usesAbbreviatedConjunction = NO;
     self.usesSerialDelimiter = YES;
 
@@ -146,7 +147,7 @@
             *obj = [NSArray arrayWithArray:components];
         } else {
             if (error) {
-                *error = NSLocalizedStringFromTable(@"Couldn’t convert to NSArray", @"FormatterKit", @"Error converting to NSArray");
+                *error = NSLocalizedStringFromTableInBundle(@"Couldn’t convert to NSArray", @"FormatterKit", [NSBundle formatterKitBundle], @"Error converting to NSArray");
             }
         }
     }

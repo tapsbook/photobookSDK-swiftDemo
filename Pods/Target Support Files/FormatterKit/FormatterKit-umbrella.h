@@ -8,6 +8,7 @@
 #import "TTTLocationFormatter.h"
 #import "TTTNameFormatter.h"
 #import "TTTOrdinalNumberFormatter.h"
+#import "NSBundle+FormatterKit.h"
 #import "TTTTimeIntervalFormatter.h"
 #import "TTTURLRequestFormatter.h"
 #import "TTTUnitOfInformationFormatter.h"

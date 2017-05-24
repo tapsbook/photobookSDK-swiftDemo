@@ -7,6 +7,7 @@
 #import "SCLAlertViewStyleKit.h"
 #import "SCLButton.h"
 #import "SCLMacros.h"
+#import "SCLSwitchView.h"
 #import "SCLTextView.h"
 #import "SCLTimerDisplay.h"
 #import "UIImage+ImageEffects.h"
