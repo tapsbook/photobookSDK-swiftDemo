@@ -1,0 +1,22 @@
+{
+ "activitycontinuation": {
+    "apps": [
+      "W29Z5T3GPH.com.atomknows.photoswipe",
+      "Q3JT59DNZ2.com.mengyao.dingmall"
+    ]
+  },
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "W29Z5T3GPH.com.atomknows.photoswipe",
+                "paths": [ "/refer/*", "/promo/*", "/user/*"]
+            },
+            {
+                "appID": "Q3JT59DNZ2.com.mengyao.dingmall",
+                "paths": [ "/dingmall/refer/*", "/dingmall/promo/*", "/dingmall/user/*", "/dingmall/store/*"]
+            }
+        ]
+    }
+}
+
