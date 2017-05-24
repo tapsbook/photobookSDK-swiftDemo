@@ -15,9 +15,9 @@
 		4A3714FB1ED5691400769398 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3714F21ED5691400769398 /* libWeChatSDK.a */; };
 		4A3714FC1ED5691400769398 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4A3714F31ED5691400769398 /* README.txt */; };
 		4A3715011ED56A0600769398 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3715001ED56A0600769398 /* libstdc++.tbd */; };
+		4A3715611ED5913E00769398 /* TapsbookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158851D74DBD20053FB91 /* TapsbookSDK.framework */; };
 		4A50262C1ED557560068403C /* UMMobClick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A50262B1ED557560068403C /* UMMobClick.framework */; };
 		4A5026351ED557E60068403C /* TapsbookSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D52158841D74DBD20053FB91 /* TapsbookSDK.bundle */; };
-		4A5026361ED557E90068403C /* TapsbookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158851D74DBD20053FB91 /* TapsbookSDK.framework */; };
 		4AF6E0861E7D5D31003CFA17 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF6E0851E7D5D31003CFA17 /* ViewController.swift */; };
 		D521585D1D74DA7A0053FB91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D521585C1D74DA7A0053FB91 /* AppDelegate.swift */; };
 		D52158621D74DA7B0053FB91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D52158601D74DA7B0053FB91 /* Main.storyboard */; };
@@ -122,6 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A3715611ED5913E00769398 /* TapsbookSDK.framework in Frameworks */,
 				4A3715011ED56A0600769398 /* libstdc++.tbd in Frameworks */,
 				D52158CA1D74DE4D0053FB91 /* UIKit.framework in Frameworks */,
 				D52158C81D74DE460053FB91 /* Accelerate.framework in Frameworks */,
@@ -145,7 +146,6 @@
 				4A3714F81ED5691400769398 /* AlipaySDK.framework in Frameworks */,
 				D52158A91D74DD4F0053FB91 /* Security.framework in Frameworks */,
 				D52158A71D74DD280053FB91 /* libsqlite3.0.tbd in Frameworks */,
-				4A5026361ED557E90068403C /* TapsbookSDK.framework in Frameworks */,
 				29F62A3AEF2DF3725AFE4AB3 /* Pods_SwiftDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -598,7 +598,7 @@
 				MACH_O_TYPE = mh_execute;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tapsbook.SwiftDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "SwiftDemo/Wow-Bridgr-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/SwiftDemo/Wow-Bridgr-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -627,7 +627,7 @@
 				MACH_O_TYPE = mh_execute;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tapsbook.SwiftDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "SwiftDemo/Wow-Bridgr-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/SwiftDemo/Wow-Bridgr-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
