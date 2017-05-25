@@ -12,7 +12,7 @@ import AVKit
 import DKImagePickerController
 import MBProgressHUD
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, TBSDKAlbumManagerDelegate {
 
     var assets: [DKAsset]?
     var tbImages : [TBImage] = []
@@ -22,6 +22,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         getDataSource()
+        TBSDKAlbumManager.sharedInstance().delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -134,76 +135,73 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         //the root path of cache, tip: strongly recommend you control
         //your cache disk usage, it may use a lot of space.
         //e.g. you can try SDWebImage's cache
-        let cachePath : String = NSHomeDirectory().stringByAppendingPathComponent("Library").stringByAppendingPathComponent("ImageCache")
-        let fileManager : FileManager = FileManager.default
-        if(!fileManager.fileExists(atPath: cachePath, isDirectory: nil)){
-            try! fileManager.createDirectory(atPath: cachePath, withIntermediateDirectories: true, attributes: nil)
-        }
+//        let cachePath : String = NSHomeDirectory().stringByAppendingPathComponent("Library").stringByAppendingPathComponent("ImageCache")
+//        let fileManager : FileManager = FileManager.default
+//        if(!fileManager.fileExists(atPath: cachePath, isDirectory: nil)){
+//            try! fileManager.createDirectory(atPath: cachePath, withIntermediateDirectories: true, attributes: nil)
+//        }
 
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: self.view, animated: true);
 
-        for asset in assets! {
-            let photo_id = asset.localIdentifier.components(separatedBy: "/").first
-            let filename_s = String.localizedStringWithFormat("%@-s.jpg", photo_id!)
-            let filename_l = String.localizedStringWithFormat("%@-l.jpg", photo_id!)
-            let sPath = cachePath.stringByAppendingPathComponent(filename_s)
-            let lPath = cachePath.stringByAppendingPathComponent(filename_l)
-            
-            //save the file to local cache for SDK
-            if(!fileManager.fileExists(atPath: sPath)){
-                asset.writeImageToFile(sPath, completeBlock: { (success) in
-                    print("didSelectAssets:",filename_s)
-                })
-            }
-            
-            if(!fileManager.fileExists(atPath: lPath)){
-                asset.writeImageToFile(lPath, completeBlock: { (success) in
-                    print("didSelectAssets:",filename_l)
-                })
-            }
-            
-            //then wrap image as TBImage
-            let tbImage : TBImage = TBImage(identifier: photo_id)
-            tbImage.setImagePath(sPath, size: TBImageSize.s)
-            tbImage.setImagePath(lPath, size: TBImageSize.l)
-            tbImages.append(tbImage)
-        }
-        hud.hide(true, afterDelay: 1.0)
-
-        //Custom product options if using SDK without a product server
-        //Ignore this if using Tapsbook server API to control products
-//        let albumOption : NSDictionary = [
-////        ktbproduct:     "1003", //1003 is a layflat
-//        kTBProductPreferredSKU:     "1003",
-//        kTBProductPreferredTheme:   "200",  //200 is for square book
-//        kTBProductMaxPageCount:     "20",   //set max=min will limit the page count
-//        kTBProductMinPageCount:     "20",
-//        kTBPreferredUIDirection:    "LTR"   //set this RTL or LTR
-//        ]
+        self.tbImages = LMTBSDKHelper.sharedInstance().convertAssets(toTBImages: assets!) as! [TBImage]
         
-        var albumOption : NSDictionary = [:]
-        switch tbProductType {
-        case .photobook:
-            albumOption = [
-                kTBProductPreferredSKU:     "1003",
-                kTBProductPreferredTheme:   "200",  //200 is for square book
-                kTBProductMaxPageCount:     "20",   //set max=min will limit the page count
-                kTBProductMinPageCount:     "20",
-                kTBPreferredUIDirection:    "LTR"   //set this RTL or LTR
-            ]
-        case .phonecase:
-            albumOption = [
-                kTBProductPreferredSKU : "220002"//iphone6壳子的sku
-            ]
-        default:
-            albumOption = [:]
+        LMTBSDKHelper.sharedInstance().downloadTBImages(self.tbImages, with: TBImageSize.s, progressBlock: nil) { (current, total, error) in
+            LMTBSDKHelper.sharedInstance().downloadTBImages(self.tbImages, with: TBImageSize.l, progressBlock: nil, completionBlock: { (current, total, error) in
+                hud.hide(true, afterDelay: 1.0)
+                
+                var albumOption : NSDictionary = [:]
+                switch self.tbProductType {
+                case .photobook:
+                    albumOption = [
+                        kTBProductPreferredSKU:     "1003",
+                        kTBProductPreferredTheme:   "200",  //200 is for square book
+                        kTBProductMaxPageCount:     "20",   //set max=min will limit the page count
+                        kTBProductMinPageCount:     "20",
+                        kTBPreferredUIDirection:    "LTR"   //set this RTL or LTR
+                    ]
+                case .phonecase:
+                    albumOption = [
+                        kTBProductPreferredSKU : "220002"//iphone6壳子的sku
+                    ]
+                default:
+                    albumOption = [:]
+                }
+                
+                TBSDKAlbumManager.sharedInstance().createSDKAlbum(with: self.tbProductType, images: self.tbImages, identifier: nil, title: "Album", tag: 0, options: albumOption as! [AnyHashable : Any]) { (success, sdkAlbum, error) in
+                    if success {
+                        TBSDKAlbumManager.sharedInstance().open(sdkAlbum!, presentOn: self, shouldPrintDirectly: false)
+                    }
+                }
+            })
         }
         
-        TBSDKAlbumManager.sharedInstance().createSDKAlbum(with: tbProductType, images: tbImages, identifier: nil, title: "Album", tag: 0, options: albumOption as! [AnyHashable : Any]) { (success, sdkAlbum, error) in
-            if success {
-                TBSDKAlbumManager.sharedInstance().open(sdkAlbum!, presentOn: self, shouldPrintDirectly: false)
-            }
-        }
+//        for asset in assets! {
+//            let photo_id = asset.localIdentifier.components(separatedBy: "/").first
+//            let filename_s = String.localizedStringWithFormat("%@-s.jpg", photo_id!)
+//            let filename_l = String.localizedStringWithFormat("%@-l.jpg", photo_id!)
+//            let sPath = cachePath.stringByAppendingPathComponent(filename_s)
+//            let lPath = cachePath.stringByAppendingPathComponent(filename_l)
+//            
+//            //save the file to local cache for SDK
+//            if(!fileManager.fileExists(atPath: sPath)){
+//                asset.writeImageToFile(sPath, completeBlock: { (success) in
+//                    print("didSelectAssets:",filename_s)
+//                })
+//            }
+//            
+//            if(!fileManager.fileExists(atPath: lPath)){
+//                asset.writeImageToFile(lPath, completeBlock: { (success) in
+//                    print("didSelectAssets:",filename_l)
+//                })
+//            }
+//            
+//            //then wrap image as TBImage
+//            let tbImage : TBImage = TBImage(identifier: photo_id)
+//            tbImage.setImagePath(sPath, size: TBImageSize.s)
+//            tbImage.setImagePath(lPath, size: TBImageSize.l)
+//            tbImages.append(tbImage)
+//        }
+        
         
 //        let albumOption : NSDictionary = [
 //            kTBProductPreferredSKU:     "200",
@@ -214,6 +212,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 //            TBSDKAlbumManager.sharedInstance().open(sdkAlbum, presentOn: self, shouldPrintDirectly: false)
 //        }
         
+    }
+    
+    
+    func albumManager(_ albumManager: TBSDKAlbumManager!, preloadXXLSizeImages tbImages: [Any]!, of sdkAlbum: TBSDKAlbum!, progressBlock: ((Int, Int, Float) -> Void)!, completionBlock: ((Int, Int, Error?) -> Void)!) {
+        LMTBSDKHelper.sharedInstance().downloadTBImages(tbImages, with: .xxl, progressBlock: progressBlock, completionBlock: completionBlock)
     }
 
     override var shouldAutorotate: Bool {

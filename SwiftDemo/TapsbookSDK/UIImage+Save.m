@@ -32,10 +32,10 @@
 - (BOOL)writeToFile:(NSString *)path withCompressQuality:(float)quality {
     NSData *data = [self toDataWithCompressQuality:quality];
     
-//    NSString *dirPath = [path stringByDeletingLastPathComponent];
-//    if (![[NSFileManager defaultManager] fileExistsAtPath:dirPath]) {
-//        [[NSFileManager defaultManager] createDirectoryAtPath:dirPath withIntermediateDirectories:YES attributes:nil error:nil];
-//    }
+    NSString *dirPath = [path stringByDeletingLastPathComponent];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:dirPath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:dirPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
     
     return [data writeToFile:path atomically:YES];
 }

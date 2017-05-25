@@ -17,6 +17,9 @@
 		4A3715691ED5932D00769398 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4A3715641ED5932D00769398 /* README.txt */; };
 		4A37156D1ED5933F00769398 /* TapsbookSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A37156B1ED5933F00769398 /* TapsbookSDK.bundle */; };
 		4A37156E1ED5933F00769398 /* TapsbookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A37156C1ED5933F00769398 /* TapsbookSDK.framework */; };
+		4A37158C1ED6869E00769398 /* WZTBCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3715891ED6869E00769398 /* WZTBCacheManager.m */; };
+		4A37158D1ED6869E00769398 /* NSFileManager+TBDirSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A37158B1ED6869E00769398 /* NSFileManager+TBDirSize.m */; };
+		4A3715901ED6871500769398 /* LMTBSDKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A37158F1ED6871500769398 /* LMTBSDKHelper.m */; };
 		4A50262C1ED557560068403C /* UMMobClick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A50262B1ED557560068403C /* UMMobClick.framework */; };
 		4AF6E0861E7D5D31003CFA17 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF6E0851E7D5D31003CFA17 /* ViewController.swift */; };
 		D521585D1D74DA7A0053FB91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D521585C1D74DA7A0053FB91 /* AppDelegate.swift */; };
@@ -68,6 +71,12 @@
 		4A3715671ED5932D00769398 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		4A37156B1ED5933F00769398 /* TapsbookSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TapsbookSDK.bundle; sourceTree = "<group>"; };
 		4A37156C1ED5933F00769398 /* TapsbookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TapsbookSDK.framework; sourceTree = "<group>"; };
+		4A3715881ED6869E00769398 /* WZTBCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WZTBCacheManager.h; sourceTree = "<group>"; };
+		4A3715891ED6869E00769398 /* WZTBCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WZTBCacheManager.m; sourceTree = "<group>"; };
+		4A37158A1ED6869E00769398 /* NSFileManager+TBDirSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+TBDirSize.h"; sourceTree = "<group>"; };
+		4A37158B1ED6869E00769398 /* NSFileManager+TBDirSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+TBDirSize.m"; sourceTree = "<group>"; };
+		4A37158E1ED6871500769398 /* LMTBSDKHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMTBSDKHelper.h; sourceTree = "<group>"; };
+		4A37158F1ED6871500769398 /* LMTBSDKHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMTBSDKHelper.m; sourceTree = "<group>"; };
 		4A50262B1ED557560068403C /* UMMobClick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UMMobClick.framework; path = "Pods/UMengAnalytics-NO-IDFA/umsdk_IOS_analyics_no-idfa_v4.2.5/UMMobClick.framework"; sourceTree = "<group>"; };
 		4AF6E0571E7D09A7003CFA17 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../Library/Developer/Xcode/DerivedData/SwiftDemo-fqvagdaghzoyqehbisyujayrzcnq/Build/Products/Debug-iphonesimulator/FBSDKCoreKit/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		4AF6E0591E7D09BD003CFA17 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../../Library/Developer/Xcode/DerivedData/SwiftDemo-fqvagdaghzoyqehbisyujayrzcnq/Build/Products/Debug-iphonesimulator/FBSDKLoginKit/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
@@ -267,6 +276,12 @@
 				D52158871D74DBD20053FB91 /* TapsbookSDKDemo-Prefix.pch */,
 				D521588A1D74DBD20053FB91 /* TBPSSizeUtil.h */,
 				D521588B1D74DBD20053FB91 /* TBPSSizeUtil.m */,
+				4A37158E1ED6871500769398 /* LMTBSDKHelper.h */,
+				4A37158F1ED6871500769398 /* LMTBSDKHelper.m */,
+				4A3715881ED6869E00769398 /* WZTBCacheManager.h */,
+				4A3715891ED6869E00769398 /* WZTBCacheManager.m */,
+				4A37158A1ED6869E00769398 /* NSFileManager+TBDirSize.h */,
+				4A37158B1ED6869E00769398 /* NSFileManager+TBDirSize.m */,
 				D521588C1D74DBD20053FB91 /* UIImage+Save.h */,
 				D521588D1D74DBD20053FB91 /* UIImage+Save.m */,
 			);
@@ -457,13 +472,16 @@
 				D52158A21D74DBD30053FB91 /* UIImage+Save.m in Sources */,
 				D52158CE1D74E5300053FB91 /* String.swift in Sources */,
 				D52158A11D74DBD30053FB91 /* TBPSSizeUtil.m in Sources */,
+				4A37158C1ED6869E00769398 /* WZTBCacheManager.m in Sources */,
 				4AF6E0861E7D5D31003CFA17 /* ViewController.swift in Sources */,
 				D52158D21D74E6780053FB91 /* AppColors.swift in Sources */,
 				4A3714F91ED5691400769398 /* PullableView.m in Sources */,
 				D52158991D74DBD30053FB91 /* SDKConfigurator.m in Sources */,
+				4A37158D1ED6869E00769398 /* NSFileManager+TBDirSize.m in Sources */,
 				D521589A1D74DBD30053FB91 /* SDKConfiguratorCustomCheckout.m in Sources */,
 				D521589B1D74DBD30053FB91 /* TapsbookObject.swift in Sources */,
 				D521585D1D74DA7A0053FB91 /* AppDelegate.swift in Sources */,
+				4A3715901ED6871500769398 /* LMTBSDKHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

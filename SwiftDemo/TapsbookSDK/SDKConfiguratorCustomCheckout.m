@@ -34,7 +34,7 @@ extern NSString * const kTBUseExternalCheckout;
                                         @(TBProductType_Calendar) : @YES,
                                         @(TBProductType_Card) : @YES,
                                         },
-                                kTBSendAlbumJSONDictToHostingApp : @YES,          // (Optional) YES when you want to generate page image on your own.
+                                kTBSendAlbumJSONDictToHostingApp : @NO,          // (Optional) YES when you want to generate page image on your own.
                                 
                                 kTBSendAlbumKeyToHostingAppWhenCheckout : @NO,
                                 kTBUseExternalPrintProductInfo : @NO,

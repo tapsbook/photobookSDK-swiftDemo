@@ -44,15 +44,18 @@ class TapsbookObject: NSObject {
                         //Size
                         let boundingSize_s : CGSize = TBPSSizeUtil.size(from: TBPSImageSize.s)
                         let boundingSize_l : CGSize = TBPSSizeUtil.size(from: TBPSImageSize.l)
+//                        let boundingSize_xxl : CGSize = TBPSSizeUtil.size(from: TBPSImageSize.xxl)
                         
                         var convertedSize_s : CGSize = boundingSize_s;
                         var convertedSize_l : CGSize = boundingSize_l;
+//                        var convertedSize_xxl : CGSize = boundingSize_xxl;
                         
                         if(asset.pixelWidth * asset.pixelHeight > 0)
                         {
                             let photoSize : CGSize = CGSize(width: CGFloat(asset.pixelWidth), height: CGFloat(asset.pixelHeight));
                             convertedSize_s = TBPSSizeUtil.convert(photoSize, to: boundingSize_s, contentMode: UIViewContentMode.scaleAspectFill);
                             convertedSize_l = TBPSSizeUtil.convert(photoSize, to: boundingSize_l, contentMode: UIViewContentMode.scaleAspectFill);
+//                            convertedSize_xxl = TBPSSizeUtil.convert(photoSize, to: boundingSize_xxl, contentMode: .scaleAspectFill)
                         }
                         
                         let sPath : String = cachePath.stringByAppendingPathComponent(String(format:"%@_s",name));

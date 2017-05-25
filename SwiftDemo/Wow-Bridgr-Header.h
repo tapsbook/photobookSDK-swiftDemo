@@ -34,6 +34,7 @@ _Pragma("clang diagnostic pop")
 //#import "iCarousel.h"
 #import "UIImage+Save.h"
 #import "TBPSSizeUtil.h"
+#import "LMTBSDKHelper.h"
 //#import "XMLDictionary.h"
 //#import "extobjc.h"
 
