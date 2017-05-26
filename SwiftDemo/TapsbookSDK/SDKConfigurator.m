@@ -171,6 +171,10 @@ static NSString * const kStripeKey = @"pk_live_vgeBiZVkdp1z3yWpBQgjjQjp";
                                                },
                                        kTBSendAlbumJSONDictToHostingApp : @NO,          // (Optional) YES when you want to generate page image on your own.
                                        },
+                               kTBHostingAppInfo : @{
+                                       kTBHostingAppName : @"SwiftDemo", // TODO:i18n
+                                       kTBHostingAppIconName : @"AppIcon60x60",
+                                       },
                                };
     
     return settings;

@@ -19,14 +19,6 @@ extern NSString * const kTBUseExternalCheckout;
     NSMutableDictionary * settings = [[super basicSettings] mutableCopy];
     
     NSDictionary * checkout = @{
-                                kTBSupportedRegions : @[
-                                        //                                                    @(TBSDKRegion_UnitedStates),
-                                        @(TBSDKRegion_China)
-                                        ],
-                                
-                                kTBMerchantKeys : @{
-                                        @(TBSDKRegion_China) : @"test_10062_cfaee5b37f6b4c4b7299d67b00fe782f"
-                                        },
                                 
                                 kTBNoCover : @{                                  // (Optional) YES if you don't need a cover or the cover is not customizable
                                         @(TBProductType_Photobook) : @NO,
@@ -37,9 +29,7 @@ extern NSString * const kTBUseExternalCheckout;
                                 kTBSendAlbumJSONDictToHostingApp : @NO,          // (Optional) YES when you want to generate page image on your own.
                                 
                                 kTBSendAlbumKeyToHostingAppWhenCheckout : @NO,
-                                kTBUseExternalPrintProductInfo : @NO,
-                                kTBUseExternalCheckout : @YES,
-                                kTBSendOrderInfoToHostingApp : @YES,
+                                kTBUseExternalPrintProductInfo : @NO,kTBUseExternalCheckout : @NO,
                                 };
     
     [settings setObject:checkout forKey:kTBCheckoutCustomization];
