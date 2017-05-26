@@ -8,18 +8,64 @@
 
 /* Begin PBXBuildFile section */
 		29F62A3AEF2DF3725AFE4AB3 /* Pods_SwiftDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F75F73D506236AD328FAAAAE /* Pods_SwiftDemo.framework */; };
-		4A3714F71ED5691400769398 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A3714EA1ED5691400769398 /* AlipaySDK.bundle */; };
-		4A3714F81ED5691400769398 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3714EB1ED5691400769398 /* AlipaySDK.framework */; };
-		4A3714F91ED5691400769398 /* PullableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3714EE1ED5691400769398 /* PullableView.m */; };
-		4A3714FA1ED5691400769398 /* WalgreensQPSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3714F01ED5691400769398 /* WalgreensQPSDK.framework */; };
 		4A3715011ED56A0600769398 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3715001ED56A0600769398 /* libstdc++.tbd */; };
-		4A3715681ED5932D00769398 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3715631ED5932D00769398 /* libWeChatSDK.a */; };
-		4A3715691ED5932D00769398 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4A3715641ED5932D00769398 /* README.txt */; };
-		4A37156D1ED5933F00769398 /* TapsbookSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A37156B1ED5933F00769398 /* TapsbookSDK.bundle */; };
-		4A37156E1ED5933F00769398 /* TapsbookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A37156C1ED5933F00769398 /* TapsbookSDK.framework */; };
 		4A37158C1ED6869E00769398 /* WZTBCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3715891ED6869E00769398 /* WZTBCacheManager.m */; };
 		4A37158D1ED6869E00769398 /* NSFileManager+TBDirSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A37158B1ED6869E00769398 /* NSFileManager+TBDirSize.m */; };
 		4A3715901ED6871500769398 /* LMTBSDKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A37158F1ED6871500769398 /* LMTBSDKHelper.m */; };
+		4A37193F1ED7DF9D00769398 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A37192F1ED7DF9D00769398 /* AlipaySDK.bundle */; };
+		4A3719401ED7DF9D00769398 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3719301ED7DF9D00769398 /* AlipaySDK.framework */; };
+		4A3719411ED7DF9D00769398 /* PullableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3719331ED7DF9D00769398 /* PullableView.m */; };
+		4A3719441ED7DF9D00769398 /* WalgreensQPSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3719381ED7DF9D00769398 /* WalgreensQPSDK.framework */; };
+		4A3719451ED7DF9D00769398 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A37193A1ED7DF9D00769398 /* libWeChatSDK.a */; };
+		4A3719461ED7DF9D00769398 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4A37193B1ED7DF9D00769398 /* README.txt */; };
+		4A3719661ED8114E00769398 /* TapsbookSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A3719641ED8114E00769398 /* TapsbookSDK.bundle */; };
+		4A3719671ED8114E00769398 /* TapsbookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3719651ED8114E00769398 /* TapsbookSDK.framework */; };
+		4A37196B1ED8149200769398 /* ALAssetRepresentation+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = D52158711D74DBD20053FB91 /* ALAssetRepresentation+Helper.m */; };
+		4A37196C1ED8149200769398 /* UIImage+Save.m in Sources */ = {isa = PBXBuildFile; fileRef = D521588D1D74DBD20053FB91 /* UIImage+Save.m */; };
+		4A37196D1ED8149200769398 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52158CD1D74E5300053FB91 /* String.swift */; };
+		4A37196E1ED8149200769398 /* TBPSSizeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D521588B1D74DBD20053FB91 /* TBPSSizeUtil.m */; };
+		4A37196F1ED8149200769398 /* WZTBCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3715891ED6869E00769398 /* WZTBCacheManager.m */; };
+		4A3719701ED8149200769398 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF6E0851E7D5D31003CFA17 /* ViewController.swift */; };
+		4A3719711ED8149200769398 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52158D11D74E6780053FB91 /* AppColors.swift */; };
+		4A3719721ED8149200769398 /* PullableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3719331ED7DF9D00769398 /* PullableView.m */; };
+		4A3719731ED8149200769398 /* SDKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = D52158791D74DBD20053FB91 /* SDKConfigurator.m */; };
+		4A3719741ED8149200769398 /* NSFileManager+TBDirSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A37158B1ED6869E00769398 /* NSFileManager+TBDirSize.m */; };
+		4A3719751ED8149200769398 /* SDKConfiguratorCustomCheckout.m in Sources */ = {isa = PBXBuildFile; fileRef = D521587B1D74DBD20053FB91 /* SDKConfiguratorCustomCheckout.m */; };
+		4A3719761ED8149200769398 /* TapsbookObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52158811D74DBD20053FB91 /* TapsbookObject.swift */; };
+		4A3719771ED8149200769398 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D521585C1D74DA7A0053FB91 /* AppDelegate.swift */; };
+		4A3719781ED8149200769398 /* LMTBSDKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A37158F1ED6871500769398 /* LMTBSDKHelper.m */; };
+		4A37197A1ED8149200769398 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3715001ED56A0600769398 /* libstdc++.tbd */; };
+		4A37197B1ED8149200769398 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3719301ED7DF9D00769398 /* AlipaySDK.framework */; };
+		4A37197C1ED8149200769398 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158C91D74DE4D0053FB91 /* UIKit.framework */; };
+		4A37197D1ED8149200769398 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A37193A1ED7DF9D00769398 /* libWeChatSDK.a */; };
+		4A37197E1ED8149200769398 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158C71D74DE460053FB91 /* Accelerate.framework */; };
+		4A37197F1ED8149200769398 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158C51D74DE3D0053FB91 /* AdSupport.framework */; };
+		4A3719801ED8149200769398 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158C31D74DE2E0053FB91 /* SystemConfiguration.framework */; };
+		4A3719811ED8149200769398 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158C11D74DE260053FB91 /* ImageIO.framework */; };
+		4A3719821ED8149200769398 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158BF1D74DE1F0053FB91 /* MessageUI.framework */; };
+		4A3719831ED8149200769398 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158BD1D74DE140053FB91 /* Social.framework */; };
+		4A3719841ED8149200769398 /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158BB1D74DE0B0053FB91 /* PhotosUI.framework */; };
+		4A3719851ED8149200769398 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158B91D74DE000053FB91 /* Photos.framework */; };
+		4A3719861ED8149200769398 /* UMMobClick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A50262B1ED557560068403C /* UMMobClick.framework */; };
+		4A3719871ED8149200769398 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158B71D74DDF40053FB91 /* AssetsLibrary.framework */; };
+		4A3719881ED8149200769398 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158B51D74DDEC0053FB91 /* Foundation.framework */; };
+		4A3719891ED8149200769398 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158B31D74DDDE0053FB91 /* CoreLocation.framework */; };
+		4A37198A1ED8149200769398 /* WalgreensQPSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A3719381ED7DF9D00769398 /* WalgreensQPSDK.framework */; };
+		4A37198B1ED8149200769398 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158B11D74DDD50053FB91 /* CoreMotion.framework */; };
+		4A37198C1ED8149200769398 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158AF1D74DDC20053FB91 /* CoreGraphics.framework */; };
+		4A37198D1ED8149200769398 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158AD1D74DDB90053FB91 /* CoreText.framework */; };
+		4A37198E1ED8149200769398 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158AA1D74DD5C0053FB91 /* MediaPlayer.framework */; };
+		4A37198F1ED8149200769398 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158A81D74DD4F0053FB91 /* Security.framework */; };
+		4A3719901ED8149200769398 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D52158A61D74DD280053FB91 /* libsqlite3.0.tbd */; };
+		4A3719911ED8149200769398 /* Pods_SwiftDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F75F73D506236AD328FAAAAE /* Pods_SwiftDemo.framework */; };
+		4A3719941ED8149200769398 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A37192F1ED7DF9D00769398 /* AlipaySDK.bundle */; };
+		4A3719951ED8149200769398 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D52158651D74DA7B0053FB91 /* LaunchScreen.storyboard */; };
+		4A3719961ED8149200769398 /* TapsbookSDKDemo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D52158861D74DBD20053FB91 /* TapsbookSDKDemo-Info.plist */; };
+		4A3719981ED8149200769398 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D52158631D74DA7B0053FB91 /* Assets.xcassets */; };
+		4A3719991ED8149200769398 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4A37193B1ED7DF9D00769398 /* README.txt */; };
+		4A37199A1ED8149200769398 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D52158601D74DA7B0053FB91 /* Main.storyboard */; };
+		4A3719A61ED8155F00769398 /* libTapsbookSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A37191C1ED7DCFE00769398 /* libTapsbookSDK.a */; };
+		4A3719A71ED8156700769398 /* TapsbookSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A3719201ED7DCFE00769398 /* TapsbookSDK.bundle */; };
 		4A50262C1ED557560068403C /* UMMobClick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A50262B1ED557560068403C /* UMMobClick.framework */; };
 		4AF6E0861E7D5D31003CFA17 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF6E0851E7D5D31003CFA17 /* ViewController.swift */; };
 		D521585D1D74DA7A0053FB91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D521585C1D74DA7A0053FB91 /* AppDelegate.swift */; };
@@ -55,28 +101,69 @@
 		D52158D21D74E6780053FB91 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52158D11D74E6780053FB91 /* AppColors.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4A37191B1ED7DCFE00769398 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A3719121ED7DCFC00769398 /* TapsbookSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C110A3BE18D1B009003E5424;
+			remoteInfo = TapsbookSDK;
+		};
+		4A37191D1ED7DCFE00769398 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A3719121ED7DCFC00769398 /* TapsbookSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C110A3CE18D1B00A003E5424;
+			remoteInfo = TapsbookSDKTests;
+		};
+		4A37191F1ED7DCFE00769398 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A3719121ED7DCFC00769398 /* TapsbookSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C110A3FE18D1B764003E5424;
+			remoteInfo = TapsbookSDKResources;
+		};
+		4A3719A21ED8155500769398 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A3719121ED7DCFC00769398 /* TapsbookSDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C110A3BD18D1B009003E5424;
+			remoteInfo = TapsbookSDK;
+		};
+		4A3719A41ED8155800769398 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A3719121ED7DCFC00769398 /* TapsbookSDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C110A3FD18D1B764003E5424;
+			remoteInfo = TapsbookSDKResources;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		02CF323AEAA1261FFBB7D745 /* Pods-SwiftDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftDemo/Pods-SwiftDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		300243C623D979DEA022DFA9 /* Pods-SwiftDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftDemo/Pods-SwiftDemo.release.xcconfig"; sourceTree = "<group>"; };
-		4A3714EA1ED5691400769398 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
-		4A3714EB1ED5691400769398 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
-		4A3714ED1ED5691400769398 /* PullableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullableView.h; sourceTree = "<group>"; };
-		4A3714EE1ED5691400769398 /* PullableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullableView.m; sourceTree = "<group>"; };
-		4A3714F01ED5691400769398 /* WalgreensQPSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WalgreensQPSDK.framework; sourceTree = "<group>"; };
 		4A3715001ED56A0600769398 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
-		4A3715631ED5932D00769398 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
-		4A3715641ED5932D00769398 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-		4A3715651ED5932D00769398 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
-		4A3715661ED5932D00769398 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
-		4A3715671ED5932D00769398 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
-		4A37156B1ED5933F00769398 /* TapsbookSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TapsbookSDK.bundle; sourceTree = "<group>"; };
-		4A37156C1ED5933F00769398 /* TapsbookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TapsbookSDK.framework; sourceTree = "<group>"; };
 		4A3715881ED6869E00769398 /* WZTBCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WZTBCacheManager.h; sourceTree = "<group>"; };
 		4A3715891ED6869E00769398 /* WZTBCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WZTBCacheManager.m; sourceTree = "<group>"; };
 		4A37158A1ED6869E00769398 /* NSFileManager+TBDirSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+TBDirSize.h"; sourceTree = "<group>"; };
 		4A37158B1ED6869E00769398 /* NSFileManager+TBDirSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+TBDirSize.m"; sourceTree = "<group>"; };
 		4A37158E1ED6871500769398 /* LMTBSDKHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMTBSDKHelper.h; sourceTree = "<group>"; };
 		4A37158F1ED6871500769398 /* LMTBSDKHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMTBSDKHelper.m; sourceTree = "<group>"; };
+		4A3719121ED7DCFC00769398 /* TapsbookSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TapsbookSDK.xcodeproj; path = "tapsbook-SDK/TapsbookSDK.xcodeproj"; sourceTree = "<group>"; };
+		4A37192F1ED7DF9D00769398 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
+		4A3719301ED7DF9D00769398 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
+		4A3719321ED7DF9D00769398 /* PullableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullableView.h; sourceTree = "<group>"; };
+		4A3719331ED7DF9D00769398 /* PullableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullableView.m; sourceTree = "<group>"; };
+		4A3719381ED7DF9D00769398 /* WalgreensQPSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WalgreensQPSDK.framework; sourceTree = "<group>"; };
+		4A37193A1ED7DF9D00769398 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
+		4A37193B1ED7DF9D00769398 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		4A37193C1ED7DF9D00769398 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
+		4A37193D1ED7DF9D00769398 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		4A37193E1ED7DF9D00769398 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		4A3719641ED8114E00769398 /* TapsbookSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TapsbookSDK.bundle; sourceTree = "<group>"; };
+		4A3719651ED8114E00769398 /* TapsbookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TapsbookSDK.framework; sourceTree = "<group>"; };
+		4A3719A01ED8149300769398 /* SwiftDemoDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftDemoDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A3719A11ED8149300769398 /* SwiftDemoDebug-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SwiftDemoDebug-Info.plist"; path = "/Users/Cary/Desktop/Cleen/photobookSDK-swiftDemo/SwiftDemoDebug-Info.plist"; sourceTree = "<absolute>"; };
 		4A50262B1ED557560068403C /* UMMobClick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UMMobClick.framework; path = "Pods/UMengAnalytics-NO-IDFA/umsdk_IOS_analyics_no-idfa_v4.2.5/UMMobClick.framework"; sourceTree = "<group>"; };
 		4AF6E0571E7D09A7003CFA17 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../Library/Developer/Xcode/DerivedData/SwiftDemo-fqvagdaghzoyqehbisyujayrzcnq/Build/Products/Debug-iphonesimulator/FBSDKCoreKit/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		4AF6E0591E7D09BD003CFA17 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../../Library/Developer/Xcode/DerivedData/SwiftDemo-fqvagdaghzoyqehbisyujayrzcnq/Build/Products/Debug-iphonesimulator/FBSDKLoginKit/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
@@ -127,14 +214,47 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4A3719791ED8149200769398 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A3719A61ED8155F00769398 /* libTapsbookSDK.a in Frameworks */,
+				4A37197A1ED8149200769398 /* libstdc++.tbd in Frameworks */,
+				4A37197B1ED8149200769398 /* AlipaySDK.framework in Frameworks */,
+				4A37197C1ED8149200769398 /* UIKit.framework in Frameworks */,
+				4A37197D1ED8149200769398 /* libWeChatSDK.a in Frameworks */,
+				4A37197E1ED8149200769398 /* Accelerate.framework in Frameworks */,
+				4A37197F1ED8149200769398 /* AdSupport.framework in Frameworks */,
+				4A3719801ED8149200769398 /* SystemConfiguration.framework in Frameworks */,
+				4A3719811ED8149200769398 /* ImageIO.framework in Frameworks */,
+				4A3719821ED8149200769398 /* MessageUI.framework in Frameworks */,
+				4A3719831ED8149200769398 /* Social.framework in Frameworks */,
+				4A3719841ED8149200769398 /* PhotosUI.framework in Frameworks */,
+				4A3719851ED8149200769398 /* Photos.framework in Frameworks */,
+				4A3719861ED8149200769398 /* UMMobClick.framework in Frameworks */,
+				4A3719871ED8149200769398 /* AssetsLibrary.framework in Frameworks */,
+				4A3719881ED8149200769398 /* Foundation.framework in Frameworks */,
+				4A3719891ED8149200769398 /* CoreLocation.framework in Frameworks */,
+				4A37198A1ED8149200769398 /* WalgreensQPSDK.framework in Frameworks */,
+				4A37198B1ED8149200769398 /* CoreMotion.framework in Frameworks */,
+				4A37198C1ED8149200769398 /* CoreGraphics.framework in Frameworks */,
+				4A37198D1ED8149200769398 /* CoreText.framework in Frameworks */,
+				4A37198E1ED8149200769398 /* MediaPlayer.framework in Frameworks */,
+				4A37198F1ED8149200769398 /* Security.framework in Frameworks */,
+				4A3719901ED8149200769398 /* libsqlite3.0.tbd in Frameworks */,
+				4A3719911ED8149200769398 /* Pods_SwiftDemo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D52158561D74DA7A0053FB91 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				4A3715011ED56A0600769398 /* libstdc++.tbd in Frameworks */,
+				4A3719401ED7DF9D00769398 /* AlipaySDK.framework in Frameworks */,
 				D52158CA1D74DE4D0053FB91 /* UIKit.framework in Frameworks */,
+				4A3719451ED7DF9D00769398 /* libWeChatSDK.a in Frameworks */,
 				D52158C81D74DE460053FB91 /* Accelerate.framework in Frameworks */,
-				4A3714FA1ED5691400769398 /* WalgreensQPSDK.framework in Frameworks */,
 				D52158C61D74DE3D0053FB91 /* AdSupport.framework in Frameworks */,
 				D52158C41D74DE2E0053FB91 /* SystemConfiguration.framework in Frameworks */,
 				D52158C21D74DE260053FB91 /* ImageIO.framework in Frameworks */,
@@ -146,65 +266,74 @@
 				D52158B81D74DDF40053FB91 /* AssetsLibrary.framework in Frameworks */,
 				D52158B61D74DDEC0053FB91 /* Foundation.framework in Frameworks */,
 				D52158B41D74DDDE0053FB91 /* CoreLocation.framework in Frameworks */,
+				4A3719441ED7DF9D00769398 /* WalgreensQPSDK.framework in Frameworks */,
 				D52158B21D74DDD50053FB91 /* CoreMotion.framework in Frameworks */,
 				D52158B01D74DDC20053FB91 /* CoreGraphics.framework in Frameworks */,
 				D52158AE1D74DDB90053FB91 /* CoreText.framework in Frameworks */,
-				4A3715681ED5932D00769398 /* libWeChatSDK.a in Frameworks */,
 				D52158AB1D74DD5C0053FB91 /* MediaPlayer.framework in Frameworks */,
-				4A3714F81ED5691400769398 /* AlipaySDK.framework in Frameworks */,
 				D52158A91D74DD4F0053FB91 /* Security.framework in Frameworks */,
 				D52158A71D74DD280053FB91 /* libsqlite3.0.tbd in Frameworks */,
 				29F62A3AEF2DF3725AFE4AB3 /* Pods_SwiftDemo.framework in Frameworks */,
-				4A37156E1ED5933F00769398 /* TapsbookSDK.framework in Frameworks */,
+				4A3719671ED8114E00769398 /* TapsbookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4A3714E91ED5691400769398 /* AliSDK */ = {
+		4A3719131ED7DCFC00769398 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4A3714EA1ED5691400769398 /* AlipaySDK.bundle */,
-				4A3714EB1ED5691400769398 /* AlipaySDK.framework */,
+				4A37191C1ED7DCFE00769398 /* libTapsbookSDK.a */,
+				4A37191E1ED7DCFE00769398 /* TapsbookSDKTests.xctest */,
+				4A3719201ED7DCFE00769398 /* TapsbookSDK.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4A37192E1ED7DF9D00769398 /* AliSDK */ = {
+			isa = PBXGroup;
+			children = (
+				4A37192F1ED7DF9D00769398 /* AlipaySDK.bundle */,
+				4A3719301ED7DF9D00769398 /* AlipaySDK.framework */,
 			);
 			path = AliSDK;
 			sourceTree = "<group>";
 		};
-		4A3714EC1ED5691400769398 /* PullableView */ = {
+		4A3719311ED7DF9D00769398 /* PullableView */ = {
 			isa = PBXGroup;
 			children = (
-				4A3714ED1ED5691400769398 /* PullableView.h */,
-				4A3714EE1ED5691400769398 /* PullableView.m */,
+				4A3719321ED7DF9D00769398 /* PullableView.h */,
+				4A3719331ED7DF9D00769398 /* PullableView.m */,
 			);
 			path = PullableView;
 			sourceTree = "<group>";
 		};
-		4A3714EF1ED5691400769398 /* WalgreesQPSDK */ = {
+		4A3719371ED7DF9D00769398 /* WalgreesQPSDK */ = {
 			isa = PBXGroup;
 			children = (
-				4A3714F01ED5691400769398 /* WalgreensQPSDK.framework */,
+				4A3719381ED7DF9D00769398 /* WalgreensQPSDK.framework */,
 			);
 			path = WalgreesQPSDK;
 			sourceTree = "<group>";
 		};
-		4A3715621ED5932D00769398 /* WechatSDK */ = {
+		4A3719391ED7DF9D00769398 /* WechatSDK */ = {
 			isa = PBXGroup;
 			children = (
-				4A3715631ED5932D00769398 /* libWeChatSDK.a */,
-				4A3715641ED5932D00769398 /* README.txt */,
-				4A3715651ED5932D00769398 /* WechatAuthSDK.h */,
-				4A3715661ED5932D00769398 /* WXApi.h */,
-				4A3715671ED5932D00769398 /* WXApiObject.h */,
+				4A37193A1ED7DF9D00769398 /* libWeChatSDK.a */,
+				4A37193B1ED7DF9D00769398 /* README.txt */,
+				4A37193C1ED7DF9D00769398 /* WechatAuthSDK.h */,
+				4A37193D1ED7DF9D00769398 /* WXApi.h */,
+				4A37193E1ED7DF9D00769398 /* WXApiObject.h */,
 			);
 			path = WechatSDK;
 			sourceTree = "<group>";
 		};
-		4A37156A1ED5933F00769398 /* TapsbookSDK_Binary */ = {
+		4A3719631ED8114E00769398 /* TapsbookSDK_Binary */ = {
 			isa = PBXGroup;
 			children = (
-				4A37156B1ED5933F00769398 /* TapsbookSDK.bundle */,
-				4A37156C1ED5933F00769398 /* TapsbookSDK.framework */,
+				4A3719641ED8114E00769398 /* TapsbookSDK.bundle */,
+				4A3719651ED8114E00769398 /* TapsbookSDK.framework */,
 			);
 			path = TapsbookSDK_Binary;
 			sourceTree = "<group>";
@@ -221,10 +350,12 @@
 		D52158501D74DA7A0053FB91 = {
 			isa = PBXGroup;
 			children = (
+				4A3719121ED7DCFC00769398 /* TapsbookSDK.xcodeproj */,
 				D521585B1D74DA7A0053FB91 /* SwiftDemo */,
 				D52158AC1D74DD640053FB91 /* Frameworks */,
 				D521585A1D74DA7A0053FB91 /* Products */,
 				D5198075F4E33F559FD3497B /* Pods */,
+				4A3719A11ED8149300769398 /* SwiftDemoDebug-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -232,6 +363,7 @@
 			isa = PBXGroup;
 			children = (
 				D52158591D74DA7A0053FB91 /* SwiftDemo.app */,
+				4A3719A01ED8149300769398 /* SwiftDemoDebug.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -265,11 +397,11 @@
 		D521586F1D74DBD20053FB91 /* TapsbookSDK */ = {
 			isa = PBXGroup;
 			children = (
-				4A37156A1ED5933F00769398 /* TapsbookSDK_Binary */,
-				4A3715621ED5932D00769398 /* WechatSDK */,
-				4A3714E91ED5691400769398 /* AliSDK */,
-				4A3714EC1ED5691400769398 /* PullableView */,
-				4A3714EF1ED5691400769398 /* WalgreesQPSDK */,
+				4A3719631ED8114E00769398 /* TapsbookSDK_Binary */,
+				4A37192E1ED7DF9D00769398 /* AliSDK */,
+				4A3719311ED7DF9D00769398 /* PullableView */,
+				4A3719371ED7DF9D00769398 /* WalgreesQPSDK */,
+				4A3719391ED7DF9D00769398 /* WechatSDK */,
 				D52158701D74DBD20053FB91 /* ALAssetRepresentation+Helper.h */,
 				D52158711D74DBD20053FB91 /* ALAssetRepresentation+Helper.m */,
 				D52158861D74DBD20053FB91 /* TapsbookSDKDemo-Info.plist */,
@@ -343,6 +475,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4A3719681ED8149200769398 /* SwiftDemoDebug */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A37199D1ED8149200769398 /* Build configuration list for PBXNativeTarget "SwiftDemoDebug" */;
+			buildPhases = (
+				4A3719691ED8149200769398 /* [CP] Check Pods Manifest.lock */,
+				4A37196A1ED8149200769398 /* Sources */,
+				4A3719791ED8149200769398 /* Frameworks */,
+				4A3719931ED8149200769398 /* Resources */,
+				4A37199B1ED8149200769398 /* [CP] Embed Pods Frameworks */,
+				4A37199C1ED8149200769398 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4A3719A51ED8155800769398 /* PBXTargetDependency */,
+				4A3719A31ED8155500769398 /* PBXTargetDependency */,
+			);
+			name = SwiftDemoDebug;
+			productName = SwiftDemo;
+			productReference = 4A3719A01ED8149300769398 /* SwiftDemoDebug.app */;
+			productType = "com.apple.product-type.application";
+		};
 		D52158581D74DA7A0053FB91 /* SwiftDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D521586B1D74DA7B0053FB91 /* Build configuration list for PBXNativeTarget "SwiftDemo" */;
@@ -373,6 +527,9 @@
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Tapsbook;
 				TargetAttributes = {
+					4A3719681ED8149200769398 = {
+						DevelopmentTeam = W29Z5T3GPH;
+					};
 					D52158581D74DA7A0053FB91 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = W29Z5T3GPH;
@@ -391,24 +548,69 @@
 			mainGroup = D52158501D74DA7A0053FB91;
 			productRefGroup = D521585A1D74DA7A0053FB91 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4A3719131ED7DCFC00769398 /* Products */;
+					ProjectRef = 4A3719121ED7DCFC00769398 /* TapsbookSDK.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D52158581D74DA7A0053FB91 /* SwiftDemo */,
+				4A3719681ED8149200769398 /* SwiftDemoDebug */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		4A37191C1ED7DCFE00769398 /* libTapsbookSDK.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libTapsbookSDK.a;
+			remoteRef = 4A37191B1ED7DCFE00769398 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4A37191E1ED7DCFE00769398 /* TapsbookSDKTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TapsbookSDKTests.xctest;
+			remoteRef = 4A37191D1ED7DCFE00769398 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4A3719201ED7DCFE00769398 /* TapsbookSDK.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TapsbookSDK.bundle;
+			remoteRef = 4A37191F1ED7DCFE00769398 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
+		4A3719931ED8149200769398 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A3719A71ED8156700769398 /* TapsbookSDK.bundle in Resources */,
+				4A3719941ED8149200769398 /* AlipaySDK.bundle in Resources */,
+				4A3719951ED8149200769398 /* LaunchScreen.storyboard in Resources */,
+				4A3719961ED8149200769398 /* TapsbookSDKDemo-Info.plist in Resources */,
+				4A3719981ED8149200769398 /* Assets.xcassets in Resources */,
+				4A3719991ED8149200769398 /* README.txt in Resources */,
+				4A37199A1ED8149200769398 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D52158571D74DA7A0053FB91 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A3714F71ED5691400769398 /* AlipaySDK.bundle in Resources */,
+				4A37193F1ED7DF9D00769398 /* AlipaySDK.bundle in Resources */,
 				D52158671D74DA7B0053FB91 /* LaunchScreen.storyboard in Resources */,
 				D521589F1D74DBD30053FB91 /* TapsbookSDKDemo-Info.plist in Resources */,
-				4A37156D1ED5933F00769398 /* TapsbookSDK.bundle in Resources */,
+				4A3719661ED8114E00769398 /* TapsbookSDK.bundle in Resources */,
 				D52158641D74DA7B0053FB91 /* Assets.xcassets in Resources */,
-				4A3715691ED5932D00769398 /* README.txt in Resources */,
+				4A3719461ED7DF9D00769398 /* README.txt in Resources */,
 				D52158621D74DA7B0053FB91 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -416,6 +618,51 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4A3719691ED8149200769398 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		4A37199B1ED8149200769398 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SwiftDemo/Pods-SwiftDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4A37199C1ED8149200769398 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SwiftDemo/Pods-SwiftDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		5C0FD2F1549222FB313F8255 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -464,6 +711,27 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4A37196A1ED8149200769398 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A37196B1ED8149200769398 /* ALAssetRepresentation+Helper.m in Sources */,
+				4A37196C1ED8149200769398 /* UIImage+Save.m in Sources */,
+				4A37196D1ED8149200769398 /* String.swift in Sources */,
+				4A37196E1ED8149200769398 /* TBPSSizeUtil.m in Sources */,
+				4A37196F1ED8149200769398 /* WZTBCacheManager.m in Sources */,
+				4A3719701ED8149200769398 /* ViewController.swift in Sources */,
+				4A3719711ED8149200769398 /* AppColors.swift in Sources */,
+				4A3719721ED8149200769398 /* PullableView.m in Sources */,
+				4A3719731ED8149200769398 /* SDKConfigurator.m in Sources */,
+				4A3719741ED8149200769398 /* NSFileManager+TBDirSize.m in Sources */,
+				4A3719751ED8149200769398 /* SDKConfiguratorCustomCheckout.m in Sources */,
+				4A3719761ED8149200769398 /* TapsbookObject.swift in Sources */,
+				4A3719771ED8149200769398 /* AppDelegate.swift in Sources */,
+				4A3719781ED8149200769398 /* LMTBSDKHelper.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D52158551D74DA7A0053FB91 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -475,7 +743,7 @@
 				4A37158C1ED6869E00769398 /* WZTBCacheManager.m in Sources */,
 				4AF6E0861E7D5D31003CFA17 /* ViewController.swift in Sources */,
 				D52158D21D74E6780053FB91 /* AppColors.swift in Sources */,
-				4A3714F91ED5691400769398 /* PullableView.m in Sources */,
+				4A3719411ED7DF9D00769398 /* PullableView.m in Sources */,
 				D52158991D74DBD30053FB91 /* SDKConfigurator.m in Sources */,
 				4A37158D1ED6869E00769398 /* NSFileManager+TBDirSize.m in Sources */,
 				D521589A1D74DBD30053FB91 /* SDKConfiguratorCustomCheckout.m in Sources */,
@@ -486,6 +754,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4A3719A31ED8155500769398 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TapsbookSDK;
+			targetProxy = 4A3719A21ED8155500769398 /* PBXContainerItemProxy */;
+		};
+		4A3719A51ED8155800769398 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TapsbookSDKResources;
+			targetProxy = 4A3719A41ED8155800769398 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D52158601D74DA7B0053FB91 /* Main.storyboard */ = {
@@ -507,6 +788,64 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		4A37199E1ED8149200769398 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 02CF323AEAA1261FFBB7D745 /* Pods-SwiftDemo.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = W29Z5T3GPH;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwiftDemo/TapsbookSDK/AliSDK",
+					"$(PROJECT_DIR)/SwiftDemo/TapsbookSDK/TapsbookSDK_Binary",
+					"$(PROJECT_DIR)/SwiftDemo/TapsbookSDK/WalgreesQPSDK",
+					"$(PROJECT_DIR)/Pods/UMengAnalytics-NO-IDFA/umsdk_IOS_analyics_no-idfa_v4.2.5",
+				);
+				INFOPLIST_FILE = "SwiftDemoDebug-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwiftDemo/TapsbookSDK/WeChatSDK",
+					"$(PROJECT_DIR)/SwiftDemo/TapsbookSDK/WechatSDK",
+				);
+				MACH_O_TYPE = mh_execute;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tapsbook.SwiftDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/SwiftDemo/Wow-Bridgr-Header.h";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		4A37199F1ED8149200769398 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 300243C623D979DEA022DFA9 /* Pods-SwiftDemo.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = W29Z5T3GPH;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwiftDemo/TapsbookSDK/AliSDK",
+					"$(PROJECT_DIR)/SwiftDemo/TapsbookSDK/TapsbookSDK_Binary",
+					"$(PROJECT_DIR)/SwiftDemo/TapsbookSDK/WalgreesQPSDK",
+					"$(PROJECT_DIR)/Pods/UMengAnalytics-NO-IDFA/umsdk_IOS_analyics_no-idfa_v4.2.5",
+				);
+				INFOPLIST_FILE = "SwiftDemoDebug-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwiftDemo/TapsbookSDK/WeChatSDK",
+					"$(PROJECT_DIR)/SwiftDemo/TapsbookSDK/WechatSDK",
+				);
+				MACH_O_TYPE = mh_execute;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tapsbook.SwiftDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/SwiftDemo/Wow-Bridgr-Header.h";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 		D52158691D74DA7B0053FB91 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -653,6 +992,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4A37199D1ED8149200769398 /* Build configuration list for PBXNativeTarget "SwiftDemoDebug" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A37199E1ED8149200769398 /* Debug */,
+				4A37199F1ED8149200769398 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D52158541D74DA7A0053FB91 /* Build configuration list for PBXProject "SwiftDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
