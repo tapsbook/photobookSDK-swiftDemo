@@ -10,8 +10,6 @@
 #import <TapsbookSDK/TapsbookSDK.h>
 #import <TapsbookSDK/TBProduct.h>
 
-static NSString * const kTBS3AppKey = @"AKIAJ7D2AGAC6S24OXMQ";
-static NSString * const kTBS3AppSecret = @"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";
 #if DEBUG
 static NSString * const kTBS3BucketNameDefault = @"tapstest";
 static NSString * const kStripeKey = @"pk_test_d5alHjczpNGKCRL539vo14TL";
@@ -73,8 +71,8 @@ static NSString * const kStripeKey = @"pk_live_vgeBiZVkdp1z3yWpBQgjjQjp";
                                        },
                                
                                kTBAWSS3 : @{
-                                       kTBAWSS3AppKey : kTBS3AppKey,                      // (Optional) Your AWS s3 cloud storage account, SDK will upload the rendered images to the AWS s3 location, you may need to set your own clean up policy to remove these images routinely
-                                       kTBAWSS3AppSecret : kTBS3AppSecret,                // (Optional) Your AWS s3 cloud storage account secret
+                                       kTBAWSS3AppKey : @"",                      // (Optional) Your AWS s3 cloud storage account, SDK will upload the rendered images to the AWS s3 location, you may need to set your own clean up policy to remove these images routinely
+                                       kTBAWSS3AppSecret : @"",                // (Optional) Your AWS s3 cloud storage account secret
                                        kTBAWSS3BucketName : kTBS3BucketNameDefault,       // (Optional) AWS uses bucket name to organize your uploaded images, your images will be uploaded to this URL pattern
                                        },
                                
