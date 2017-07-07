@@ -214,7 +214,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
-    
     func albumManager(_ albumManager: TBSDKAlbumManager!, preloadXXLSizeImages tbImages: [Any]!, of sdkAlbum: TBSDKAlbum!, progressBlock: ((Int, Int, Float) -> Void)!, completionBlock: ((Int, Int, Error?) -> Void)!) {
         LMTBSDKHelper.sharedInstance().downloadTBImages(tbImages, with: .xxl, progressBlock: progressBlock, completionBlock: completionBlock)
     }
